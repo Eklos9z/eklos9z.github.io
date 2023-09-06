@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>利用hexo在github上搭建个人博客</title>
+    <url>/2023/08/15/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<p>由于哥们的服务器过期了，不好意思找他续费，于是决定自己搭一个blog，国内的要么广告多（X书），要么略显老旧（X园），几经挑选之后决定利用hexo在github上搭建。<br>搭建的过程基本参考了<a href="https://www.cnblogs.com/huanhao/p/hexobase.html#%E9%85%8D%E7%BD%AE%E4%B8%BB%E9%A2%98">【基础篇】hexo博客搭建教程</a>。<br>但是可能是由于版本更新的问题，遇到了一些意料之外的情况。</p>
+<p>1、在git bash中执行安装cnpm出错<br>错误：Error: EPERM: operation not permitted<br>解决方案：利用管理员模式打开git即可。<br>错误：ERR! code EPERM<br>解决方案：将C：&#x2F;user&#x2F;用户名&#x2F;.npmrc删除（需要打开隐藏文件）。</p>
+<p>2、上传github时页面主题未显示<br>解决方案：分别在博客页面所在的文件夹执行hexo g -d与 hexo d。（无法确认究竟是什么导致的问题）</p>
+<p>3、修改schemes后上传无效<br>删除themes&#x2F;next 中的.git（隐藏），再重新执行hexo g -d与 hexo d即可</p>
+<p>另：由于github的项目规则更改，如果按照链接中的教程会将页面信息上传到项目的master分支中，此时只需将页面配置文件中的branch项改成main即可。</p>
+]]></content>
+      <categories>
+        <category>杂项比赛/学习</category>
+      </categories>
+      <tags>
+        <tag>自学</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>机器人比赛避障项目赛后总结</title>
     <url>/2023/08/15/%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%AF%94%E8%B5%9B%E9%81%BF%E9%9A%9C%E9%A1%B9%E7%9B%AE%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<p>在见到避障比赛的文件之后，对比赛算法的设计并没有我想象中那么困难：机器人直行——机器人识别到箭头——机器人向箭头指向的方向平移——机器人视野脱离箭头——机器人直行，但是直觉与经验都在告诉我这个比赛最困难的地方就是在于怎么样才能去识别到三个箭头的方向。</p>
@@ -22,22 +38,6 @@
       </categories>
       <tags>
         <tag>复盘</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>利用hexo在github上搭建个人博客</title>
-    <url>/2023/08/15/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<p>由于哥们的服务器过期了，不好意思找他续费，于是决定自己搭一个blog，国内的要么广告多（X书），要么略显老旧（X园），几经挑选之后决定利用hexo在github上搭建。<br>搭建的过程基本参考了<a href="https://www.cnblogs.com/huanhao/p/hexobase.html#%E9%85%8D%E7%BD%AE%E4%B8%BB%E9%A2%98">【基础篇】hexo博客搭建教程</a>。<br>但是可能是由于版本更新的问题，遇到了一些意料之外的情况。</p>
-<p>1、在git bash中执行安装cnpm出错<br>错误：Error: EPERM: operation not permitted<br>解决方案：利用管理员模式打开git即可。<br>错误：ERR! code EPERM<br>解决方案：将C：&#x2F;user&#x2F;用户名&#x2F;.npmrc删除（需要打开隐藏文件）。</p>
-<p>2、上传github时页面主题未显示<br>解决方案：分别在博客页面所在的文件夹执行hexo g -d与 hexo d。（无法确认究竟是什么导致的问题）</p>
-<p>3、修改schemes后上传无效<br>删除themes&#x2F;next 中的.git（隐藏），再重新执行hexo g -d与 hexo d即可</p>
-<p>另：由于github的项目规则更改，如果按照链接中的教程会将页面信息上传到项目的master分支中，此时只需将页面配置文件中的branch项改成main即可。</p>
-]]></content>
-      <categories>
-        <category>杂项比赛/学习</category>
-      </categories>
-      <tags>
-        <tag>自学</tag>
       </tags>
   </entry>
 </search>
