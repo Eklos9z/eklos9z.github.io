@@ -30,7 +30,7 @@
 <p>base64编码：特征是尾部可能会有等于号。</p>
 <p>gif隐写：可以使用101editor打开gif图片 若gif图片无法在图片管理器中打开考虑图片是否文档开头中缺少GIF8[<code>GIF文件头：47 49 46 38 39 61]</code></p>
 <p>HTTP请求方法：</p>
-<p><img src="/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/http.png" alt="http"></p>
+<p><img src="/./CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/http.png" alt="http"></p>
 ]]></content>
       <categories>
         <category>CTF学习</category>
