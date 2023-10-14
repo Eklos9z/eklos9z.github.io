@@ -123,12 +123,12 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">2</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">3</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">4</span></a>
 
   </li>
   </ul>
@@ -213,6 +213,139 @@
             </div>
           <!--/noindex-->
         
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eklos9z.github.io/2023/09/06/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eklos">
+      <meta itemprop="description" content="The world around you is not what it seems.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eklos's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/06/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/" class="post-title-link" itemprop="url">MoeCTF2023部分题目wp</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-09-06 15:40:50" itemprop="dateCreated datePublished" datetime="2023-09-06T15:40:50+08:00">2023-09-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-09-24 18:51:16" itemprop="dateModified" datetime="2023-09-24T18:51:16+08:00">2023-09-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF%E6%AF%94%E8%B5%9B/" itemprop="url" rel="index"><span itemprop="name">CTF比赛</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>比赛链接：<a target="_blank" rel="noopener" href="https://ctf.xidian.edu.cn/">https://ctf.xidian.edu.cn/</a></p>
+<p>因为本人水平有限，并且部分题目是一边做一边记录，有错误在所难免，还请各位师傅多多批评指正。</p>
+<p><code>&lt;!--more--&gt;</code></p>
+<h1 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h1><p><code>&lt;details&gt;</code></p>
+<p><code>&lt;summary&gt;</code></p>
+<p>1、http</p>
+<p><code>&lt;/summary&gt;</code></p>
+<p>使用工具：Burp</p>
+<p><code>&lt;details&gt;</code></p>
+<h1 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h1><p><code>&lt;details&gt;</code></p>
+<p><code>&lt;summary&gt;</code></p>
+<h3 id="机位查询"><a href="#机位查询" class="headerlink" title="机位查询"></a>机位查询</h3><p><code>&lt;/summary&gt;</code></p>
+<p><img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695552040696.png" alt="1695552040696"></p>
+<p>使用工具：百度地图，高德地图；(exif)</p>
+<p>题干的安装包里有三个文件（1、2、3）。</p>
+<p><img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546103340.png" alt="1695546103340"></p>
+<p><img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546153083.png" alt="1695546153083"></p>
+<p><img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546160885.png" alt="1695546160885"></p>
+<p>P1可以看到图片中有个很明显的南宁站，结合旁边的“高铁商务酒店“可以初步判断P1地址位于南宁高铁站附近</p>
+<p><img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546843704.png" alt="1695546843704"></p>
+<p>然后根据地图与照片尝试反推位置：机位既能看到”猪霸王”所在的美食街，又能看到城市便捷酒店的远角以及南宁站的全貌。因此可以做一个大致的视线图如下。</p>
+<p><img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695547408548.png" alt="1695547408548"></p>
+<p>模拟图显示机位大概在”摩根快捷酒店”与”运德集团小区”附近，考虑到简易标点的误差，把”君安快捷酒店”作为备选项，选择用百度实景地图查看一下附近的具体信息。<img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695547590711.png" alt="1695547590711"></p>
+<p>很显然，只有”嘉士摩根国际”这个建筑具备机位的相关条件，”运德集团小区”的建筑高度无法实现该效果，如果采取相同角度在”君安快捷酒店”拍照，”嘉士摩根国际”必然会出现在照片中。因此P1的flag片段为”jiashi”（注意平翘舌，别问我为什么）。</p>
+<p>P2有一个很明显的”中山路美食街”的特征，扔到bing搜索一下。<img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548004807.png" alt="1695548004807"></p>
+<p>又在南宁，顺手看一眼图片。</p>
+<p><img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548056397.png" alt="1695548056397"></p>
+<p>看到一个类似的图片，点进去发现是素材库。判断这个图片可能是网图，开始百度识图。<img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548274601.png" alt="1695548274601"></p>
+<p>发现是某摄影比赛的作品，于是<del>找到主办方联系作者发邮件问照片是在哪拍的（x，</del> 打开百度地图搜索南宁中山路美食街</p>
+<p><img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548713876.png" alt="1695548713876"></p>
+<p>根据”琉璃净”的位置确认具体方位。然后根据照片推断大致机位位置。（这里吐槽一下百度地图和高德地图一个不支持地图旋转，一个没有实景地图）</p>
+<p><img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548962411.png" alt="1695548962411"></p>
+<p>根据上面比赛信息，可以排除在马路上使用无人机进行拍摄，所以只能是在”广西高等法院办公楼旧址”所在的区域，利用百度实景地图瞄一眼。</p>
+<p><img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549111309.png" alt="1695549111309"></p>
+<p>显然，P2的flag片段为：baisheng</p>
+<p>P3比较麻烦，整个照片几乎没有有效的特征信息，只有最远处高楼有”广西农信”的字样，因此我猜测照片还是在南宁，在百度地图上尝试搜索”时代丽都”。</p>
+<p><img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549302124.png" alt="1695549302124"></p>
+<p>运气很好。并且根据近大远小的透视关系。以及”时代丽都”和”中国人保大厦”的相对位置，可以很容易判断照片是从左往右拍摄的。照片下方有一串95500的电话，经过查询是太平洋保险的电话，由此向左寻找和太平洋相关的地标。</p>
+<p><img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549579432.png" alt="1695549579432"></p>
+<p>初步判断是左边的”疫苗临床研究所”，查询全景地图。</p>
+<p><img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549812014.png" alt="1695549812014"></p>
+<p>显然右边的黄色建筑（疾病预防控制中心）的高度不足以越过”太平洋世纪广场”所在的楼，所以还需要再重新定位。</p>
+<p>再往左看，发现最近同时具备能拍摄”太平洋世纪广场”并且高度明显远高于”太平洋世纪广场”的建筑仅可能有”铭湖经典”、”东方明珠花园”和”汇金苑”</p>
+<p><img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695550053013.png" alt="1695550053013"></p>
+<p>此时我发现了”中国人保”右边的字被挡住了，因此在通过实景地图查询中国人保标牌在建筑上的相对位置可以模拟一条较为精确的视线。</p>
+<p><img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695550372881.png" alt="1695550372881"></p>
+<p>大致为2&#x2F;3的位置。同时根据机位大概在”时代丽都”与”中国人保财险”的位置正中，并且”时代丽都”所在的区域背后有一条视角偏左的马路，可以模拟另一条视线图。同时照片是刚好只能看到”太平洋世纪广场”的电话的，所以可以做第三条视线图。</p>
+<p><img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551035234.png" alt="1695551035234"></p>
+<p>受限于误差，仅仅排除了”铭湖经典”。并且不能判断究竟是”东方明珠花园”的前楼还是”东方明珠花园”与“汇金苑”的侧楼，然后我又仔细观察了一遍照片，发现有一个红色标识的楼位于机位的正中央</p>
+<p><img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551258300.png" alt="1695551258300"></p>
+<p>区域特征是旁边有一些红色的楼群，并且几乎都是高度较高的建筑，以及一个红色的不明logo，利用卫星地图确认了目标楼，并作了视线图，由于位于照片正中央，因此只需作平行线即可。</p>
+<p><img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551520367.png" alt="1695551520367"></p>
+<p><img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551566402.png" alt="1695551566402"></p>
+<p>然后再通过实景地图确认，”东方明珠花园”前楼的高度不足，因此P3的flag片段为”huijin”。</p>
+<p><img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551701456.png" alt="1695551701456"></p>
+<p>最后，关于P3的这些其实都可以不看，因为我直到整理wp的时候才想起来把照片扔exif里查一下，里面写了经纬度……</p>
+<p><img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551823956.png" alt="1695551823956"></p>
+<p><img src="/image/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551866254.png" alt="1695551866254"></p>
+<p>哭了，我的头发，我对不起你。</p>
+<p> <code>&lt;details&gt;</code></p>
+
       
     </div>
 
@@ -458,14 +591,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
