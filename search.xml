@@ -68,7 +68,7 @@
 <p><del>普通版burp不具备生成CSRF poc的功能，换个工具先（</del></p>
 </details>
 
-<datails>
+<details>
 <summary>File Inclusion(文件包含)</summary>
 
 <p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849299946.png" alt="1698849299946"></p>
@@ -77,55 +77,7 @@
 <p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849376545.png" alt="1698849376545"><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849392702.png" alt="1698849392702"></p>
 <p>然后注意到了浏览器的网址栏，发现所谓php文件的读取是直接将php文件传入page中再读出来，联系到标题的文件隐藏，尝试着将page&#x3D;file3.php改成page&#x3D;file4.php。</p>
 <p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849666992.png" alt="1698849666992"></p>
-</datails>
-
 </details>
-]]></content>
-      <tags>
-        <tag>自学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>漏洞挖掘学习笔记</title>
-    <url>/2023/10/22/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>想试着挖一些简单的漏洞，学习一下常见漏洞的类型和运用思路</p>
-<span id="more"></span>
-<details>
-<summary>OWASP top10</summary>
-</details>
-
-
-
-
-<details>
-<summary>逻辑漏洞</summary>
-
-<p>工具：Burp</p>
-<p>属于业务本身可能产生的漏洞。</p>
-<p>个人信息部分中可能出现文件上传漏洞，XSS，暴力破解验证码等；主要体现在是否会向后端传入一些数据。利用Burp篡改传入的输入达到相应的目的。大部分需要自己尝试。</p>
-<details>
-<summary>URL跳转漏洞</summary>
-
-<p>体现在url网址中后方加入?returnurl&#x3D; 或者是?sec&#x3D; ?url&#x3D;</p>
-<p>可以让点击链接的用户重定向自后方的网址，会被原网址WAF拦截。</p>
-<p>常见于业务完成场景中，如：修改密码成功、用户分享、收藏的跳转等。</p>
-<p>url跳转bypass。</p>
-<p>利用问号、@绕过限制。</p>
-</details>
-
-<details>
-<summary>短信轰炸漏洞</summary>
-
-<p>发送短信&#x2F;邮件的包会无限制的发送。</p>
-<p>场景常见于登录、注册、找回密码等需要会产生短信交互或者邮箱交互中。</p>
-<p>bypass思路：</p>
-<p>在mobile参数后面加上%20、字母等，或者修改大小写、修改cookie值或者利用调用接口绕过。</p>
-</details>
-
-<details>
-<summary></summary>
-</details>
-
 
 </details>
 ]]></content>
@@ -259,6 +211,54 @@
       </categories>
       <tags>
         <tag>复盘</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>漏洞挖掘学习笔记</title>
+    <url>/2023/10/22/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>想试着挖一些简单的漏洞，学习一下常见漏洞的类型和运用思路</p>
+<span id="more"></span>
+<details>
+<summary>OWASP top10</summary>
+</details>
+
+
+
+
+<details>
+<summary>逻辑漏洞</summary>
+
+<p>工具：Burp</p>
+<p>属于业务本身可能产生的漏洞。</p>
+<p>个人信息部分中可能出现文件上传漏洞，XSS，暴力破解验证码等；主要体现在是否会向后端传入一些数据。利用Burp篡改传入的输入达到相应的目的。大部分需要自己尝试。</p>
+<details>
+<summary>URL跳转漏洞</summary>
+
+<p>体现在url网址中后方加入?returnurl&#x3D; 或者是?sec&#x3D; ?url&#x3D;</p>
+<p>可以让点击链接的用户重定向自后方的网址，会被原网址WAF拦截。</p>
+<p>常见于业务完成场景中，如：修改密码成功、用户分享、收藏的跳转等。</p>
+<p>url跳转bypass。</p>
+<p>利用问号、@绕过限制。</p>
+</details>
+
+<details>
+<summary>短信轰炸漏洞</summary>
+
+<p>发送短信&#x2F;邮件的包会无限制的发送。</p>
+<p>场景常见于登录、注册、找回密码等需要会产生短信交互或者邮箱交互中。</p>
+<p>bypass思路：</p>
+<p>在mobile参数后面加上%20、字母等，或者修改大小写、修改cookie值或者利用调用接口绕过。</p>
+</details>
+
+<details>
+<summary></summary>
+</details>
+
+
+</details>
+]]></content>
+      <tags>
+        <tag>自学</tag>
       </tags>
   </entry>
 </search>
