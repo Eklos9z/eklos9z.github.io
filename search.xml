@@ -27,75 +27,6 @@
       </tags>
   </entry>
   <entry>
-    <title>DVWA靶场练习笔记</title>
-    <url>/2023/11/01/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>发现了一个很棒的靶场，里面囊括了Web方向的大多数常见漏洞，并且还分了四个难度等级（Low,Medium,High,Impossible），很适合目前我的需求。</p>
-<span id="more"></span>
-
-<details>
-
-<summary>Low</summary>
-
-<details>
-<summary>Brute Force(暴力破解)</summary>
-
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698826342694.png" alt="1698826342694"></p>
-<p>先随意选择一组用户名和密码看看会发生什么。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698827316880.png" alt="1698827316880"></p>
-<p>显示用户名和&#x2F;或密码错误，除此之外没有任何的机制。所以考虑使用Burp的Intruder模块对用户名和密码进行爆破。</p>
-<p>这里由于username和password都需要爆破。所以考虑Pitchfork模块或者Cluster Bomb模块（Sniper和Batteringram只能导入一个payload），这里选择Clusterbomb。</p>
-<p>选择字典之后开始爆破。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698831896134.png" alt="1698831896134"></p>
-<p>发现了一个长度明显有差异的返回长度。输入进去。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698831967463.png" alt="1698831967463"></p>
-</details>
-
-<details>
-<summary>Command Injection(指令注入)</summary>
-
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698843230447.png" alt="1698843230447"><br><del>（是知识盲区</del>  尝试着分析了一下，工作原理可能是直接将输入框内的文字与ping命令进行拼接。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698843498673.png" alt="1698843498673"></p>
-<p>并且不能过滤不合法的输入，那么尝试一下用&amp;符号进行注入。<del>（windows命令行指令都是啥来着</del></p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698843906106.png" alt="1698843906106"></p>
-</details>
-
-<details>
-<summary>CSRF(Cross Site Request Forgery)(跨站请求伪造)</summary>
-
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698844012937.png" alt="1698844012937"></p>
-<p>尝试抓个包。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698845752819.png" alt="1698845752819"></p>
-<p>发现是直接传递了新的密码和确认的密码，同时查看源代码发现是直接判断New password和Conf password是否相等，并没有其他的验证。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700221775155.png" alt="1700221775155"></p>
-<p><del>普通版burp不具备生成CSRF poc的功能，换个工具先（</del>    burp汉化破解链接 <code>https://www.52pojie.cn/thread-1544866-1-1.html</code></p>
-<p>或者不使用poc工具，直接构造链接 <code>http://127.0.0.1/DVWA-2.3/vulnerabilities/csrf/?password_new=123&amp;password_conf=123&amp;Change=Change#</code> 即可 ，或者再用短链接生成器包装一下看着像那么回事也可以。</p>
-</details>
-
-<details>
-<summary>File Inclusion(文件包含)</summary>
-
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849299946.png" alt="1698849299946"></p>
-<p>页面上给了三个php文件，逐个点击后没有发现特别有用的信息。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849364929.png" alt="1698849364929"></p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849376545.png" alt="1698849376545"><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849392702.png" alt="1698849392702"></p>
-<p>然后注意到了浏览器的网址栏，发现所谓php文件的读取是直接将php文件传入page中再读出来，联系到标题的文件隐藏，尝试着将page&#x3D;file3.php改成page&#x3D;file4.php。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849666992.png" alt="1698849666992"></p>
-</details>
-<details>
-<summary>File Upload(文件上传漏洞)</summary>
-
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700222526114.png" alt="1700222526114"></p>
-<p>一句话木马干就完了 <code>&lt;?php @eval($_POST[&#39;z&#39;]);?&gt;</code></p>
-<p><del>tmd卡巴斯基怎么又给我的文件清理了</del></p>
-</details>
-
-</details>
-]]></content>
-      <tags>
-        <tag>自学</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>机器人比赛避障项目赛后总结</title>
     <url>/2023/08/15/%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%AF%94%E8%B5%9B%E9%81%BF%E9%9A%9C%E9%A1%B9%E7%9B%AE%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<p>在见到避障比赛的文件之后，对比赛算法的设计并没有我想象中那么困难：机器人直行——机器人识别到箭头——机器人向箭头指向的方向平移——机器人视野脱离箭头——机器人直行，但是直觉与经验都在告诉我这个比赛最困难的地方就是在于怎么样才能去识别到三个箭头的方向。</p>
@@ -126,73 +57,105 @@
       </tags>
   </entry>
   <entry>
-    <title>漏洞挖掘学习笔记</title>
-    <url>/2023/10/22/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>想试着挖一些简单的漏洞，学习一下常见漏洞的类型和运用思路</p>
-<span id="more"></span>
-<details>
-<summary>OWASP top10</summary>
-</details>
-
-
-
-
-<details>
-<summary>逻辑漏洞</summary>
-
-<p>工具：Burp</p>
-<p>属于业务本身可能产生的漏洞。</p>
-<p>个人信息部分中可能出现文件上传漏洞，XSS，暴力破解验证码等；主要体现在是否会向后端传入一些数据。利用Burp篡改传入的输入达到相应的目的。大部分需要自己尝试。</p>
-<details>
-<summary>URL跳转漏洞</summary>
-
-<p>体现在url网址中后方加入?returnurl&#x3D; 或者是?sec&#x3D; ?url&#x3D;</p>
-<p>可以让点击链接的用户重定向自后方的网址，会被原网址WAF拦截。</p>
-<p>常见于业务完成场景中，如：修改密码成功、用户分享、收藏的跳转等。</p>
-<p>url跳转bypass。</p>
-<p>利用问号、@绕过限制。</p>
-</details>
-
-<details>
-<summary>短信轰炸漏洞</summary>
-
-<p>发送短信&#x2F;邮件的包会无限制的发送。</p>
-<p>场景常见于登录、注册、找回密码等需要会产生短信交互或者邮箱交互中。</p>
-<p>bypass思路：</p>
-<p>在mobile参数后面加上%20、字母等，或者修改大小写、修改cookie值或者利用调用接口绕过。</p>
-</details>
-
-<details>
-<summary></summary>
-</details>
-
-
-</details>
-]]></content>
-      <tags>
-        <tag>自学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>利用hexo在github上搭建个人博客</title>
-    <url>/2023/08/15/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<p>由于哥们的服务器过期了，不好意思找他续费，于是决定自己搭一个blog，国内的要么广告多（X书），要么后台略显老旧（X园），几经挑选之后决定利用hexo在github上搭建。</p>
-<p>搭建的过程基本参考了<a href="https://www.cnblogs.com/huanhao/p/hexobase.html#%E9%85%8D%E7%BD%AE%E4%B8%BB%E9%A2%98">【基础篇】hexo博客搭建教程</a>。<br>但是可能是由于版本更新的问题，遇到了一些意料之外的情况。</p>
+    <title>DVWA靶场练习笔记</title>
+    <url>/2023/11/01/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>发现了一个很棒的靶场，里面囊括了Web方向的大多数常见漏洞，并且还分了四个难度等级（Low,Medium,High,Impossible），很适合目前我的需求。</p>
 <span id="more"></span>
 
-<p>1、在git bash中执行安装cnpm出错<br>错误1：Error: EPERM: operation not permitted<br>解决方案：利用管理员模式打开git即可。<br>错误2：ERR! code EPERM<br>解决方案：将C:&#x2F;user&#x2F;用户名&#x2F;.npmrc删除（需要打开隐藏文件）。</p>
-<p>2、上传github时页面主题未显示<br>解决方案：分别在博客页面所在的文件夹执行hexo clean后再执行hexo g -d与 hexo d。（无法确认究竟是什么导致的问题，推测是缓存问题。）</p>
-<p>3、修改schemes后上传无效<br>删除themes&#x2F;next 中的.git（隐藏），再重新执行hexo g -d与 hexo d即可.</p>
-<p>另：由于github的项目规则更改，如果按照链接中的教程会将页面信息上传到项目的master分支中，此时只需将（根目录下的）页面配置文件中的branch项改成main即可。</p>
-<p>4、图片插入无法显示</p>
-<p>图片根目录位于 &#x2F;博客名称&#x2F;themes&#x2F;主题名&#x2F;source&#x2F;images。即如果需要插入图片，需要引用的代码格式为 :<code>！[](./images/图片名（或者可以加入二级文件夹）))</code></p>
-<p>可以用hexo s在本地页面中检查是否成功，同时本地页面可以动态调整。</p>
-<p>5、新版hexo下文章创建无法分段</p>
-<p>需要在文章正文需要分段的地方自行添加 <code>&lt;!--more--&gt;</code></p>
+<details>
+
+<summary>Brute Force(暴力破解)</summary>
+
+<details>
+
+<summary>Low</summary>
+
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698826342694.png" alt="1698826342694"></p>
+<p>先随意选择一组用户名和密码看看会发生什么。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698827316880.png" alt="1698827316880"></p>
+<p>显示用户名和&#x2F;或密码错误，除此之外没有任何的机制。所以考虑使用Burp的Intruder模块对用户名和密码进行爆破。</p>
+<p>这里由于username和password都需要爆破。所以考虑Pitchfork模块或者Cluster Bomb模块（Sniper和Batteringram只能导入一个payload），这里选择Clusterbomb。</p>
+<p>选择字典之后开始爆破。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698831896134.png" alt="1698831896134"></p>
+<p>发现了一个长度明显有差异的返回长度。输入进去。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698831967463.png" alt="1698831967463"></p>
+</details>
+
+</details>
+
+<details>
+<summary>Command Injection(指令注入)</summary>
+<details>
+<summary>Low</summary>
+
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698843230447.png" alt="1698843230447"><br><del>（是知识盲区</del>  尝试着分析了一下，工作原理可能是直接将输入框内的文字与ping命令进行拼接。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698843498673.png" alt="1698843498673"></p>
+<p>并且不能过滤不合法的输入，那么尝试一下用&amp;符号进行注入。<del>（windows命令行指令都是啥来着</del></p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698843906106.png" alt="1698843906106"></p>
+</details>
+</details>
+
+<details>
+<summary>CSRF(Cross Site Request Forgery)(跨站请求伪造)</summary>
+<details>
+<summary>Low</summary>
+
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698844012937.png" alt="1698844012937"></p>
+<p>尝试抓个包。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698845752819.png" alt="1698845752819"></p>
+<p>发现是直接传递了新的密码和确认的密码，同时查看源代码发现是直接判断New password和Conf password是否相等，并没有其他的验证。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700221775155.png" alt="1700221775155"></p>
+<p><del>普通版burp不具备生成CSRF poc的功能，换个工具先（</del>    burp汉化破解链接 <code>https://www.52pojie.cn/thread-1544866-1-1.html</code></p>
+<p>或者不使用poc工具，直接构造链接 <code>http://127.0.0.1/DVWA-2.3/vulnerabilities/csrf/?password_new=123&amp;password_conf=123&amp;Change=Change#</code> 即可 ，或者再用短链接生成器包装一下看着像那么回事也可以。</p>
+</details>
+</details>
+
+<details>
+<summary>File Inclusion(文件包含)</summary>
+<details>
+
+<summary>Low</summary>
+
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849299946.png" alt="1698849299946"></p>
+<p>页面上给了三个php文件，逐个点击后没有发现特别有用的信息。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849364929.png" alt="1698849364929"></p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849376545.png" alt="1698849376545"><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849392702.png" alt="1698849392702"></p>
+<p>然后注意到了浏览器的网址栏，发现所谓php文件的读取是直接将php文件传入page中再读出来，联系到标题的文件隐藏，尝试着将page&#x3D;file3.php改成page&#x3D;file4.php。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849666992.png" alt="1698849666992"></p>
+</details>
+</details>
+
+<details>
+<summary>File Upload(文件上传漏洞)</summary>
+<details>
+<summary>Low</summary>
+
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700222526114.png" alt="1700222526114"></p>
+<p>虽然说是上传图片，但是源代码中没有对上传文件的格式作要求</p>
+<p>一句话木马干就完了 <code>&lt;?php @eval($_POST[&#39;z&#39;]);?&gt;</code></p>
+<p><del>tmd卡巴斯基怎么又给我的文件清理了</del></p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700466093449.png" alt="1700466093449"></p>
+<p>上传成功，然后用蚁剑连接</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700466460394.png" alt="1700466460394"></p>
+<p>成功（记得把php文件删掉</p>
+</details>
+</details>
+
+<details>
+<summary>Insecure CAPTCHA(不安全验证码)</summary>
+
+<p><strong>因验证码的key有问题，所以暂时搁置</strong></p>
+</details>
+
+<details>
+<details>
+
+<summary>SQL Injection(SQL注入)</summary>
+
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700468784744.png" alt="1700468784744"></p>
+</details>
+</details>
 ]]></content>
-      <categories>
-        <category>杂项比赛/学习</category>
-      </categories>
       <tags>
         <tag>自学</tag>
       </tags>
@@ -269,6 +232,78 @@
       </categories>
       <tags>
         <tag>复盘</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>漏洞挖掘学习笔记</title>
+    <url>/2023/10/22/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>想试着挖一些简单的漏洞，学习一下常见漏洞的类型和运用思路</p>
+<span id="more"></span>
+<details>
+<summary>OWASP top10</summary>
+</details>
+
+
+
+
+<details>
+<summary>逻辑漏洞</summary>
+
+<p>工具：Burp</p>
+<p>属于业务本身可能产生的漏洞。</p>
+<p>个人信息部分中可能出现文件上传漏洞，XSS，暴力破解验证码等；主要体现在是否会向后端传入一些数据。利用Burp篡改传入的输入达到相应的目的。大部分需要自己尝试。</p>
+<details>
+<summary>URL跳转漏洞</summary>
+
+<p>体现在url网址中后方加入?returnurl&#x3D; 或者是?sec&#x3D; ?url&#x3D;</p>
+<p>可以让点击链接的用户重定向自后方的网址，会被原网址WAF拦截。</p>
+<p>常见于业务完成场景中，如：修改密码成功、用户分享、收藏的跳转等。</p>
+<p>url跳转bypass。</p>
+<p>利用问号、@绕过限制。</p>
+</details>
+
+<details>
+<summary>短信轰炸漏洞</summary>
+
+<p>发送短信&#x2F;邮件的包会无限制的发送。</p>
+<p>场景常见于登录、注册、找回密码等需要会产生短信交互或者邮箱交互中。</p>
+<p>bypass思路：</p>
+<p>在mobile参数后面加上%20、字母等，或者修改大小写、修改cookie值或者利用调用接口绕过。</p>
+</details>
+
+<details>
+<summary></summary>
+</details>
+
+
+</details>
+]]></content>
+      <tags>
+        <tag>自学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>利用hexo在github上搭建个人博客</title>
+    <url>/2023/08/15/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<p>由于哥们的服务器过期了，不好意思找他续费，于是决定自己搭一个blog，国内的要么广告多（X书），要么后台略显老旧（X园），几经挑选之后决定利用hexo在github上搭建。</p>
+<p>搭建的过程基本参考了<a href="https://www.cnblogs.com/huanhao/p/hexobase.html#%E9%85%8D%E7%BD%AE%E4%B8%BB%E9%A2%98">【基础篇】hexo博客搭建教程</a>。<br>但是可能是由于版本更新的问题，遇到了一些意料之外的情况。</p>
+<span id="more"></span>
+
+<p>1、在git bash中执行安装cnpm出错<br>错误1：Error: EPERM: operation not permitted<br>解决方案：利用管理员模式打开git即可。<br>错误2：ERR! code EPERM<br>解决方案：将C:&#x2F;user&#x2F;用户名&#x2F;.npmrc删除（需要打开隐藏文件）。</p>
+<p>2、上传github时页面主题未显示<br>解决方案：分别在博客页面所在的文件夹执行hexo clean后再执行hexo g -d与 hexo d。（无法确认究竟是什么导致的问题，推测是缓存问题。）</p>
+<p>3、修改schemes后上传无效<br>删除themes&#x2F;next 中的.git（隐藏），再重新执行hexo g -d与 hexo d即可.</p>
+<p>另：由于github的项目规则更改，如果按照链接中的教程会将页面信息上传到项目的master分支中，此时只需将（根目录下的）页面配置文件中的branch项改成main即可。</p>
+<p>4、图片插入无法显示</p>
+<p>图片根目录位于 &#x2F;博客名称&#x2F;themes&#x2F;主题名&#x2F;source&#x2F;images。即如果需要插入图片，需要引用的代码格式为 :<code>！[](./images/图片名（或者可以加入二级文件夹）))</code></p>
+<p>可以用hexo s在本地页面中检查是否成功，同时本地页面可以动态调整。</p>
+<p>5、新版hexo下文章创建无法分段</p>
+<p>需要在文章正文需要分段的地方自行添加 <code>&lt;!--more--&gt;</code></p>
+]]></content>
+      <categories>
+        <category>杂项比赛/学习</category>
+      </categories>
+      <tags>
+        <tag>自学</tag>
       </tags>
   </entry>
 </search>
