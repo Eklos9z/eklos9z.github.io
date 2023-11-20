@@ -1,32 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>CTF自学问题收集</title>
-    <url>/2023/09/06/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/</url>
-    <content><![CDATA[<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/weibo.png"></p>
-<p><strong>“先动手搞起来”</strong></p>
-<p>受限于CTF的分支较多，知识点也比较杂，记录一下自己不熟悉的知识点。</p>
-<span id="more"></span>
-
-<p>robots协议：网络爬虫排除标准，它是搜索引擎中访问网站的时候要查看的第一个文件。robots.txt文件告诉蜘蛛程序在服务器上什么文件是可以被查看的。 当一个搜索蜘蛛访问一个站点时，它会首先检查该站点根目录下是否存在robots.txt。基于人文道德规范建立的标准，不具备强制性（有点类似于readme.md？）<img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/robot.png"></p>
-<p>.php 备份文件后缀：通常备份文件的后缀名为.bak 所以 index. php 的备份文件名为 index.php.bak。</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/php.png"></p>
-<p>cookie：是web服务器为了识别用户身份而设置的一小段文本文件（一小段数据） 可通过Burpsuite爬取网页中的数据包。<a href="https://www.jianshu.com/p/6fc9cea6daa2">深入理解Cookie - 简书 (jianshu.com)</a></p>
-<p>Burp爆破模块使用界面：</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/burp.png"></p>
-<p>base64编码：特征是尾部可能会有等于号。</p>
-<p>gif隐写：可以使用101editor打开gif图片 若gif图片无法在图片管理器中打开考虑图片是否文档开头中缺少GIF8 <code>[GIF文件头：47 49 46 38 39 61]</code></p>
-<p>HTTP请求方法：</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/http.png"></p>
-]]></content>
-      <categories>
-        <category>CTF学习</category>
-      </categories>
-      <tags>
-        <tag>自学</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>MoeCTF2023部分题目wp</title>
     <url>/2023/09/20/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/</url>
     <content><![CDATA[<p>比赛链接：<a href="https://ctf.xidian.edu.cn/">https://ctf.xidian.edu.cn/</a></p>
@@ -101,11 +75,68 @@
       </tags>
   </entry>
   <entry>
+    <title>CTF自学问题收集</title>
+    <url>/2023/09/06/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/</url>
+    <content><![CDATA[<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/weibo.png"></p>
+<p><strong>“先动手搞起来”</strong></p>
+<p>受限于CTF的分支较多，知识点也比较杂，记录一下自己不熟悉的知识点。</p>
+<span id="more"></span>
+
+<p>robots协议：网络爬虫排除标准，它是搜索引擎中访问网站的时候要查看的第一个文件。robots.txt文件告诉蜘蛛程序在服务器上什么文件是可以被查看的。 当一个搜索蜘蛛访问一个站点时，它会首先检查该站点根目录下是否存在robots.txt。基于人文道德规范建立的标准，不具备强制性（有点类似于readme.md？）<img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/robot.png"></p>
+<p>.php 备份文件后缀：通常备份文件的后缀名为.bak 所以 index. php 的备份文件名为 index.php.bak。</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/php.png"></p>
+<p>cookie：是web服务器为了识别用户身份而设置的一小段文本文件（一小段数据） 可通过Burpsuite爬取网页中的数据包。<a href="https://www.jianshu.com/p/6fc9cea6daa2">深入理解Cookie - 简书 (jianshu.com)</a></p>
+<p>Burp爆破模块使用界面：</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/burp.png"></p>
+<p>base64编码：特征是尾部可能会有等于号。</p>
+<p>gif隐写：可以使用101editor打开gif图片 若gif图片无法在图片管理器中打开考虑图片是否文档开头中缺少GIF8 <code>[GIF文件头：47 49 46 38 39 61]</code></p>
+<p>HTTP请求方法：</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/http.png"></p>
+]]></content>
+      <categories>
+        <category>CTF学习</category>
+      </categories>
+      <tags>
+        <tag>自学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>利用hexo在github上搭建个人博客</title>
+    <url>/2023/08/15/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<p>由于哥们的服务器过期了，不好意思找他续费，于是决定自己搭一个blog，国内的要么广告多（X书），要么后台略显老旧（X园），几经挑选之后决定利用hexo在github上搭建。</p>
+<p>搭建的过程基本参考了<a href="https://www.cnblogs.com/huanhao/p/hexobase.html#%E9%85%8D%E7%BD%AE%E4%B8%BB%E9%A2%98">【基础篇】hexo博客搭建教程</a>。<br>但是可能是由于版本更新的问题，遇到了一些意料之外的情况。</p>
+<span id="more"></span>
+
+<p>1、在git bash中执行安装cnpm出错<br>错误1：Error: EPERM: operation not permitted<br>解决方案：利用管理员模式打开git即可。<br>错误2：ERR! code EPERM<br>解决方案：将C:&#x2F;user&#x2F;用户名&#x2F;.npmrc删除（需要打开隐藏文件）。</p>
+<p>2、上传github时页面主题未显示<br>解决方案：分别在博客页面所在的文件夹执行hexo clean后再执行hexo g -d与 hexo d。（无法确认究竟是什么导致的问题，推测是缓存问题。）</p>
+<p>3、修改schemes后上传无效<br>删除themes&#x2F;next 中的.git（隐藏），再重新执行hexo g -d与 hexo d即可.</p>
+<p>另：由于github的项目规则更改，如果按照链接中的教程会将页面信息上传到项目的master分支中，此时只需将（根目录下的）页面配置文件中的branch项改成main即可。</p>
+<p>4、图片插入无法显示</p>
+<p>图片根目录位于 &#x2F;博客名称&#x2F;themes&#x2F;主题名&#x2F;source&#x2F;images。即如果需要插入图片，需要引用的代码格式为 :<code>！[](./images/图片名（或者可以加入二级文件夹）))</code></p>
+<p>可以用hexo s在本地页面中检查是否成功，同时本地页面可以动态调整。</p>
+<p>5、新版hexo下文章创建无法分段</p>
+<p>需要在文章正文需要分段的地方自行添加 <code>&lt;!--more--&gt;</code></p>
+]]></content>
+      <categories>
+        <category>杂项比赛/学习</category>
+      </categories>
+      <tags>
+        <tag>自学</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>DVWA靶场练习笔记</title>
     <url>/2023/11/01/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>发现了一个很棒的靶场，里面囊括了Web方向的大多数常见漏洞，并且还分了四个难度等级（Low,Medium,High,Impossible），很适合目前我的需求。</p>
 <span id="more"></span>
 
+<p>TODO:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Low</li>
+<li><input disabled="" type="checkbox"> Medium</li>
+<li><input disabled="" type="checkbox"> High</li>
+<li><input disabled="" type="checkbox"> Impossible</li>
+</ul>
 <details>
 
 <summary>Brute Force(暴力破解)</summary>
@@ -198,11 +229,13 @@
 <details>
 <summary>Low</summary>
 
-
 <p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700468784744.png" alt="1700468784744"></p>
 </details>
 </details>
 ]]></content>
+      <categories>
+        <category>信息安全</category>
+      </categories>
       <tags>
         <tag>自学</tag>
       </tags>
@@ -242,12 +275,10 @@
     <url>/2023/10/22/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>想试着挖一些简单的漏洞，学习一下常见漏洞的类型和运用思路</p>
 <span id="more"></span>
+
 <details>
 <summary>OWASP top10</summary>
 </details>
-
-
-
 
 <details>
 <summary>逻辑漏洞</summary>
@@ -255,6 +286,8 @@
 <p>工具：Burp</p>
 <p>属于业务本身可能产生的漏洞。</p>
 <p>个人信息部分中可能出现文件上传漏洞，XSS，暴力破解验证码等；主要体现在是否会向后端传入一些数据。利用Burp篡改传入的输入达到相应的目的。大部分需要自己尝试。</p>
+</details>
+
 <details>
 <summary>URL跳转漏洞</summary>
 
@@ -274,36 +307,10 @@
 <p>在mobile参数后面加上%20、字母等，或者修改大小写、修改cookie值或者利用调用接口绕过。</p>
 </details>
 
-<details>
-<summary></summary>
 </details>
-
-
-</details>
-]]></content>
-      <tags>
-        <tag>自学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>利用hexo在github上搭建个人博客</title>
-    <url>/2023/08/15/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<p>由于哥们的服务器过期了，不好意思找他续费，于是决定自己搭一个blog，国内的要么广告多（X书），要么后台略显老旧（X园），几经挑选之后决定利用hexo在github上搭建。</p>
-<p>搭建的过程基本参考了<a href="https://www.cnblogs.com/huanhao/p/hexobase.html#%E9%85%8D%E7%BD%AE%E4%B8%BB%E9%A2%98">【基础篇】hexo博客搭建教程</a>。<br>但是可能是由于版本更新的问题，遇到了一些意料之外的情况。</p>
-<span id="more"></span>
-
-<p>1、在git bash中执行安装cnpm出错<br>错误1：Error: EPERM: operation not permitted<br>解决方案：利用管理员模式打开git即可。<br>错误2：ERR! code EPERM<br>解决方案：将C:&#x2F;user&#x2F;用户名&#x2F;.npmrc删除（需要打开隐藏文件）。</p>
-<p>2、上传github时页面主题未显示<br>解决方案：分别在博客页面所在的文件夹执行hexo clean后再执行hexo g -d与 hexo d。（无法确认究竟是什么导致的问题，推测是缓存问题。）</p>
-<p>3、修改schemes后上传无效<br>删除themes&#x2F;next 中的.git（隐藏），再重新执行hexo g -d与 hexo d即可.</p>
-<p>另：由于github的项目规则更改，如果按照链接中的教程会将页面信息上传到项目的master分支中，此时只需将（根目录下的）页面配置文件中的branch项改成main即可。</p>
-<p>4、图片插入无法显示</p>
-<p>图片根目录位于 &#x2F;博客名称&#x2F;themes&#x2F;主题名&#x2F;source&#x2F;images。即如果需要插入图片，需要引用的代码格式为 :<code>！[](./images/图片名（或者可以加入二级文件夹）))</code></p>
-<p>可以用hexo s在本地页面中检查是否成功，同时本地页面可以动态调整。</p>
-<p>5、新版hexo下文章创建无法分段</p>
-<p>需要在文章正文需要分段的地方自行添加 <code>&lt;!--more--&gt;</code></p>
 ]]></content>
       <categories>
-        <category>杂项比赛/学习</category>
+        <category>信息安全</category>
       </categories>
       <tags>
         <tag>自学</tag>
