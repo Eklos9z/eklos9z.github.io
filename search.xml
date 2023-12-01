@@ -1,32 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>CTF自学问题收集</title>
-    <url>/2023/09/06/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/</url>
-    <content><![CDATA[<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/weibo.png"></p>
-<p><strong>“先动手搞起来”</strong></p>
-<p>受限于CTF的分支较多，知识点也比较杂，记录一下自己不熟悉的知识点。</p>
-<span id="more"></span>
-
-<p>robots协议：网络爬虫排除标准，它是搜索引擎中访问网站的时候要查看的第一个文件。robots.txt文件告诉蜘蛛程序在服务器上什么文件是可以被查看的。 当一个搜索蜘蛛访问一个站点时，它会首先检查该站点根目录下是否存在robots.txt。基于人文道德规范建立的标准，不具备强制性（有点类似于readme.md？）<img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/robot.png"></p>
-<p>.php 备份文件后缀：通常备份文件的后缀名为.bak 所以 index. php 的备份文件名为 index.php.bak。</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/php.png"></p>
-<p>cookie：是web服务器为了识别用户身份而设置的一小段文本文件（一小段数据） 可通过Burpsuite爬取网页中的数据包。<a href="https://www.jianshu.com/p/6fc9cea6daa2">深入理解Cookie - 简书 (jianshu.com)</a></p>
-<p>Burp爆破模块使用界面：</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/burp.png"></p>
-<p>base64编码：特征是尾部可能会有等于号。</p>
-<p>gif隐写：可以使用101editor打开gif图片 若gif图片无法在图片管理器中打开考虑图片是否文档开头中缺少GIF8 <code>[GIF文件头：47 49 46 38 39 61]</code></p>
-<p>HTTP请求方法：</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/http.png"></p>
-]]></content>
-      <categories>
-        <category>CTF学习</category>
-      </categories>
-      <tags>
-        <tag>自学</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>DVWA靶场练习笔记</title>
     <url>/2023/11/01/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>发现了一个很棒的靶场，里面囊括了Web方向的大多数常见漏洞，并且还分了四个难度等级（Low,Medium,High,Impossible），很适合目前我的需求。</p>
@@ -148,90 +122,6 @@
       </tags>
   </entry>
   <entry>
-    <title>利用hexo在github上搭建个人博客</title>
-    <url>/2023/08/15/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<p>由于哥们的服务器过期了，不好意思找他续费，于是决定自己搭一个blog，国内的要么广告多（X书），要么后台略显老旧（X园），几经挑选之后决定利用hexo在github上搭建。</p>
-<p>搭建的过程基本参考了<a href="https://www.cnblogs.com/huanhao/p/hexobase.html#%E9%85%8D%E7%BD%AE%E4%B8%BB%E9%A2%98">【基础篇】hexo博客搭建教程</a>。<br>但是可能是由于版本更新的问题，遇到了一些意料之外的情况。</p>
-<span id="more"></span>
-
-<p>1、在git bash中执行安装cnpm出错<br>错误1：Error: EPERM: operation not permitted<br>解决方案：利用管理员模式打开git即可。<br>错误2：ERR! code EPERM<br>解决方案：将C:&#x2F;user&#x2F;用户名&#x2F;.npmrc删除（需要打开隐藏文件）。</p>
-<p>2、上传github时页面主题未显示<br>解决方案：分别在博客页面所在的文件夹执行hexo clean后再执行hexo g -d与 hexo d。（无法确认究竟是什么导致的问题，推测是缓存问题。）</p>
-<p>3、修改schemes后上传无效<br>删除themes&#x2F;next 中的.git（隐藏），再重新执行hexo g -d与 hexo d即可.</p>
-<p>另：由于github的项目规则更改，如果按照链接中的教程会将页面信息上传到项目的master分支中，此时只需将（根目录下的）页面配置文件中的branch项改成main即可。</p>
-<p>4、图片插入无法显示</p>
-<p>图片根目录位于 &#x2F;博客名称&#x2F;themes&#x2F;主题名&#x2F;source&#x2F;images。即如果需要插入图片，需要引用的代码格式为 :<code>！[](./images/图片名（或者可以加入二级文件夹）))</code></p>
-<p>可以用hexo s在本地页面中检查是否成功，同时本地页面可以动态调整。</p>
-<p>5、新版hexo下文章创建无法分段</p>
-<p>需要在文章正文需要分段的地方自行添加 <code>&lt;!--more--&gt;</code></p>
-]]></content>
-      <categories>
-        <category>杂项比赛/学习</category>
-      </categories>
-      <tags>
-        <tag>自学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>漏洞挖掘学习笔记</title>
-    <url>/2023/10/22/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>想试着挖一些简单的漏洞，学习一下常见漏洞的类型和运用思路</p>
-<span id="more"></span>
-
-<details>
-<summary>OWASP top10</summary>
-</details>
-
-<details>
-<summary>逻辑漏洞</summary>
-
-<p>工具：Burp</p>
-<p>属于业务本身可能产生的漏洞。</p>
-<p>个人信息部分中可能出现文件上传漏洞，XSS，暴力破解验证码等；主要体现在是否会向后端传入一些数据。利用Burp篡改传入的输入达到相应的目的。大部分需要自己尝试。</p>
-</details>
-
-<details>
-<summary>URL跳转漏洞</summary>
-
-<p>体现在url网址中后方加入?returnurl&#x3D; 或者是?sec&#x3D; ?url&#x3D;</p>
-<p>可以让点击链接的用户重定向自后方的网址，会被原网址WAF拦截。</p>
-<p>常见于业务完成场景中，如：修改密码成功、用户分享、收藏的跳转等。</p>
-<p>url跳转bypass。</p>
-<p>利用问号、@绕过限制。</p>
-</details>
-
-<details>
-<summary>短信轰炸漏洞</summary>
-
-<p>发送短信&#x2F;邮件的包会无限制的发送。</p>
-<p>场景常见于登录、注册、找回密码等需要会产生短信交互或者邮箱交互中。</p>
-<p>bypass思路：</p>
-<p>在mobile参数后面加上%20、字母等，或者修改大小写、修改cookie值或者利用调用接口绕过。</p>
-</details>
-
-<details>
-<summary>SQL注入</summary>
-
-<p>SQL注入的原理是利用web程序对用户输入的数据没有严格的过滤和判断，主要被用来在url或者表单中输入特殊的字符或者语句，根据数据库的反馈判断是否存在SQL注入的可能性，一般有一下几种方法：</p>
-<ol>
-<li>单引号法：在参数后加入单引号，如 <code>?id=1&#39;</code>,如果页面返回错误或者汇报异常，说明存在SQL注入的可能性，因为无论是字符型还是整型都会因为单引号个数不匹配而报错</li>
-<li>and语句法：在参数后面加上and语句，如 <code>id=1 and 1=1</code>与 <code>id=1 and 1=2</code>，如果页面返回的结果不同，说明存在SQL注入的可能性。因为and语句会影响SQL语句的逻辑判断，从而影响查询的结果。不仅仅限于and，or、not在某些情况下都可以用作注入。</li>
-<li>注释符法：在参数后面加上注释符，如 <code>id=1#</code>，如果页面的返回结果不同，说明存在SQL注入的可能性。因为注释符的存在会使剩下的语句部分失效，从而改变查询的结果。</li>
-</ol>
-<p>SQL注入的第一步就要判断注入类型。一般来说，SQL注入按照<strong>参数分类</strong>分为：<strong>字符型</strong>和<strong>数字型</strong>，按照<strong>页面回显</strong>分为<strong>回显注入</strong>和<strong>盲注</strong>，<strong>回显</strong>分为<strong>回显正常</strong>和<strong>回显报错</strong>，<strong>盲注</strong>分为<strong>时间盲注</strong>和<strong>布尔盲注</strong>。</p>
-<p>字符型注入：注入的数据类型是字符，需要使用引号来包围，例如，<code>name=&#39;admin&#39;</code>，语句原型是 <code>select * from [lable name] where [conditions]</code> 。通过构建类似  <code>name=&#39;admin&#39; and &#39;1&#39;=&#39;1&#39;</code>的语句来判断。</p>
-<p>数字型注入：注入的数据类型是数字，和字符型注入类似，但是不需要引号包围，例如，<code>id=1</code>，语句原型是 <code>selcet * from [lable name] where [conditions]</code>。可以构建类似于 <code>id=1 and 1=1</code>类似的语句来判断。</p>
-<p>回显注入：回显注入的前提是数据库的查询结果会显示在页面上，通过构造联合查询和子查询的语句以获取数据库的其他信息。例如，<code>http://www.example.com/news.php?id=1&#39; union select version(),user(),database(),z #</code>，这样就可以尝试获取数据库的其他信息。其中 <code>z</code>标识占位符，<code>#</code>表示将后方的语句注释掉。</p>
-<p>时间盲注：时间盲注的特点是输入的数据被拼接到SQL语句执行的时候，数据库的查询结果不会显示到页面上，只能通过页面的响应时间去判断条件是否正确，一般采用数据库的一些时间函数以制造延迟(sleep、benchmark)</p>
-</details>
-]]></content>
-      <categories>
-        <category>信息安全</category>
-      </categories>
-      <tags>
-        <tag>自学</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>MoeCTF2023部分题目wp</title>
     <url>/2023/09/20/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/</url>
     <content><![CDATA[<p>比赛链接：<a href="https://ctf.xidian.edu.cn/">https://ctf.xidian.edu.cn/</a></p>
@@ -303,6 +193,116 @@
       </categories>
       <tags>
         <tag>复盘</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>利用hexo在github上搭建个人博客</title>
+    <url>/2023/08/15/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<p>由于哥们的服务器过期了，不好意思找他续费，于是决定自己搭一个blog，国内的要么广告多（X书），要么后台略显老旧（X园），几经挑选之后决定利用hexo在github上搭建。</p>
+<p>搭建的过程基本参考了<a href="https://www.cnblogs.com/huanhao/p/hexobase.html#%E9%85%8D%E7%BD%AE%E4%B8%BB%E9%A2%98">【基础篇】hexo博客搭建教程</a>。<br>但是可能是由于版本更新的问题，遇到了一些意料之外的情况。</p>
+<span id="more"></span>
+
+<p>1、在git bash中执行安装cnpm出错<br>错误1：Error: EPERM: operation not permitted<br>解决方案：利用管理员模式打开git即可。<br>错误2：ERR! code EPERM<br>解决方案：将C:&#x2F;user&#x2F;用户名&#x2F;.npmrc删除（需要打开隐藏文件）。</p>
+<p>2、上传github时页面主题未显示<br>解决方案：分别在博客页面所在的文件夹执行hexo clean后再执行hexo g -d与 hexo d。（无法确认究竟是什么导致的问题，推测是缓存问题。）</p>
+<p>3、修改schemes后上传无效<br>删除themes&#x2F;next 中的.git（隐藏），再重新执行hexo g -d与 hexo d即可.</p>
+<p>另：由于github的项目规则更改，如果按照链接中的教程会将页面信息上传到项目的master分支中，此时只需将（根目录下的）页面配置文件中的branch项改成main即可。</p>
+<p>4、图片插入无法显示</p>
+<p>图片根目录位于 &#x2F;博客名称&#x2F;themes&#x2F;主题名&#x2F;source&#x2F;images。即如果需要插入图片，需要引用的代码格式为 :<code>！[](./images/图片名（或者可以加入二级文件夹）))</code></p>
+<p>可以用hexo s在本地页面中检查是否成功，同时本地页面可以动态调整。</p>
+<p>5、新版hexo下文章创建无法分段</p>
+<p>需要在文章正文需要分段的地方自行添加 <code>&lt;!--more--&gt;</code></p>
+]]></content>
+      <categories>
+        <category>杂项比赛/学习</category>
+      </categories>
+      <tags>
+        <tag>自学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CTF自学问题收集</title>
+    <url>/2023/09/06/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/</url>
+    <content><![CDATA[<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/weibo.png"></p>
+<p><strong>“先动手搞起来”</strong></p>
+<p>受限于CTF的分支较多，知识点也比较杂，记录一下自己不熟悉的知识点。</p>
+<span id="more"></span>
+
+<p>robots协议：网络爬虫排除标准，它是搜索引擎中访问网站的时候要查看的第一个文件。robots.txt文件告诉蜘蛛程序在服务器上什么文件是可以被查看的。 当一个搜索蜘蛛访问一个站点时，它会首先检查该站点根目录下是否存在robots.txt。基于人文道德规范建立的标准，不具备强制性（有点类似于readme.md？）<img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/robot.png"></p>
+<p>.php 备份文件后缀：通常备份文件的后缀名为.bak 所以 index. php 的备份文件名为 index.php.bak。</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/php.png"></p>
+<p>cookie：是web服务器为了识别用户身份而设置的一小段文本文件（一小段数据） 可通过Burpsuite爬取网页中的数据包。<a href="https://www.jianshu.com/p/6fc9cea6daa2">深入理解Cookie - 简书 (jianshu.com)</a></p>
+<p>Burp爆破模块使用界面：</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/burp.png"></p>
+<p>base64编码：特征是尾部可能会有等于号。</p>
+<p>gif隐写：可以使用101editor打开gif图片 若gif图片无法在图片管理器中打开考虑图片是否文档开头中缺少GIF8 <code>[GIF文件头：47 49 46 38 39 61]</code></p>
+<p>HTTP请求方法：</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/http.png"></p>
+]]></content>
+      <categories>
+        <category>CTF学习</category>
+      </categories>
+      <tags>
+        <tag>自学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>漏洞挖掘学习笔记</title>
+    <url>/2023/10/22/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>想试着挖一些简单的漏洞，学习一下常见漏洞的类型和运用思路</p>
+<span id="more"></span>
+
+<details>
+<summary>OWASP top10</summary>
+</details>
+
+<details>
+<summary>逻辑漏洞</summary>
+
+<p>工具：Burp</p>
+<p>属于业务本身可能产生的漏洞。</p>
+<p>个人信息部分中可能出现文件上传漏洞，XSS，暴力破解验证码等；主要体现在是否会向后端传入一些数据。利用Burp篡改传入的输入达到相应的目的。大部分需要自己尝试。</p>
+</details>
+
+<details>
+<summary>URL跳转漏洞</summary>
+
+<p>体现在url网址中后方加入?returnurl&#x3D; 或者是?sec&#x3D; ?url&#x3D;</p>
+<p>可以让点击链接的用户重定向自后方的网址，会被原网址WAF拦截。</p>
+<p>常见于业务完成场景中，如：修改密码成功、用户分享、收藏的跳转等。</p>
+<p>url跳转bypass。</p>
+<p>利用问号、@绕过限制。</p>
+</details>
+
+<details>
+<summary>短信轰炸漏洞</summary>
+
+<p>发送短信&#x2F;邮件的包会无限制的发送。</p>
+<p>场景常见于登录、注册、找回密码等需要会产生短信交互或者邮箱交互中。</p>
+<p>bypass思路：</p>
+<p>在mobile参数后面加上%20、字母等，或者修改大小写、修改cookie值或者利用调用接口绕过。</p>
+</details>
+
+<details>
+<summary>SQL注入</summary>
+
+<p>SQL注入的原理是利用web程序对用户输入的数据没有严格的过滤和判断，主要被用来在url或者表单中输入特殊的字符或者语句，根据数据库的反馈判断是否存在SQL注入的可能性，一般有一下几种方法：</p>
+<ol>
+<li>单引号法：在参数后加入单引号，如 <code>?id=1&#39;</code>,如果页面返回错误或者汇报异常，说明存在SQL注入的可能性，因为无论是字符型还是整型都会因为单引号个数不匹配而报错</li>
+<li>and语句法：在参数后面加上and语句，如 <code>id=1 and 1=1</code>与 <code>id=1 and 1=2</code>，如果页面返回的结果不同，说明存在SQL注入的可能性。因为and语句会影响SQL语句的逻辑判断，从而影响查询的结果。不仅仅限于and，or、not在某些情况下都可以用作注入。</li>
+<li>注释符法：在参数后面加上注释符，如 <code>id=1#</code>，如果页面的返回结果不同，说明存在SQL注入的可能性。因为注释符的存在会使剩下的语句部分失效，从而改变查询的结果。</li>
+</ol>
+<p>SQL注入的第一步就要判断注入类型。一般来说，SQL注入按照<strong>参数分类</strong>分为：<strong>字符型</strong>和<strong>数字型</strong>，按照<strong>页面回显</strong>分为<strong>回显注入</strong>和<strong>盲注</strong>，<strong>回显</strong>分为<strong>回显正常</strong>和<strong>回显报错</strong>，<strong>盲注</strong>分为<strong>时间盲注</strong>和<strong>布尔盲注</strong>。</p>
+<p>字符型注入：注入的数据类型是字符，需要使用引号来包围，例如，<code>name=&#39;admin&#39;</code>，语句原型是 <code>select * from [lable name] where [conditions]</code> 。通过构建类似  <code>name=&#39;admin&#39; and &#39;1&#39;=&#39;1&#39;</code>的语句来判断。</p>
+<p>数字型注入：注入的数据类型是数字，和字符型注入类似，但是不需要引号包围，例如，<code>id=1</code>，语句原型是 <code>selcet * from [lable name] where [conditions]</code>。可以构建类似于 <code>id=1 and 1=1</code>类似的语句来判断。</p>
+<p>回显注入：回显注入的前提是数据库的查询结果会显示在页面上，通过构造联合查询和子查询的语句以获取数据库的其他信息。例如，<code>http://www.example.com/news.php?id=1&#39; union select version(),user(),database(),z #</code>，这样就可以尝试获取数据库的其他信息。其中 <code>z</code>标识占位符，<code>#</code>表示将后方的语句注释掉。</p>
+<p>时间盲注：时间盲注的特点是输入的数据被拼接到SQL语句执行的时候，数据库的查询结果不会显示到页面上，只能通过页面的响应时间去判断条件是否正确，一般采用数据库的一些时间函数以制造延迟(sleep、benchmark)</p>
+</details>
+]]></content>
+      <categories>
+        <category>信息安全</category>
+      </categories>
+      <tags>
+        <tag>自学</tag>
       </tags>
   </entry>
   <entry>
