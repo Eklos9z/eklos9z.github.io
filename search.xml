@@ -1,32 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>CTF自学问题收集</title>
-    <url>/2023/09/06/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/</url>
-    <content><![CDATA[<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/weibo.png"></p>
-<p><strong>“先动手搞起来”</strong></p>
-<p>受限于CTF的分支较多，知识点也比较杂，记录一下自己不熟悉的知识点。</p>
-<span id="more"></span>
-
-<p>robots协议：网络爬虫排除标准，它是搜索引擎中访问网站的时候要查看的第一个文件。robots.txt文件告诉蜘蛛程序在服务器上什么文件是可以被查看的。 当一个搜索蜘蛛访问一个站点时，它会首先检查该站点根目录下是否存在robots.txt。基于人文道德规范建立的标准，不具备强制性（有点类似于readme.md？）<img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/robot.png"></p>
-<p>.php 备份文件后缀：通常备份文件的后缀名为.bak 所以 index. php 的备份文件名为 index.php.bak。</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/php.png"></p>
-<p>cookie：是web服务器为了识别用户身份而设置的一小段文本文件（一小段数据） 可通过Burpsuite爬取网页中的数据包。<a href="https://www.jianshu.com/p/6fc9cea6daa2">深入理解Cookie - 简书 (jianshu.com)</a></p>
-<p>Burp爆破模块使用界面：</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/burp.png"></p>
-<p>base64编码：特征是尾部可能会有等于号。</p>
-<p>gif隐写：可以使用101editor打开gif图片 若gif图片无法在图片管理器中打开考虑图片是否文档开头中缺少GIF8 <code>[GIF文件头：47 49 46 38 39 61]</code></p>
-<p>HTTP请求方法：</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/http.png"></p>
-]]></content>
-      <categories>
-        <category>CTF学习</category>
-      </categories>
-      <tags>
-        <tag>自学</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>DVWA靶场练习笔记</title>
     <url>/2023/11/01/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>发现了一个很棒的靶场，里面囊括了Web方向的大多数常见漏洞，并且还分了四个难度等级（Low,Medium,High,Impossible），很适合目前我的需求。</p>
@@ -222,6 +196,32 @@
       </tags>
   </entry>
   <entry>
+    <title>CTF自学问题收集</title>
+    <url>/2023/09/06/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/</url>
+    <content><![CDATA[<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/weibo.png"></p>
+<p><strong>“先动手搞起来”</strong></p>
+<p>受限于CTF的分支较多，知识点也比较杂，记录一下自己不熟悉的知识点。</p>
+<span id="more"></span>
+
+<p>robots协议：网络爬虫排除标准，它是搜索引擎中访问网站的时候要查看的第一个文件。robots.txt文件告诉蜘蛛程序在服务器上什么文件是可以被查看的。 当一个搜索蜘蛛访问一个站点时，它会首先检查该站点根目录下是否存在robots.txt。基于人文道德规范建立的标准，不具备强制性（有点类似于readme.md？）<img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/robot.png"></p>
+<p>.php 备份文件后缀：通常备份文件的后缀名为.bak 所以 index. php 的备份文件名为 index.php.bak。</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/php.png"></p>
+<p>cookie：是web服务器为了识别用户身份而设置的一小段文本文件（一小段数据） 可通过Burpsuite爬取网页中的数据包。<a href="https://www.jianshu.com/p/6fc9cea6daa2">深入理解Cookie - 简书 (jianshu.com)</a></p>
+<p>Burp爆破模块使用界面：</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/burp.png"></p>
+<p>base64编码：特征是尾部可能会有等于号。</p>
+<p>gif隐写：可以使用101editor打开gif图片 若gif图片无法在图片管理器中打开考虑图片是否文档开头中缺少GIF8 <code>[GIF文件头：47 49 46 38 39 61]</code></p>
+<p>HTTP请求方法：</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/http.png"></p>
+]]></content>
+      <categories>
+        <category>CTF学习</category>
+      </categories>
+      <tags>
+        <tag>自学</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>机器人比赛避障项目赛后总结</title>
     <url>/2023/08/15/%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%AF%94%E8%B5%9B%E9%81%BF%E9%9A%9C%E9%A1%B9%E7%9B%AE%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<p>在见到避障比赛的文件之后，对比赛算法的设计并没有我想象中那么困难：机器人直行——机器人识别到箭头——机器人向箭头指向的方向平移——机器人视野脱离箭头——机器人直行，但是直觉与经验都在告诉我这个比赛最困难的地方就是在于怎么样才能去识别到三个箭头的方向。</p>
@@ -312,6 +312,8 @@
 
 <details>
 <summary>OWASP top10</summary>
+![1702371115857](./images/漏洞挖掘学习笔记/1702371115857.png)
+
 </details>
 
 <details>
@@ -356,8 +358,26 @@
 <p>数字型注入：注入的数据类型是数字，和字符型注入类似，但是不需要引号包围，例如，<code>id=1</code>，语句原型是 <code>selcet * from [lable name] where [conditions]</code>。可以构建类似于 <code>id=1 and 1=1</code>类似的语句来判断。</p>
 <p>回显注入：回显注入的前提是数据库的查询结果会显示在页面上，通过构造联合查询和子查询的语句以获取数据库的其他信息。例如，<code>http://www.example.com/news.php?id=1&#39; union select version(),user(),database(),z #</code>，这样就可以尝试获取数据库的其他信息。其中 <code>z</code>标识占位符，<code>#</code>表示将后方的语句注释掉。</p>
 <p>时间盲注：时间盲注的特点是输入的数据被拼接到SQL语句执行的时候，数据库的查询结果不会显示到页面上，只能通过页面的响应时间去判断条件是否正确，一般采用数据库的一些时间函数以制造延迟(sleep、benchmark)</p>
+<p>布尔盲注：布尔盲注与时间盲注类似，查询结果只会返回ture和false。通常采用Substring进行截取，格式为<code>Substring(被截取字符串，从第几位开始截取，截取长度)</code>。如果Substring被waf过滤掉了，可以考虑使用left()、right()、mid()这类等价的函数。</p>
 </details>
-]]></content>
+
+
+<details>
+<summary>目录遍历</summary>
+一般是指系统后台的目录由于各种原因被探测到，导致网站目录与文件泄露，造成的后果通常根据目录的内容决定。
+</details>
+
+<details>
+<summary>phpinfo漏洞</summary>
+指通过phpinfo页面进行漏洞利用从而暴露整个php环境，包括物理目录等敏感信息，通常可以利用物理机上留存的一些靶场（例如phpstudy等）进入。
+</details>
+
+<details>
+<summary>备份文件下载</summary>
+
+<p>指开发人员在线上环境中对源代码进行了备份操作，并且将备份文件放在了目录下，就可以利用扫描工具进行扫描从而获得网站源码。</p>
+<p>常见的网站源码备份文件后缀tar、tar.gz、zip、rar。<br>常见的网站源码备份文件名web、website、backup、back、www、wwwroot、temp。<br>如果是index.php可能还会有index.php.bak。</p>
+</details>]]></content>
       <categories>
         <category>信息安全</category>
       </categories>
