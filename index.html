@@ -190,7 +190,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-11-21 14:13:47" itemprop="dateModified" datetime="2023-11-21T14:13:47+08:00">2023-11-21</time>
+                <time title="修改时间：2024-02-05 14:54:01" itemprop="dateModified" datetime="2024-02-05T14:54:01+08:00">2024-02-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -271,7 +271,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-02-04 16:24:55" itemprop="dateModified" datetime="2024-02-04T16:24:55+08:00">2024-02-04</time>
+                <time title="修改时间：2024-02-05 14:59:36" itemprop="dateModified" datetime="2024-02-05T14:59:36+08:00">2024-02-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -294,121 +294,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <span id="more"></span>
-
-<details>
-<summary>OWASP top10</summary>
-
-<p><img src="/./images/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/1702371115857.png" alt="1702371115857"></p>
-</details>
-
-<hr>
-<details>
-<summary>逻辑漏洞</summary>
-
-<p>工具：Burp</p>
-<p>属于业务本身可能产生的漏洞。</p>
-<p>个人信息部分中可能出现文件上传漏洞，XSS，暴力破解验证码等；主要体现在是否会向后端传入一些数据。利用Burp篡改传入的输入达到相应的目的。大部分需要自己尝试。</p>
-</details>
-
-<hr>
-<details>
-<summary>URL跳转漏洞</summary>
-
-<p>体现在url网址中后方加入?returnurl&#x3D; 或者是?sec&#x3D; ?url&#x3D;</p>
-<p>可以让点击链接的用户重定向自后方的网址，会被原网址WAF拦截。</p>
-<p>常见于业务完成场景中，如：修改密码成功、用户分享、收藏的跳转等。</p>
-<p>url跳转bypass。</p>
-<p>利用问号、@绕过限制。</p>
-</details>
-
-<hr>
-<details>
-<summary>短信轰炸漏洞</summary>
-
-<p>发送短信&#x2F;邮件的包会无限制的发送。</p>
-<p>场景常见于登录、注册、找回密码等需要会产生短信交互或者邮箱交互中。</p>
-<p>主要利用途径burp的repeater模块进行重复发送。</p>
-<p>bypass思路：</p>
-<p>在mobile参数后面加上%20、字母等，或者修改大小写、修改cookie值或者利用调用接口绕过。</p>
-</details>
-
-<hr>
-<details>
-<summary>注入</summary>
-注入攻击的本质是使应用违背"数据与代码分离"的原则。
-<details>
-<summary>SQL注入</summary>
-
-<p>SQL注入的原理是利用web程序对用户输入的数据没有严格的过滤和判断，主要被用来在url或者表单中输入特殊的字符或者语句，根据数据库的反馈判断是否存在SQL注入的可能性，一般有一下几种方法：</p>
-<ol>
-<li>单引号法：在参数后加入单引号，如 <code>?id=1&#39;</code>,如果页面返回错误或者汇报异常，说明存在SQL注入的可能性，因为无论是字符型还是整型都会因为单引号个数不匹配而报错</li>
-<li>and语句法：在参数后面加上and语句，如 <code>id=1 and 1=1</code>与 <code>id=1 and 1=2</code>，如果页面返回的结果不同，说明存在SQL注入的可能性。因为and语句会影响SQL语句的逻辑判断，从而影响查询的结果。不仅仅限于and，or、not在某些情况下都可以用作注入。</li>
-<li>注释符法：在参数后面加上注释符，如 <code>id=1#</code>，如果页面的返回结果不同，说明存在SQL注入的可能性。因为注释符的存在会使剩下的语句部分失效，从而改变查询的结果。</li>
-</ol>
-<p>SQL注入的第一步就要判断注入类型。一般来说，SQL注入按照<strong>参数分类</strong>分为：<strong>字符型</strong>和<strong>数字型</strong>，按照<strong>页面回显</strong>分为<strong>回显注入</strong>和<strong>盲注</strong>，<strong>回显</strong>分为<strong>回显正常</strong>和<strong>回显报错</strong>，<strong>盲注</strong>分为<strong>时间盲注</strong>和<strong>布尔盲注</strong>。</p>
-<p>字符型注入：注入的数据类型是字符，需要使用引号来包围，例如，<code>name=&#39;admin&#39;</code>，语句原型是 <code>select * from [lable name] where [conditions]</code> 。通过构建类似  <code>name=&#39;admin&#39; and &#39;1&#39;=&#39;1&#39;</code>的语句来判断。</p>
-<p>数字型注入：注入的数据类型是数字，和字符型注入类似，但是不需要引号包围，例如，<code>id=1</code>，语句原型是 <code>selcet * from [lable name] where [conditions]</code>。可以构建类似于 <code>id=1 and 1=1</code>类似的语句来判断。</p>
-<p>回显注入：回显注入的前提是数据库的查询结果会显示在页面上，通过构造联合查询和子查询的语句以获取数据库的其他信息。例如，<code>http://www.example.com/news.php?id=1&#39; union select version(),user(),database(),z #</code>，这样就可以尝试获取数据库的其他信息。其中 <code>z</code>标识占位符，<code>#</code>表示将后方的语句注释掉。</p>
-<p>时间盲注：时间盲注的特点是输入的数据被拼接到SQL语句执行的时候，数据库的查询结果不会显示到页面上，只能通过页面的响应时间去判断条件是否正确，一般采用数据库的一些时间函数以制造延迟，比如MYSQL的 <code>SLEEP、BENCHMARK</code>，PostgreSQL的 <code>PG_SLEEP、GENERATE_SERIES</code>，MS SQL SERVER的 <code>WAITFOR DELAY</code>。基本利用原理是判断第一个字母是否为 ，如果是真则利用时间函数制造一个较长的延迟，如果是假则不做处理，这样就可以逐个遍历出整个数据库名或者需要的信息。</p>
-<p>布尔盲注：布尔盲注与时间盲注类似，查询结果只会返回ture和false。通常采用Substring进行截取，格式为 <code>Substring(被截取字符串，从第几位开始截取，截取长度)</code>。如果Substring被waf过滤掉了，可以考虑使用left()、right()、mid()这类等价的函数。</p>
-<p>万能密码：用户名填admin’ or 1–。密码随便填，原理是用–注释掉后面的语句，并且因为or语句的存在语句一定为真，并且由于后方的语句被注释，password这一栏填什么都无所谓。</p>
-<p><img src="/./images/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/1702455499619.png" alt="1702455499619"></p>
-<p>如何防范SQL注入：</p>
-<ol>
-<li>使用预编译的SQL语句，SQL语句的语义不会发生改变，例如将SQL语句 <code>INSERT INTO class(name,id,sex) VALUES(?,?,?)</code>中的变量用 <code>?</code>来表示,即使使用了 <code>&#39;</code>去尝试进行SQL注入，系统也只会将其作为参数的一部分来执行<br>。</li>
-<li>检查输入数据的数据类型，例如</li>
-</ol>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">settype</span>(<span class="variable">$offset</span>,<span class="string">&#x27;integer&#x27;</span>)；</span><br><span class="line"><span class="variable">$query</span> = <span class="string">&quot;SELECT id, name FROM products ORDER BY name LIMIT 20 OFFSET <span class="subst">$offset</span>;&quot;</span>;</span><br><span class="line"><span class="variable">$query</span> = <span class="title function_ invoke__">sprintf</span>(<span class="string">&quot;SELECT id ,name FROM products ORDER BY name LIMIT 20 OFFSET %d;&quot;</span>,<span class="variable">$offset</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-<p>上面的代码就限制了输入数据的类型只能是int格式，这样也在一定程度上可以防范注入。<br>3. 遵循最小权限原则，避免web应用使用root、dbowner等高权限账户直接连接数据库，什么级别的使用者赋予什么级别的权限。</p>
-</details>
-<details>
-<summary>XML注入</summary>
-</details>
-
-
-</details>
-
-<hr>
-<details>
-<summary>目录遍历</summary>
-
-<p>一般是指系统后台的目录由于各种原因被探测到，导致网站目录与文件泄露，造成的后果通常根据目录的内容决定。一般情况下会被waf拦截，但是可以通过php:&#x2F;&#x2F;filter尝试绕过。</p>
-</details>
-
-<hr>
-<details>
-<summary>phpinfo漏洞</summary>
-
-<p>指通过phpinfo页面进行漏洞利用从而暴露整个php环境，包括物理目录等敏感信息，通常可以利用物理机上留存的一些靶场（例如phpstudy等）进入。</p>
-</details>
-
-<hr>
-<details>
-<summary>备份文件下载</summary>
-
-<p>指开发人员在线上环境中对源代码进行了备份操作，并且将备份文件放在了目录下，就可以利用扫描工具进行扫描从而获得网站源码。</p>
-<p>常见的网站源码备份文件后缀tar、tar.gz、zip、rar。</p>
-<p>常见的网站源码备份文件名web、website、backup、back、www、wwwroot、temp。</p>
-<p>如果是index.php可能还会有index.php.bak。</p>
-</details>
-
-<hr>
-<details>
-<summary>vim缓存</summary>
-
-<p>当开发人员在线上使用vim编辑器，在使用过程中会留下vim编辑器缓存，当vim异常退出时，vim缓存会一直留在服务器上，引起网站源码泄露。</p>
-<p>可以利用vim命令recover为原本的文件，进而查看源码。</p>
-<p>因为vim缓存文件是固定格式的二进制文件，在vim缓存中这些明文字符会保留。</p>
-</details>
-
-<hr>
-<details>
-<summary>任意文件读取漏洞</summary>
-
-<p>指通过一些手段读取到服务器上开发者不希望其他人读取到的文件</p>
-</details>
-
+          <p>为什么<code>&lt;!--more--&gt;</code>之前必须得写点东西</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/10/22/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
