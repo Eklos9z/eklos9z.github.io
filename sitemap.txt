@@ -1,7 +1,8 @@
+https://eklos9z.github.io/2024/04/26/%E7%AC%94%E8%AE%B0%E6%9C%AC%E9%94%AE%E7%9B%98%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%8D%9F%E5%9D%8F%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF/
+https://eklos9z.github.io/2023/10/22/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/
 https://eklos9z.github.io/2023/09/06/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/
 https://eklos9z.github.io/2023/09/20/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/
 https://eklos9z.github.io/2023/11/01/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/
-https://eklos9z.github.io/2023/10/22/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/
 https://eklos9z.github.io/2023/08/15/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/
 https://eklos9z.github.io/schedule/index.html
 https://eklos9z.github.io/2023/08/15/%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%AF%94%E8%B5%9B%E9%81%BF%E9%9A%9C%E9%A1%B9%E7%9B%AE%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/
@@ -11,6 +12,6 @@ https://eklos9z.github.io/
 https://eklos9z.github.io/tags/%E8%87%AA%E5%AD%A6/
 https://eklos9z.github.io/tags/%E5%A4%8D%E7%9B%98/
 https://eklos9z.github.io/categories/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/
-https://eklos9z.github.io/categories/%E6%9D%82%E9%A1%B9%E6%AF%94%E8%B5%9B-%E5%AD%A6%E4%B9%A0/
-https://eklos9z.github.io/categories/CTF%E5%AD%A6%E4%B9%A0/
 https://eklos9z.github.io/categories/CTF%E6%AF%94%E8%B5%9B/
+https://eklos9z.github.io/categories/CTF%E5%AD%A6%E4%B9%A0/
+https://eklos9z.github.io/categories/%E6%9D%82%E9%A1%B9%E6%AF%94%E8%B5%9B-%E5%AD%A6%E4%B9%A0/
