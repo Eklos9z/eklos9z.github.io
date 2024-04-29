@@ -1,45 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>CTF自学问题收集</title>
-    <url>/2023/09/06/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/</url>
-    <content><![CDATA[<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/weibo.png"></p>
-<p><strong>“先动手搞起来”</strong></p>
-<p>受限于CTF的分支较多，知识点也比较杂，记录一下自己不熟悉的知识点。</p>
-<span id="more"></span>
-
-<p>robots协议：网络爬虫排除标准，它是搜索引擎中访问网站的时候要查看的第一个文件。robots.txt文件告诉蜘蛛程序在服务器上什么文件是可以被查看的。 当一个搜索蜘蛛访问一个站点时，它会首先检查该站点根目录下是否存在robots.txt。基于人文道德规范建立的标准，不具备强制性（有点类似于readme.md？）<img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/robot.png"></p>
-<p>.php 备份文件后缀：通常备份文件的后缀名为.bak 所以 index. php 的备份文件名为 index.php.bak。</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/php.png"></p>
-<p>cookie：是web服务器为了识别用户身份而设置的一小段文本文件（一小段数据） 可通过Burpsuite爬取网页中的数据包。<a href="https://www.jianshu.com/p/6fc9cea6daa2">深入理解Cookie - 简书 (jianshu.com)</a></p>
-<p>Burp爆破模块使用界面：</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/burp.png"></p>
-<p>base64编码：特征是尾部可能会有等于号。</p>
-<p>gif隐写：可以使用101editor打开gif图片 若gif图片无法在图片管理器中打开考虑图片是否文档开头中缺少GIF8 <code>[GIF文件头：47 49 46 38 39 61]</code></p>
-<p>HTTP请求方法：</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/http.png"></p>
-<p>php:&#x2F;&#x2F;filter理解：其是php协议中的一个独有的协议，可以作为一个中间流去处理其他流，从而实现任意文件的读取。大部分情况下使用resourse以筛选过滤指定的数据流。<br>例如：某个网站的规则被制定为：如果直接用get方法请求flag <code>http://IP:PORT/?p=</code>会直接被拦截，这时候就可以考虑使用 <code>http://IP:PORT/?p=php://filter/convert.base64-encode/resource=flag</code>这样就会绕过拦截规则，以base64的格式输出flag中的文件。</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/1702452297071.png" alt="1702452297071"></p>
-<p>对称加密：对称加密算法是指在加密和解密时使用的是<strong>同一个密钥</strong>。 这种方法速度快，但需要双方事先协商好密钥，并保证密钥不被泄露。它的优点是速度快，效率高，适合加密大量数据。它的缺点是密钥的分发和管理比较困难，如果密钥泄露，加密的数据就会被破解（DES、AES）</p>
-<p>非对称加密：非对称加密使用一对密钥来加密和解密数据，其中一个密钥是公开的，叫做公钥，另一个密钥是私密的，叫做私钥。如果使用 <strong>公钥</strong> 对数据  <strong>进行加密</strong> ，只有用对应的 <strong>私钥</strong> 才能  <strong>进行解密</strong> 。它的优点是密钥的分发和管理比较容易，只需要公开公钥，私钥不需要共享。它的缺点是速度慢，效率低，适合加密少量数据（RSA、DSA）</p>
-<p>简单来说就是，对称加密是同钥加密，同钥解密。非对称加密是公钥加密，私钥解密。</p>
-<details>
-<summary>对称加密与非对称加密的代码实现</summary>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 基本思路是调用pycryptodome(对称加密)和cryptography(非对称加密)实现</span></span><br><span class="line"><span class="comment"># 导入所需的库</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives.ciphers <span class="keyword">import</span> Cipher, algorithms, modes</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives.asymmetric <span class="keyword">import</span> rsa, padding</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives <span class="keyword">import</span> hashes, serialization</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.backends <span class="keyword">import</span> default_backend</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成一个随机的对称密钥</span></span><br><span class="line">symmetric_key = os.urandom(<span class="number">32</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个AES加密器</span></span><br><span class="line">aes_cipher = Cipher(algorithms.AES(symmetric_key), modes.CBC(os.urandom(<span class="number">16</span>)), backend=default_backend())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用对称密钥加密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">symmetric_encrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据转换为字节串</span></span><br><span class="line">    data = data.encode()</span><br><span class="line">    <span class="comment"># 创建一个加密器</span></span><br><span class="line">    encryptor = aes_cipher.encryptor()</span><br><span class="line">    <span class="comment"># 对数据进行填充，使其长度为16的倍数</span></span><br><span class="line">    padding_length = <span class="number">16</span> - <span class="built_in">len</span>(data) % <span class="number">16</span></span><br><span class="line">    data = <span class="built_in">bytes</span>([padding_length]) * padding_length + data</span><br><span class="line">    <span class="comment"># 返回加密后的数据，使用base64编码方便显示</span></span><br><span class="line">    <span class="keyword">return</span> base64.b64encode(encryptor.update(data) + encryptor.finalize())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用对称密钥解密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">symmetric_decrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据解码为字节串</span></span><br><span class="line">    data = base64.b64decode(data)</span><br><span class="line">    <span class="comment"># 创建一个解密器</span></span><br><span class="line">    decryptor = aes_cipher.decryptor()</span><br><span class="line">    <span class="comment"># 返回解密后的数据，去掉填充的部分</span></span><br><span class="line">    data = decryptor.update(data) + decryptor.finalize()</span><br><span class="line">    padding_length = data[-<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> data[:-padding_length].decode()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成一对非对称密钥</span></span><br><span class="line">private_key = rsa.generate_private_key(public_exponent=<span class="number">65537</span>, key_size=<span class="number">2048</span>, backend=default_backend())</span><br><span class="line">public_key = private_key.public_key()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用公钥加密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">asymmetric_encrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据转换为字节串</span></span><br><span class="line">    data = data.encode()</span><br><span class="line">    <span class="comment"># 使用公钥和OAEP填充方式进行加密</span></span><br><span class="line">    <span class="keyword">return</span> base64.b64encode(public_key.encrypt(data, padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=<span class="literal">None</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用私钥解密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">asymmetric_decrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据解码为字节串</span></span><br><span class="line">    data = base64.b64decode(data)</span><br><span class="line">    <span class="comment"># 使用私钥和OAEP填充方式进行解密</span></span><br><span class="line">    <span class="keyword">return</span> public_key.decrypt(data, padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=<span class="literal">None</span>)).decode()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试一下</span></span><br><span class="line">data = <span class="string">&quot;Hello, world!&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;原始数据：&quot;</span>, data)</span><br><span class="line">symmetric_data = symmetric_encrypt(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;对称加密后的数据：&quot;</span>, symmetric_data)</span><br><span class="line">asymmetric_data = asymmetric_encrypt(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;非对称加密后的数据：&quot;</span>, asymmetric_data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;对称解密后的数据：&quot;</span>, symmetric_decrypt(symmetric_data))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;非对称解密后的数据：&quot;</span>, asymmetric_decrypt(asymmetric_data))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-</details>
-
-
-<p>哈希算法：哈希算法是一种单向算法，可以对任意长度的数据生成固定长度的唯一值，称为哈希值或摘要。 哈希算法不能逆向还原原始数据，只能用于验证数据的完整性和一致性。常见的哈希算法有 MD5、SHA-1、SHA-256 等。代码实现较为简单，导入hashlib，再创建一个hash对象即可。</p>
-]]></content>
-      <categories>
-        <category>CTF学习</category>
-      </categories>
-      <tags>
-        <tag>自学</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>DVWA靶场练习笔记</title>
     <url>/2023/11/01/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>发现了一个很棒的靶场，里面囊括了Web方向的大多数常见漏洞，并且还分了四个难度等级（Low,Medium,High,Impossible），很适合目前我的需求。</p>
@@ -167,6 +128,45 @@
       </tags>
   </entry>
   <entry>
+    <title>CTF自学问题收集</title>
+    <url>/2023/09/06/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/</url>
+    <content><![CDATA[<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/weibo.png"></p>
+<p><strong>“先动手搞起来”</strong></p>
+<p>受限于CTF的分支较多，知识点也比较杂，记录一下自己不熟悉的知识点。</p>
+<span id="more"></span>
+
+<p>robots协议：网络爬虫排除标准，它是搜索引擎中访问网站的时候要查看的第一个文件。robots.txt文件告诉蜘蛛程序在服务器上什么文件是可以被查看的。 当一个搜索蜘蛛访问一个站点时，它会首先检查该站点根目录下是否存在robots.txt。基于人文道德规范建立的标准，不具备强制性（有点类似于readme.md？）<img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/robot.png"></p>
+<p>.php 备份文件后缀：通常备份文件的后缀名为.bak 所以 index. php 的备份文件名为 index.php.bak。</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/php.png"></p>
+<p>cookie：是web服务器为了识别用户身份而设置的一小段文本文件（一小段数据） 可通过Burpsuite爬取网页中的数据包。<a href="https://www.jianshu.com/p/6fc9cea6daa2">深入理解Cookie - 简书 (jianshu.com)</a></p>
+<p>Burp爆破模块使用界面：</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/burp.png"></p>
+<p>base64编码：特征是尾部可能会有等于号。</p>
+<p>gif隐写：可以使用101editor打开gif图片 若gif图片无法在图片管理器中打开考虑图片是否文档开头中缺少GIF8 <code>[GIF文件头：47 49 46 38 39 61]</code></p>
+<p>HTTP请求方法：</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/http.png"></p>
+<p>php:&#x2F;&#x2F;filter理解：其是php协议中的一个独有的协议，可以作为一个中间流去处理其他流，从而实现任意文件的读取。大部分情况下使用resourse以筛选过滤指定的数据流。<br>例如：某个网站的规则被制定为：如果直接用get方法请求flag <code>http://IP:PORT/?p=</code>会直接被拦截，这时候就可以考虑使用 <code>http://IP:PORT/?p=php://filter/convert.base64-encode/resource=flag</code>这样就会绕过拦截规则，以base64的格式输出flag中的文件。</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/1702452297071.png" alt="1702452297071"></p>
+<p>对称加密：对称加密算法是指在加密和解密时使用的是<strong>同一个密钥</strong>。 这种方法速度快，但需要双方事先协商好密钥，并保证密钥不被泄露。它的优点是速度快，效率高，适合加密大量数据。它的缺点是密钥的分发和管理比较困难，如果密钥泄露，加密的数据就会被破解（DES、AES）</p>
+<p>非对称加密：非对称加密使用一对密钥来加密和解密数据，其中一个密钥是公开的，叫做公钥，另一个密钥是私密的，叫做私钥。如果使用 <strong>公钥</strong> 对数据  <strong>进行加密</strong> ，只有用对应的 <strong>私钥</strong> 才能  <strong>进行解密</strong> 。它的优点是密钥的分发和管理比较容易，只需要公开公钥，私钥不需要共享。它的缺点是速度慢，效率低，适合加密少量数据（RSA、DSA）</p>
+<p>简单来说就是，对称加密是同钥加密，同钥解密。非对称加密是公钥加密，私钥解密。</p>
+<details>
+<summary>对称加密与非对称加密的代码实现</summary>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 基本思路是调用pycryptodome(对称加密)和cryptography(非对称加密)实现</span></span><br><span class="line"><span class="comment"># 导入所需的库</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives.ciphers <span class="keyword">import</span> Cipher, algorithms, modes</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives.asymmetric <span class="keyword">import</span> rsa, padding</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives <span class="keyword">import</span> hashes, serialization</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.backends <span class="keyword">import</span> default_backend</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成一个随机的对称密钥</span></span><br><span class="line">symmetric_key = os.urandom(<span class="number">32</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个AES加密器</span></span><br><span class="line">aes_cipher = Cipher(algorithms.AES(symmetric_key), modes.CBC(os.urandom(<span class="number">16</span>)), backend=default_backend())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用对称密钥加密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">symmetric_encrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据转换为字节串</span></span><br><span class="line">    data = data.encode()</span><br><span class="line">    <span class="comment"># 创建一个加密器</span></span><br><span class="line">    encryptor = aes_cipher.encryptor()</span><br><span class="line">    <span class="comment"># 对数据进行填充，使其长度为16的倍数</span></span><br><span class="line">    padding_length = <span class="number">16</span> - <span class="built_in">len</span>(data) % <span class="number">16</span></span><br><span class="line">    data = <span class="built_in">bytes</span>([padding_length]) * padding_length + data</span><br><span class="line">    <span class="comment"># 返回加密后的数据，使用base64编码方便显示</span></span><br><span class="line">    <span class="keyword">return</span> base64.b64encode(encryptor.update(data) + encryptor.finalize())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用对称密钥解密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">symmetric_decrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据解码为字节串</span></span><br><span class="line">    data = base64.b64decode(data)</span><br><span class="line">    <span class="comment"># 创建一个解密器</span></span><br><span class="line">    decryptor = aes_cipher.decryptor()</span><br><span class="line">    <span class="comment"># 返回解密后的数据，去掉填充的部分</span></span><br><span class="line">    data = decryptor.update(data) + decryptor.finalize()</span><br><span class="line">    padding_length = data[-<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> data[:-padding_length].decode()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成一对非对称密钥</span></span><br><span class="line">private_key = rsa.generate_private_key(public_exponent=<span class="number">65537</span>, key_size=<span class="number">2048</span>, backend=default_backend())</span><br><span class="line">public_key = private_key.public_key()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用公钥加密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">asymmetric_encrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据转换为字节串</span></span><br><span class="line">    data = data.encode()</span><br><span class="line">    <span class="comment"># 使用公钥和OAEP填充方式进行加密</span></span><br><span class="line">    <span class="keyword">return</span> base64.b64encode(public_key.encrypt(data, padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=<span class="literal">None</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用私钥解密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">asymmetric_decrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据解码为字节串</span></span><br><span class="line">    data = base64.b64decode(data)</span><br><span class="line">    <span class="comment"># 使用私钥和OAEP填充方式进行解密</span></span><br><span class="line">    <span class="keyword">return</span> public_key.decrypt(data, padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=<span class="literal">None</span>)).decode()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试一下</span></span><br><span class="line">data = <span class="string">&quot;Hello, world!&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;原始数据：&quot;</span>, data)</span><br><span class="line">symmetric_data = symmetric_encrypt(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;对称加密后的数据：&quot;</span>, symmetric_data)</span><br><span class="line">asymmetric_data = asymmetric_encrypt(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;非对称加密后的数据：&quot;</span>, asymmetric_data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;对称解密后的数据：&quot;</span>, symmetric_decrypt(symmetric_data))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;非对称解密后的数据：&quot;</span>, asymmetric_decrypt(asymmetric_data))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</details>
+
+
+<p>哈希算法：哈希算法是一种单向算法，可以对任意长度的数据生成固定长度的唯一值，称为哈希值或摘要。 哈希算法不能逆向还原原始数据，只能用于验证数据的完整性和一致性。常见的哈希算法有 MD5、SHA-1、SHA-256 等。代码实现较为简单，导入hashlib，再创建一个hash对象即可。</p>
+]]></content>
+      <categories>
+        <category>CTF学习</category>
+      </categories>
+      <tags>
+        <tag>自学</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MoeCTF2023部分题目wp</title>
     <url>/2023/09/20/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/</url>
     <content><![CDATA[<p>比赛链接：<a href="https://ctf.xidian.edu.cn/">https://ctf.xidian.edu.cn/</a></p>
@@ -259,11 +259,11 @@
 <p>另：由于github的项目规则更改，如果按照链接中的教程会将页面信息上传到项目的master分支中，此时只需将（根目录下的）页面配置文件中的branch项改成main即可。</p>
 <ol start="4">
 <li><p>图片插入无法显示</p>
-<p> 图片根目录位于 &#x2F;博客名称&#x2F;themes&#x2F;主题名&#x2F;source&#x2F;images。即如果需要插入图片，需要引用的代码格式为 :<code>！[](./images/图片名（或者可以加入二级文件	夹）))</code></p>
-<p> 可以用hexo s在本地页面中检查是否成功，同时本地页面可以动态调整。</p>
+<p>图片根目录位于 &#x2F;博客名称&#x2F;themes&#x2F;主题名&#x2F;source&#x2F;images。即如果需要插入图片，需要引用的代码格式为 :<code>！[](./images/图片名（或者可以加入二级文件	夹）))</code></p>
+<p>可以用hexo s在本地页面中检查是否成功，同时本地页面可以动态调整。</p>
 </li>
 <li><p>新版hexo下文章创建无法分段</p>
-<p> 需要在文章正文需要分段的地方自行添加<code>&lt;!--more--&gt;</code></p>
+<p>需要在文章正文需要分段的地方自行添加 <code>&lt;!--more--&gt;</code></p>
 </li>
 </ol>
 <h2 id="增加谷歌日历订阅"><a href="#增加谷歌日历订阅" class="headerlink" title="增加谷歌日历订阅"></a>增加谷歌日历订阅</h2><details>
@@ -271,18 +271,31 @@
 
 <p>（以信息来源：<a href="https://www.ctfhub.com/#/calendar">CTFHub calendar</a>为例）</p>
 <ol>
-<li>打开_config.yml,找到calendar备用。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701415622456.png" alt="1701415622456"></li>
-<li>打开谷歌开发控制板 <a href="https://console.cloud.google.com/apis/dashboard">https://console.cloud.google.com/apis/dashboard</a> ，创建一个新项目（名字随意，位置默认）。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701416010725.png" alt="1701416010725"></li>
-<li>在上方搜索框中搜索：Google calendar api.选择并启用。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701415764731.png" alt="1701415764731"></li>
-<li>打开OAuth consent screen，名称随意，User type选外部，邮箱填写自己的即可，范围勾选所有的Google calendar api。测试用户不用管，然后继续<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701416611080.png" alt="1701416611080"></li>
-<li>打开凭据，选择创建凭据-api密钥，复制生成的密钥到_config.yml中的api_key里。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701416630608.png" alt="1701416630608"><br>5.5. 如果有需要可以在api设置中add自己的网站为过滤条件，可以防止api被恶意使用（可选）<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417104331.png" alt="1701417104331"></li>
-<li>打开谷歌日历，打开设置-添加日历-通过网址添加<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417220508.png" alt="1701417220508"></li>
-<li>打开刚才添加的日历，找到集成日历，复制集成日历的日历ID。（如果添加的是自己的日历需要将日历设置为公开）<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417310583.png" alt="1701417310583"></li>
-<li>将日历id填入_config.yml。</li>
-<li>在网站根目录用命令 <code>hexo new page schedule</code>创建日程表页面。</li>
-<li>修改刚刚创建的页面，添加 <code>type: scheldule</code>，可自定义修改名字。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417519112.png" alt="1701417519112"></li>
-<li>启用menu中的schedule。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417720304.png" alt="1701417720304"></li>
-<li>hexo s 在本地查看无误后hexo clean hexo g -d推送。</li>
+<li><p>打开主题内的_config.yml,找到calendar备用（\themes\next_config.yml）。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701415622456.png" alt="1701415622456"></p>
+</li>
+<li><p>打开谷歌开发控制板 <code>https://console.cloud.google.com/apis/dashboard</code> ，创建一个新项目（名字随意，位置默认）。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701416010725.png" alt="1701416010725"></p>
+</li>
+<li><p>在上方搜索框中搜索：Google calendar api.选择并启用。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701415764731.png" alt="1701415764731"></p>
+</li>
+<li><p>打开OAuth consent screen，名称随意，User type选外部，邮箱填写自己的即可，范围勾选所有的Google calendar api。测试用户不用管，然后继续<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701416611080.png" alt="1701416611080"></p>
+</li>
+<li><p>打开凭据，选择创建凭据-api密钥，复制生成的密钥到_config.yml中的api_key里。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701416630608.png" alt="1701416630608"><br>5.5. 如果有需要可以在api设置中add自己的网站为过滤条件，可以防止api被恶意使用（可选）<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417104331.png" alt="1701417104331"></p>
+</li>
+<li><p>打开谷歌日历，打开设置-添加日历-通过网址添加<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417220508.png" alt="1701417220508"></p>
+</li>
+<li><p>打开刚才添加的日历，找到集成日历，复制集成日历的日历ID。（如果添加的是自己的日历需要将日历设置为公开）<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417310583.png" alt="1701417310583"></p>
+</li>
+<li><p>将日历id填入_config.yml。</p>
+<p><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714357303411.png" alt="1714357303411"></p>
+</li>
+<li><p>在网站根目录用命令 <code>hexo new page schedule</code>创建日程表页面。</p>
+</li>
+<li><p>修改刚刚创建的页面，添加 <code>type: scheldule</code>，可自定义修改名字。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417519112.png" alt="1701417519112"></p>
+</li>
+<li><p>启用menu中的schedule。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417720304.png" alt="1701417720304"></p>
+</li>
+<li><p>hexo s 在本地查看无误后分别执行 <code>hexo clean</code>和 <code>hexo g -d</code>推送。</p>
+</li>
 </ol>
 </details>
 ]]></content>
