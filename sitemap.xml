@@ -117,13 +117,6 @@
 
   
   <url>
-    <loc>https://eklos9z.github.io/categories/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/</loc>
-    <lastmod>2024-04-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://eklos9z.github.io/categories/CTF%E5%AD%A6%E4%B9%A0/</loc>
     <lastmod>2024-04-29</lastmod>
     <changefreq>weekly</changefreq>
@@ -131,7 +124,7 @@
   </url>
   
   <url>
-    <loc>https://eklos9z.github.io/categories/CTF%E6%AF%94%E8%B5%9B/</loc>
+    <loc>https://eklos9z.github.io/categories/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/</loc>
     <lastmod>2024-04-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -139,6 +132,13 @@
   
   <url>
     <loc>https://eklos9z.github.io/categories/%E6%9D%82%E9%A1%B9%E6%AF%94%E8%B5%9B-%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2024-04-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://eklos9z.github.io/categories/CTF%E6%AF%94%E8%B5%9B/</loc>
     <lastmod>2024-04-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
