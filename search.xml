@@ -1,246 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>buuctf-web刷题</title>
-    <url>/2024/04/30/buuctf-web%E5%88%B7%E9%A2%98/</url>
-    <content><![CDATA[<p>未来怎么又可期了</p>
-<span id="more"></span>
-
-<details>
-<summary>Web</summary>
-
-<details>
-<summary>[极客大挑战 2019]EasySQL</summary>
-
-<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1714459494749.png" alt="1714459494749"></p>
-<p>数据交互点明显在页面上。验证SQL语句的闭合方式。</p>
-<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1714460320935.png" alt="1714460320935"></p>
-<p>判断出来为单引号。</p>
-<p>尝试使用万能密码。</p>
-<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1714460683481.png" alt="1714460683481"></p>
-<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1714460693162.png" alt="1714460693162"></p>
-<p>成功 <code>flag&#123;6ff105e8-e7ac-4cd0-9f14-14d8f41db6db&#125;</code></p>
-</details>
-
-<details>
-<summary>[极客大挑战 2019]Havefun</summary>
-
-<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1714461027021.png" alt="1714461027021"><br>页面上没有什么有用的信息。<br>查看一下前端：<br><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1714461210520.png" alt="1714461210520"></p>
-<p>尝试传入cat&#x3D;dog</p>
-<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1714461280981.png" alt="1714461280981"></p>
-<p>成功 <code>flag&#123;9b385537-e339-4d47-ac68-10fcc3c9217c&#125;</code></p>
-</details>
-
-<details>
-<summary>[HCTF 2018]WarmUp</summary>
-
-<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1714462460575.png" alt="1714462460575"><br>页面同样是没有什么有用的信息。</p>
-<p>查看前端源码：</p>
-<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1714462534879.png" alt="1714462534879"></p>
-<p>里面提到了source.php，那就前往source.php看看</p>
-<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1714462574772.png" alt="1714462574772"></p>
-<p>出现了php源码，里面提到了还有一个hint.php，前往hint.php</p>
-<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1714462636641.png" alt="1714462636641"></p>
-<p>提示flag的文件名是ffffllllaaaagggg。</p>
-<p>回头查看source.php的信息</p>
-<ul>
-<li><code>$whitelist = [&quot;source&quot;=&gt;&quot;source.php&quot;,&quot;hint&quot;=&gt;&quot;hint.php&quot;];</code>: 这是一个白名单数组，只有数组中的文件名才被允许访问。</li>
-<li><code>if (! isset($page) || !is_string($page))</code>: 检查 <code>$page</code> 变量是否已设置，并且确保它是一个字符串。</li>
-<li><code>if (in_array($page, $whitelist))</code>: 检查 <code>$page</code> 是否直接在白名单数组中。</li>
-<li><code>$_page = mb_substr($page, 0, mb_strpos($page . &#39;?&#39;, &#39;?&#39;))</code>: 这行代码试图去除查询字符串之后的部分，只留下文件名。</li>
-<li><code>if (in_array($_page, $whitelist))</code>: 再次检查处理后的文件名是否在白名单中。</li>
-<li><code>$_page = urldecode($page)</code>: 对 <code>$page</code> 进行 URL 解码，以防有编码过的字符。</li>
-<li><code>echo &quot;you can&#39;t see it&quot;</code>: 如果文件不在白名单中，输出这个信息。</li>
-<li><code>include $_REQUEST[&#39;file&#39;]</code>: 如果文件检查通过，包含并执行该文件。</li>
-</ul>
-<p>一共进行了四次过滤，因此构建 <code>http://d4284bb3-a9a4-46be-9050-f86dd118bdb6.node5.buuoj.cn:81/source.php?file=hint.php?/../../../../ffffllllaaaagggg</code></p>
-<p>成功。<code>flag&#123;8a16c171-c3a7-4dc0-8e6f-9d1892970174&#125;</code></p>
-</details>
-<details>
-<summary>[GXYCTF2019]Ping Ping Ping</summary>
-
-<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715129842819.png" alt="1715129842819"><br>看起来应该是一个指令注入<br>界面提示传入ip，先尝试正常使用<br><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715129922073.png" alt="1715129922073"><br>正常<br>指令注入可以使用 <code>&amp;&amp; || ；</code>间隔开。<code>&amp;&amp;</code>的含义是：如果前面的指令执行成功则执行后面的指令：<code>a&amp;&amp;b  a执行成功后则执行b</code>。<code>||</code>的含义是：如果前面的指令执行失败后则执行后者：<code>a||b a执行失败后才执行b</code>。<code>；</code>的含义是：前后指令按顺序执行：<code>a；b  先执行a再执行b</code>。<br>基于以上信息，构建 <code>?ip=127.0.0.1;whoami</code><br><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715132909524.png" alt="1715132909524"></p>
-<p>注入成功。</p>
-<p>构建语句为 <code>/?ip=127.0.0.1;ls</code>查看当前目录下的文件。</p>
-<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715133089504.png" alt="1715133089504"></p>
-<p>发现 <code>flag.php</code></p>
-<p>构建语句 <code>/?ip=127.0.0.1;cat%20flag.php</code></p>
-<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715133166932.png" alt="1715133166932"></p>
-<p><del>不给就不给怎么还骂人</del></p>
-<p><code>%20 </code>被过滤，用 <code>$IFS</code>代替空格，构建 <code>/?ip=127.0.0.1;cat$IFS$1flag.php</code>。里面$1代表传入的第一个参数，也就是 <code>flag.php</code>。</p>
-<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715133754043.png" alt="1715133754043"></p>
-<p><del>怎么又骂人</del></p>
-<p>flag也被过滤。尝试了多种间隔符都没有解决。</p>
-<p>转换思路，看看 <code>index.php</code>里面有什么东西。构建 <code>/?ip=127.0.0.1;cat$IFS$1index.php</code></p>
-<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715133815963.png" alt="1715133815963"></p>
-<p>里面提示了关于过滤的规则。</p>
-<ul>
-<li>如果 <code>$ip</code> 中包含空格，输出 “fxck your space!” 并终止执行。</li>
-<li>如果 <code>$ip</code> 中包含字符串 “bash”，输出 “fxck your bash!” 并终止执行。</li>
-<li>如果 <code>$ip</code> 中包含字符串 “flag”（不区分大小写），输出 “fxck your flag!” 并终止执行。</li>
-</ul>
-<p>那么尝试拆解一下flag <code>/?ip=127.0.0.1;b=lag;cat$IFS$1f$b.php</code></p>
-<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715134729614.png" alt="1715134729614"></p>
-<p>没有回显，但是没有报错 <del>开始怀疑人生</del></p>
-<p>然后不知道经过多长时间才发现flag在F12里</p>
-<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715134852929.png" alt="1715134852929"></p>
-<p>成功。<code>flag&#123;38db704f-52e3-4eb2-b399-78fd63d72d8c&#125;</code></p>
-</details>
-</details>
-]]></content>
-      <categories>
-        <category>CTF学习</category>
-      </categories>
-      <tags>
-        <tag>自学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>利用hexo在github上搭建个人博客</title>
-    <url>/2023/08/15/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<p>由于哥们的服务器过期了，不好意思找他续费，于是决定自己搭一个blog，国内的要么广告多（X书），要么后台略显老旧（X园），几经挑选之后决定利用hexo在github上搭建。</p>
-<p>搭建的过程基本参考了<a href="https://www.cnblogs.com/huanhao/p/hexobase.html#%E9%85%8D%E7%BD%AE%E4%B8%BB%E9%A2%98">【基础篇】hexo博客搭建教程</a>。<br>但是可能是由于版本更新的问题，遇到了一些意料之外的情况。</p>
-<p>同时基于原本的教程增加了一些新功能并作此记录。</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> 2023&#x2F;12&#x2F;1：记录了添加谷歌日历订阅的简易过程</li>
-<li><input checked="" disabled="" type="checkbox"> 2024&#x2F;4&#x2F;30: 记录了修正hexo new生成页面需要手动修改类型(categorie -&gt; categories)的问题</li>
-</ul>
-<span id="more"></span>
-
-<h2 id="问题汇总"><a href="#问题汇总" class="headerlink" title="问题汇总"></a>问题汇总</h2><ol>
-<li>在git bash中执行安装cnpm出错<br>错误1：Error: EPERM: operation not permitted<br>解决方案：利用管理员模式打开git即可。<br>错误2：ERR! code EPERM<br>解决方案：将C:&#x2F;user&#x2F;用户名&#x2F;.npmrc删除（需要打开隐藏文件）。</li>
-<li>上传github时页面主题未显示<br>解决方案：分别在博客页面所在的文件夹执行hexo clean后再执行hexo g -d与 hexo d。（无法确认究竟是什么导致的问题，推测是缓存问题。）</li>
-<li>修改schemes后上传无效<br>删除themes&#x2F;next 中的.git（隐藏），再重新执行hexo g -d与 hexo d即可.</li>
-</ol>
-<p>另：由于github的项目规则更改，如果按照链接中的教程会将页面信息上传到项目的master分支中，此时只需将（根目录下的）页面配置文件中的branch项改成main即可。</p>
-<ol start="4">
-<li><p>图片插入无法显示</p>
-<p>图片根目录位于 &#x2F;博客名称&#x2F;themes&#x2F;主题名&#x2F;source&#x2F;images。即如果需要插入图片，需要引用的代码格式为 :<code>！[](./images/图片名（或者可以加入二级文件	夹）))</code></p>
-<p>可以用hexo s在本地页面中检查是否成功，同时本地页面可以动态调整。</p>
-</li>
-<li><p>新版hexo下文章创建无法分段</p>
-<p>需要在文章正文需要分段的地方自行添加 <code>&lt;!--more--&gt;</code></p>
-</li>
-</ol>
-<h2 id="增加谷歌日历订阅"><a href="#增加谷歌日历订阅" class="headerlink" title="增加谷歌日历订阅"></a>增加谷歌日历订阅</h2><details>
-<summary>展开</summary>
-
-<p>（以信息来源：<a href="https://www.ctfhub.com/#/calendar">CTFHub calendar</a>为例）</p>
-<ol>
-<li><p>打开主题内的_config.yml,找到calendar备用（\themes\next_config.yml）。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701415622456.png" alt="1701415622456"></p>
-</li>
-<li><p>打开谷歌开发控制板 <code>https://console.cloud.google.com/apis/dashboard</code> ，创建一个新项目（名字随意，位置默认）。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701416010725.png" alt="1701416010725"></p>
-</li>
-<li><p>在上方搜索框中搜索：Google calendar api.选择并启用。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701415764731.png" alt="1701415764731"></p>
-</li>
-<li><p>打开OAuth consent screen，名称随意，User type选外部，邮箱填写自己的即可，范围勾选所有的Google calendar api。测试用户不用管，然后继续<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701416611080.png" alt="1701416611080"></p>
-</li>
-<li><p>打开凭据，选择创建凭据-api密钥，复制生成的密钥到_config.yml中的api_key里。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701416630608.png" alt="1701416630608"><br>5.5. 如果有需要可以在api设置中add自己的网站为过滤条件，可以防止api被恶意使用（可选）<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417104331.png" alt="1701417104331"></p>
-</li>
-<li><p>打开谷歌日历，打开设置-添加日历-通过网址添加<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417220508.png" alt="1701417220508"></p>
-</li>
-<li><p>打开刚才添加的日历，找到集成日历，复制集成日历的日历ID。（如果添加的是自己的日历需要将日历设置为公开）<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417310583.png" alt="1701417310583"></p>
-</li>
-<li><p>将日历id填入_config.yml。</p>
-<p><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714357303411.png" alt="1714357303411"></p>
-</li>
-<li><p>在网站根目录用命令 <code>hexo new page schedule</code>创建日程表页面。</p>
-</li>
-<li><p>修改刚刚创建的页面，添加 <code>type: scheldule</code>，可自定义修改名字。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417519112.png" alt="1701417519112"></p>
-</li>
-<li><p>启用menu中的schedule。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417720304.png" alt="1701417720304"></p>
-</li>
-<li><p>hexo s 在本地查看无误后分别执行 <code>hexo clean</code>和 <code>hexo g -d</code>推送。</p>
-</li>
-</ol>
-</details>
-
-<h2 id="修正hexo-new生成页面需要手动修改类型-categorie-categories-的问题"><a href="#修正hexo-new生成页面需要手动修改类型-categorie-categories-的问题" class="headerlink" title="修正hexo new生成页面需要手动修改类型(categorie -&gt; categories)的问题"></a>修正hexo new生成页面需要手动修改类型(categorie -&gt; categories)的问题</h2><details>
-<summary>展开</summary>
-
-<p>不确定是我个人的问题，还是hexo的普遍问题，此问题曾导致：使用<code>hexo new</code>生成页面时，默认生成的页面里categories拼写错误，需要手动修改。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714442743740.png" alt="1714442743740"><br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714442805573.png" alt="1714442805573"><br>解决方案：进入 <code>.\%BLOG_NAME%\scaffolds</code>里修改自己使用的页面默认格式。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714443016916.png" alt="1714443016916"><br>如果不确定自己使用的哪个页面，前往根目录的 <code>_config.yaml</code>里的<code>default_layout</code>列查看</p>
-<p><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714443180903.png" alt="1714443180903"></p>
-</details>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>自学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MoeCTF2023部分题目wp</title>
-    <url>/2023/09/20/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/</url>
-    <content><![CDATA[<p>比赛链接：<a href="https://ctf.xidian.edu.cn/">https://ctf.xidian.edu.cn/</a></p>
-<p>因为本人水平有限，并且部分题目是一边做一边记录，有错误在所难免，还请各位师傅多多批评指正。</p>
-<span id="more"></span>
-
-<h1 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h1><details>
-
-<summary>http</summary>
-
-<p>使用工具：Burp</p>
-</details>
-
-<h1 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h1><details>
-
-<summary>机位查询</summary>
-
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695552040696.png"></p>
-<p>使用工具：百度地图，高德地图；(exif)</p>
-<p>题干的安装包里有三个文件（1、2、3）。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546103340.png"></p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546153083.png"></p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546160885.png"></p>
-<p>P1可以看到图片中有个很明显的南宁站，结合旁边的”高铁商务酒店”可以初步判断P1地址位于南宁高铁站附近</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546843704.png"></p>
-<p>然后根据地图与照片尝试反推位置：机位既能看到”猪霸王”所在的美食街，又能看到城市便捷酒店的远角以及南宁站的全貌。因此可以做一个大致的视线图如下。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695547408548.png"></p>
-<p>模拟图显示机位大概在”摩根快捷酒店”与”运德集团小区”附近，考虑到简易标点的误差，把”君安快捷酒店”作为备选项，选择用百度实景地图查看一下附近的具体信息。<img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695547590711.png"></p>
-<p>很显然，只有”嘉士摩根国际”这个建筑具备机位的相关条件，”运德集团小区”的建筑高度无法实现该效果，如果采取相同角度在”君安快捷酒店”拍照，”嘉士摩根国际”必然会出现在照片中。因此P1的flag片段为”jiashi”（注意平翘舌，别问我为什么）。</p>
-<p>P2有一个很明显的”中山路美食街”的特征，扔到bing搜索一下。<img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548004807.png"></p>
-<p>又在南宁，顺手看一眼图片。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548056397.png"></p>
-<p>看到一个类似的图片，点进去发现是素材库。判断这个图片可能是网图，开始百度识图。<img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548274601.png"></p>
-<p>发现是某摄影比赛的作品，于是<del>找到主办方联系作者发邮件问照片是在哪拍的，</del> 打开百度地图搜索南宁中山路美食街</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548713876.png"></p>
-<p>根据”琉璃净”的位置确认具体方位。然后根据照片推断大致机位位置。（这里吐槽一下百度地图和高德地图一个不支持地图旋转，一个没有实景地图）</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548962411.png"></p>
-<p>根据上面比赛信息，可以排除在马路上使用无人机进行拍摄，所以只能是在”广西高等法院办公楼旧址”所在的区域，利用百度实景地图瞄一眼。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549111309.png"></p>
-<p>显然，P2的flag片段为：baisheng</p>
-<p>P3比较麻烦，整个照片几乎没有有效的特征信息，只有最远处高楼有”广西农信”的字样，因此我猜测照片还是在南宁，在百度地图上尝试搜索”时代丽都”。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549302124.png"></p>
-<p>运气很好。并且根据近大远小的透视关系。以及”时代丽都”和”中国人保大厦”的相对位置，可以很容易判断照片是从左往右拍摄的。照片下方有一串95500的电话，经过查询是太平洋保险的电话，由此向左寻找和太平洋相关的地标。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549579432.png"></p>
-<p>初步判断是左边的”疫苗临床研究所”，查询全景地图。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549812014.png"></p>
-<p>显然右边的黄色建筑（疾病预防控制中心）的高度不足以越过”太平洋世纪广场”所在的楼，所以还需要再重新定位。</p>
-<p>再往左看，发现最近同时具备能拍摄”太平洋世纪广场”并且高度明显远高于”太平洋世纪广场”的建筑仅可能有”铭湖经典”、”东方明珠花园”和”汇金苑”</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695550053013.png"></p>
-<p>此时我发现了”中国人保”右边的字被挡住了，因此在通过实景地图查询中国人保标牌在建筑上的相对位置可以模拟一条较为精确的视线。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695550372881.png"></p>
-<p>大致为2&#x2F;3的位置。同时根据机位大概在”时代丽都”与”中国人保财险”的位置正中，并且”时代丽都”所在的区域背后有一条视角偏左的马路，可以模拟另一条视线图。同时照片是刚好只能看到”太平洋世纪广场”的电话的，所以可以做第三条视线图。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551035234.png"></p>
-<p>受限于误差，仅仅排除了”铭湖经典”。并且不能判断究竟是”东方明珠花园”的前楼还是”东方明珠花园”与”汇金苑”的侧楼，然后我又仔细观察了一遍照片，发现有一个红色标识的楼位于机位的正中央。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551258300.png"></p>
-<p>区域特征是旁边有一些红色的楼群，并且几乎都是高度较高的建筑，以及一个红色的不明logo，利用卫星地图确认了目标楼，并作了视线图，由于位于照片正中央，因此只需作平行线即可。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551520367.png"></p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551566402.png"></p>
-<p>然后再通过实景地图确认，”东方明珠花园”前楼的高度不足，因此P3的flag片段为”huijin”。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551701456.png"></p>
-<p>最后，关于P3的这些各位读者其实都可以不看，因为我直到整理wp的时候才想起来把照片扔exif里查一下，里面写了经纬度……</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551823956.png"></p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551866254.png"></p>
-<p>哭了，我的头发，我对不起你。</p>
-</details>
-]]></content>
-      <tags>
-        <tag>复盘</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>DVWA靶场练习笔记</title>
     <url>/2023/11/01/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<p>发现了一个很棒的靶场，里面囊括了Web方向的大多数常见漏洞，并且还分了四个难度等级（Low,Medium,High,Impossible），很适合目前我的需求。</p>
@@ -362,71 +122,6 @@
 ]]></content>
       <categories>
         <category>信息安全</category>
-      </categories>
-      <tags>
-        <tag>自学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>笔记本键盘注册表损坏处理过程</title>
-    <url>/2024/04/26/%E7%AC%94%E8%AE%B0%E6%9C%AC%E9%94%AE%E7%9B%98%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%8D%9F%E5%9D%8F%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF/</url>
-    <content><![CDATA[<p>损坏原因暂时没有找到，暂定为机魂不悦吧</p>
-<span id="more"></span>
-
-<p>因为键盘失灵，所以后续的所有操作只能通过鼠标完成。并且因为原因未知，不排除后面继续复发的过程，所以作此记录。</p>
-<ol>
-<li>检查设备管理器，可以通过右键windows图标找到。</li>
-</ol>
-<p><img src="/./images/%E7%AC%94%E8%AE%B0%E6%9C%AC%E9%94%AE%E7%9B%98%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%8D%9F%E5%9D%8F%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF/1714132399444.png" alt="1714132399444"></p>
-<ol start="2">
-<li>通过 <code>键盘-&gt;设备-&gt;属性</code>查看具体的报错信息，当时我得到的信息是 <code>由于其配置信息(注册表中的)不完整或已损坏，Windows 无法启动这个硬件设备。 (代码 19)</code></li>
-<li>上网搜索得知故障发生在键盘对应的注册表中。于是前往注册表，Windows自带的索引直接搜索 <code>注册表</code>即可，如果没有制作索引可以用鼠标复制之前报错信息里的注册表得到registry，再通过 <code>运行</code>即可。</li>
-<li>然后前往 <code>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Class\</code>路径，在这个路径下基本都是代表着电脑里的各种设备，<code>&#123;4d36e96b-e325-11ce-bfc1-08002be10318&#125;</code>代表着键盘。经过对比网上的经验帖，发现 <code>UpperFilters</code>文件丢失。于是新建一个值补上。数值名称 <code>UpperFilters</code>，数值数据是 <code>kbdclass</code>。</li>
-<li>后在设备管理器上卸载所有发生错误的键盘设备，重启，问题<del>解决</del> 解决个p。</li>
-<li>回头复盘寻找思路，发现在一个帖子中有人询问 <code>UpperFilters</code>里的 <code>kbdclass</code>和 <code>vmkbd3d</code>值的问题，这才反应过来 <code>UpperFilters</code>这个值应该是 <code>多字符串值</code>，猜测和Vmware的虚拟键盘相关，参考的经验贴可能没有虚拟机环境所以给的是 <code> 字符串值</code>，于是重复第4步，并将新建值修改为  <code>多字符串值</code>后问题解决。</li>
-</ol>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>自学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CTF自学问题收集</title>
-    <url>/2023/09/06/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/</url>
-    <content><![CDATA[<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/weibo.png"></p>
-<p><strong>“先动手搞起来”</strong></p>
-<p>受限于CTF的分支较多，知识点也比较杂，记录一下自己不熟悉的知识点。</p>
-<span id="more"></span>
-
-<p>robots协议：网络爬虫排除标准，它是搜索引擎中访问网站的时候要查看的第一个文件。robots.txt文件告诉蜘蛛程序在服务器上什么文件是可以被查看的。 当一个搜索蜘蛛访问一个站点时，它会首先检查该站点根目录下是否存在robots.txt。基于人文道德规范建立的标准，不具备强制性（有点类似于readme.md？）<img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/robot.png"></p>
-<p>.php 备份文件后缀：通常备份文件的后缀名为.bak 所以 index. php 的备份文件名为 index.php.bak。</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/php.png"></p>
-<p>cookie：是web服务器为了识别用户身份而设置的一小段文本文件（一小段数据） 可通过Burpsuite爬取网页中的数据包。<a href="https://www.jianshu.com/p/6fc9cea6daa2">深入理解Cookie - 简书 (jianshu.com)</a></p>
-<p>Burp爆破模块使用界面：</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/burp.png"></p>
-<p>base64编码：特征是尾部可能会有等于号。</p>
-<p>gif隐写：可以使用101editor打开gif图片 若gif图片无法在图片管理器中打开考虑图片是否文档开头中缺少GIF8 <code>[GIF文件头：47 49 46 38 39 61]</code></p>
-<p>HTTP请求方法：</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/http.png"></p>
-<p>php:&#x2F;&#x2F;filter理解：其是php协议中的一个独有的协议，可以作为一个中间流去处理其他流，从而实现任意文件的读取。大部分情况下使用resourse以筛选过滤指定的数据流。<br>例如：某个网站的规则被制定为：如果直接用get方法请求flag <code>http://IP:PORT/?p=</code>会直接被拦截，这时候就可以考虑使用 <code>http://IP:PORT/?p=php://filter/convert.base64-encode/resource=flag</code>这样就会绕过拦截规则，以base64的格式输出flag中的文件。</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/1702452297071.png" alt="1702452297071"></p>
-<p>对称加密：对称加密算法是指在加密和解密时使用的是<strong>同一个密钥</strong>。 这种方法速度快，但需要双方事先协商好密钥，并保证密钥不被泄露。它的优点是速度快，效率高，适合加密大量数据。它的缺点是密钥的分发和管理比较困难，如果密钥泄露，加密的数据就会被破解（DES、AES）</p>
-<p>非对称加密：非对称加密使用一对密钥来加密和解密数据，其中一个密钥是公开的，叫做公钥，另一个密钥是私密的，叫做私钥。如果使用 <strong>公钥</strong> 对数据  <strong>进行加密</strong> ，只有用对应的 <strong>私钥</strong> 才能  <strong>进行解密</strong> 。它的优点是密钥的分发和管理比较容易，只需要公开公钥，私钥不需要共享。它的缺点是速度慢，效率低，适合加密少量数据（RSA、DSA）</p>
-<p>简单来说就是，对称加密是同钥加密，同钥解密。非对称加密是公钥加密，私钥解密。</p>
-<details>
-<summary>对称加密与非对称加密的代码实现</summary>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 基本思路是调用pycryptodome(对称加密)和cryptography(非对称加密)实现</span></span><br><span class="line"><span class="comment"># 导入所需的库</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives.ciphers <span class="keyword">import</span> Cipher, algorithms, modes</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives.asymmetric <span class="keyword">import</span> rsa, padding</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives <span class="keyword">import</span> hashes, serialization</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.backends <span class="keyword">import</span> default_backend</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成一个随机的对称密钥</span></span><br><span class="line">symmetric_key = os.urandom(<span class="number">32</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个AES加密器</span></span><br><span class="line">aes_cipher = Cipher(algorithms.AES(symmetric_key), modes.CBC(os.urandom(<span class="number">16</span>)), backend=default_backend())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用对称密钥加密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">symmetric_encrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据转换为字节串</span></span><br><span class="line">    data = data.encode()</span><br><span class="line">    <span class="comment"># 创建一个加密器</span></span><br><span class="line">    encryptor = aes_cipher.encryptor()</span><br><span class="line">    <span class="comment"># 对数据进行填充，使其长度为16的倍数</span></span><br><span class="line">    padding_length = <span class="number">16</span> - <span class="built_in">len</span>(data) % <span class="number">16</span></span><br><span class="line">    data = <span class="built_in">bytes</span>([padding_length]) * padding_length + data</span><br><span class="line">    <span class="comment"># 返回加密后的数据，使用base64编码方便显示</span></span><br><span class="line">    <span class="keyword">return</span> base64.b64encode(encryptor.update(data) + encryptor.finalize())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用对称密钥解密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">symmetric_decrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据解码为字节串</span></span><br><span class="line">    data = base64.b64decode(data)</span><br><span class="line">    <span class="comment"># 创建一个解密器</span></span><br><span class="line">    decryptor = aes_cipher.decryptor()</span><br><span class="line">    <span class="comment"># 返回解密后的数据，去掉填充的部分</span></span><br><span class="line">    data = decryptor.update(data) + decryptor.finalize()</span><br><span class="line">    padding_length = data[-<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> data[:-padding_length].decode()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成一对非对称密钥</span></span><br><span class="line">private_key = rsa.generate_private_key(public_exponent=<span class="number">65537</span>, key_size=<span class="number">2048</span>, backend=default_backend())</span><br><span class="line">public_key = private_key.public_key()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用公钥加密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">asymmetric_encrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据转换为字节串</span></span><br><span class="line">    data = data.encode()</span><br><span class="line">    <span class="comment"># 使用公钥和OAEP填充方式进行加密</span></span><br><span class="line">    <span class="keyword">return</span> base64.b64encode(public_key.encrypt(data, padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=<span class="literal">None</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用私钥解密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">asymmetric_decrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据解码为字节串</span></span><br><span class="line">    data = base64.b64decode(data)</span><br><span class="line">    <span class="comment"># 使用私钥和OAEP填充方式进行解密</span></span><br><span class="line">    <span class="keyword">return</span> public_key.decrypt(data, padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=<span class="literal">None</span>)).decode()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试一下</span></span><br><span class="line">data = <span class="string">&quot;Hello, world!&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;原始数据：&quot;</span>, data)</span><br><span class="line">symmetric_data = symmetric_encrypt(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;对称加密后的数据：&quot;</span>, symmetric_data)</span><br><span class="line">asymmetric_data = asymmetric_encrypt(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;非对称加密后的数据：&quot;</span>, asymmetric_data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;对称解密后的数据：&quot;</span>, symmetric_decrypt(symmetric_data))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;非对称解密后的数据：&quot;</span>, asymmetric_decrypt(asymmetric_data))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-</details>
-
-<p>哈希算法：哈希算法是一种单向算法，可以对任意长度的数据生成固定长度的唯一值，称为哈希值或摘要。 哈希算法不能逆向还原原始数据，只能用于验证数据的完整性和一致性。常见的哈希算法有 MD5、SHA-1、SHA-256 等。代码实现较为简单，导入hashlib，再创建一个hash对象即可。</p>
-]]></content>
-      <categories>
-        <category>CTF学习</category>
       </categories>
       <tags>
         <tag>自学</tag>
@@ -624,6 +319,343 @@
 ]]></content>
       <categories>
         <category>信息安全</category>
+      </categories>
+      <tags>
+        <tag>自学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CTF自学问题收集</title>
+    <url>/2023/09/06/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/</url>
+    <content><![CDATA[<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/weibo.png"></p>
+<p><strong>“先动手搞起来”</strong></p>
+<p>受限于CTF的分支较多，知识点也比较杂，记录一下自己不熟悉的知识点。</p>
+<span id="more"></span>
+
+<p>robots协议：网络爬虫排除标准，它是搜索引擎中访问网站的时候要查看的第一个文件。robots.txt文件告诉蜘蛛程序在服务器上什么文件是可以被查看的。 当一个搜索蜘蛛访问一个站点时，它会首先检查该站点根目录下是否存在robots.txt。基于人文道德规范建立的标准，不具备强制性（有点类似于readme.md？）<img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/robot.png"></p>
+<p>.php 备份文件后缀：通常备份文件的后缀名为.bak 所以 index. php 的备份文件名为 index.php.bak。</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/php.png"></p>
+<p>cookie：是web服务器为了识别用户身份而设置的一小段文本文件（一小段数据） 可通过Burpsuite爬取网页中的数据包。<a href="https://www.jianshu.com/p/6fc9cea6daa2">深入理解Cookie - 简书 (jianshu.com)</a></p>
+<p>Burp爆破模块使用界面：</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/burp.png"></p>
+<p>base64编码：特征是尾部可能会有等于号。</p>
+<p>gif隐写：可以使用101editor打开gif图片 若gif图片无法在图片管理器中打开考虑图片是否文档开头中缺少GIF8 <code>[GIF文件头：47 49 46 38 39 61]</code></p>
+<p>HTTP请求方法：</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/http.png"></p>
+<p>php:&#x2F;&#x2F;filter理解：其是php协议中的一个独有的协议，可以作为一个中间流去处理其他流，从而实现任意文件的读取。大部分情况下使用resourse以筛选过滤指定的数据流。<br>例如：某个网站的规则被制定为：如果直接用get方法请求flag <code>http://IP:PORT/?p=</code>会直接被拦截，这时候就可以考虑使用 <code>http://IP:PORT/?p=php://filter/convert.base64-encode/resource=flag</code>这样就会绕过拦截规则，以base64的格式输出flag中的文件。</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/1702452297071.png" alt="1702452297071"></p>
+<p>对称加密：对称加密算法是指在加密和解密时使用的是<strong>同一个密钥</strong>。 这种方法速度快，但需要双方事先协商好密钥，并保证密钥不被泄露。它的优点是速度快，效率高，适合加密大量数据。它的缺点是密钥的分发和管理比较困难，如果密钥泄露，加密的数据就会被破解（DES、AES）</p>
+<p>非对称加密：非对称加密使用一对密钥来加密和解密数据，其中一个密钥是公开的，叫做公钥，另一个密钥是私密的，叫做私钥。如果使用 <strong>公钥</strong> 对数据  <strong>进行加密</strong> ，只有用对应的 <strong>私钥</strong> 才能  <strong>进行解密</strong> 。它的优点是密钥的分发和管理比较容易，只需要公开公钥，私钥不需要共享。它的缺点是速度慢，效率低，适合加密少量数据（RSA、DSA）</p>
+<p>简单来说就是，对称加密是同钥加密，同钥解密。非对称加密是公钥加密，私钥解密。</p>
+<details>
+<summary>对称加密与非对称加密的代码实现</summary>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 基本思路是调用pycryptodome(对称加密)和cryptography(非对称加密)实现</span></span><br><span class="line"><span class="comment"># 导入所需的库</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives.ciphers <span class="keyword">import</span> Cipher, algorithms, modes</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives.asymmetric <span class="keyword">import</span> rsa, padding</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives <span class="keyword">import</span> hashes, serialization</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.backends <span class="keyword">import</span> default_backend</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成一个随机的对称密钥</span></span><br><span class="line">symmetric_key = os.urandom(<span class="number">32</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个AES加密器</span></span><br><span class="line">aes_cipher = Cipher(algorithms.AES(symmetric_key), modes.CBC(os.urandom(<span class="number">16</span>)), backend=default_backend())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用对称密钥加密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">symmetric_encrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据转换为字节串</span></span><br><span class="line">    data = data.encode()</span><br><span class="line">    <span class="comment"># 创建一个加密器</span></span><br><span class="line">    encryptor = aes_cipher.encryptor()</span><br><span class="line">    <span class="comment"># 对数据进行填充，使其长度为16的倍数</span></span><br><span class="line">    padding_length = <span class="number">16</span> - <span class="built_in">len</span>(data) % <span class="number">16</span></span><br><span class="line">    data = <span class="built_in">bytes</span>([padding_length]) * padding_length + data</span><br><span class="line">    <span class="comment"># 返回加密后的数据，使用base64编码方便显示</span></span><br><span class="line">    <span class="keyword">return</span> base64.b64encode(encryptor.update(data) + encryptor.finalize())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用对称密钥解密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">symmetric_decrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据解码为字节串</span></span><br><span class="line">    data = base64.b64decode(data)</span><br><span class="line">    <span class="comment"># 创建一个解密器</span></span><br><span class="line">    decryptor = aes_cipher.decryptor()</span><br><span class="line">    <span class="comment"># 返回解密后的数据，去掉填充的部分</span></span><br><span class="line">    data = decryptor.update(data) + decryptor.finalize()</span><br><span class="line">    padding_length = data[-<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> data[:-padding_length].decode()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成一对非对称密钥</span></span><br><span class="line">private_key = rsa.generate_private_key(public_exponent=<span class="number">65537</span>, key_size=<span class="number">2048</span>, backend=default_backend())</span><br><span class="line">public_key = private_key.public_key()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用公钥加密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">asymmetric_encrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据转换为字节串</span></span><br><span class="line">    data = data.encode()</span><br><span class="line">    <span class="comment"># 使用公钥和OAEP填充方式进行加密</span></span><br><span class="line">    <span class="keyword">return</span> base64.b64encode(public_key.encrypt(data, padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=<span class="literal">None</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用私钥解密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">asymmetric_decrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据解码为字节串</span></span><br><span class="line">    data = base64.b64decode(data)</span><br><span class="line">    <span class="comment"># 使用私钥和OAEP填充方式进行解密</span></span><br><span class="line">    <span class="keyword">return</span> public_key.decrypt(data, padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=<span class="literal">None</span>)).decode()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试一下</span></span><br><span class="line">data = <span class="string">&quot;Hello, world!&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;原始数据：&quot;</span>, data)</span><br><span class="line">symmetric_data = symmetric_encrypt(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;对称加密后的数据：&quot;</span>, symmetric_data)</span><br><span class="line">asymmetric_data = asymmetric_encrypt(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;非对称加密后的数据：&quot;</span>, asymmetric_data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;对称解密后的数据：&quot;</span>, symmetric_decrypt(symmetric_data))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;非对称解密后的数据：&quot;</span>, asymmetric_decrypt(asymmetric_data))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+</details>
+
+<p>哈希算法：哈希算法是一种单向算法，可以对任意长度的数据生成固定长度的唯一值，称为哈希值或摘要。 哈希算法不能逆向还原原始数据，只能用于验证数据的完整性和一致性。常见的哈希算法有 MD5、SHA-1、SHA-256 等。代码实现较为简单，导入hashlib，再创建一个hash对象即可。</p>
+]]></content>
+      <categories>
+        <category>CTF学习</category>
+      </categories>
+      <tags>
+        <tag>自学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>buuctf-web刷题</title>
+    <url>/2024/04/30/buuctf-web%E5%88%B7%E9%A2%98/</url>
+    <content><![CDATA[<p>未来怎么又可期了</p>
+<span id="more"></span>
+
+<details>
+<summary>Web</summary>
+
+<details>
+<summary>[极客大挑战 2019]EasySQL</summary>
+
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1714459494749.png" alt="1714459494749"></p>
+<p>数据交互点明显在页面上。验证SQL语句的闭合方式。</p>
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1714460320935.png" alt="1714460320935"></p>
+<p>判断出来为单引号。</p>
+<p>尝试使用万能密码。</p>
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1714460683481.png" alt="1714460683481"></p>
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1714460693162.png" alt="1714460693162"></p>
+<p>成功 <code>flag&#123;6ff105e8-e7ac-4cd0-9f14-14d8f41db6db&#125;</code></p>
+</details>
+
+<details>
+<summary>[极客大挑战 2019]Havefun</summary>
+
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1714461027021.png" alt="1714461027021"><br>页面上没有什么有用的信息。<br>查看一下前端：<br><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1714461210520.png" alt="1714461210520"></p>
+<p>尝试传入cat&#x3D;dog</p>
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1714461280981.png" alt="1714461280981"></p>
+<p>成功 <code>flag&#123;9b385537-e339-4d47-ac68-10fcc3c9217c&#125;</code></p>
+</details>
+
+<details>
+<summary>[HCTF 2018]WarmUp</summary>
+
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1714462460575.png" alt="1714462460575"><br>页面同样是没有什么有用的信息。</p>
+<p>查看前端源码：</p>
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1714462534879.png" alt="1714462534879"></p>
+<p>里面提到了source.php，那就前往source.php看看</p>
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1714462574772.png" alt="1714462574772"></p>
+<p>出现了php源码，里面提到了还有一个hint.php，前往hint.php</p>
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1714462636641.png" alt="1714462636641"></p>
+<p>提示flag的文件名是ffffllllaaaagggg。</p>
+<p>回头查看source.php的信息</p>
+<ul>
+<li><code>$whitelist = [&quot;source&quot;=&gt;&quot;source.php&quot;,&quot;hint&quot;=&gt;&quot;hint.php&quot;];</code>: 这是一个白名单数组，只有数组中的文件名才被允许访问。</li>
+<li><code>if (! isset($page) || !is_string($page))</code>: 检查 <code>$page</code> 变量是否已设置，并且确保它是一个字符串。</li>
+<li><code>if (in_array($page, $whitelist))</code>: 检查 <code>$page</code> 是否直接在白名单数组中。</li>
+<li><code>$_page = mb_substr($page, 0, mb_strpos($page . &#39;?&#39;, &#39;?&#39;))</code>: 这行代码试图去除查询字符串之后的部分，只留下文件名。</li>
+<li><code>if (in_array($_page, $whitelist))</code>: 再次检查处理后的文件名是否在白名单中。</li>
+<li><code>$_page = urldecode($page)</code>: 对 <code>$page</code> 进行 URL 解码，以防有编码过的字符。</li>
+<li><code>echo &quot;you can&#39;t see it&quot;</code>: 如果文件不在白名单中，输出这个信息。</li>
+<li><code>include $_REQUEST[&#39;file&#39;]</code>: 如果文件检查通过，包含并执行该文件。</li>
+</ul>
+<p>一共进行了四次过滤，因此构建 <code>http://d4284bb3-a9a4-46be-9050-f86dd118bdb6.node5.buuoj.cn:81/source.php?file=hint.php?/../../../../ffffllllaaaagggg</code></p>
+<p>成功。<code>flag&#123;8a16c171-c3a7-4dc0-8e6f-9d1892970174&#125;</code></p>
+</details>
+<details>
+<summary>[GXYCTF2019]Ping Ping Ping</summary>
+
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715129842819.png" alt="1715129842819"><br>看起来应该是一个指令注入<br>界面提示传入ip，先尝试正常使用<br><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715129922073.png" alt="1715129922073"><br>正常<br>指令注入可以使用 <code>&amp;&amp; || ；</code>间隔开。<code>&amp;&amp;</code>的含义是：如果前面的指令执行成功则执行后面的指令：<code>a&amp;&amp;b  a执行成功后则执行b</code>。<code>||</code>的含义是：如果前面的指令执行失败后则执行后者：<code>a||b a执行失败后才执行b</code>。<code>；</code>的含义是：前后指令按顺序执行：<code>a；b  先执行a再执行b</code>。<br>基于以上信息，构建 <code>?ip=127.0.0.1;whoami</code><br><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715132909524.png" alt="1715132909524"></p>
+<p>注入成功。</p>
+<p>构建语句为 <code>/?ip=127.0.0.1;ls</code>查看当前目录下的文件。</p>
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715133089504.png" alt="1715133089504"></p>
+<p>发现 <code>flag.php</code></p>
+<p>构建语句 <code>/?ip=127.0.0.1;cat%20flag.php</code></p>
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715133166932.png" alt="1715133166932"></p>
+<p><del>不给就不给怎么还骂人</del></p>
+<p><code>%20 </code>被过滤，用 <code>$IFS</code>代替空格，构建 <code>/?ip=127.0.0.1;cat$IFS$1flag.php</code>。里面$1代表传入的第一个参数，也就是 <code>flag.php</code>。</p>
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715133754043.png" alt="1715133754043"></p>
+<p><del>怎么又骂人</del></p>
+<p>flag也被过滤。尝试了多种间隔符都没有解决。</p>
+<p>转换思路，看看 <code>index.php</code>里面有什么东西。构建 <code>/?ip=127.0.0.1;cat$IFS$1index.php</code></p>
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715133815963.png" alt="1715133815963"></p>
+<p>里面提示了关于过滤的规则。</p>
+<ul>
+<li>如果 <code>$ip</code> 中包含空格，输出 “fxck your space!” 并终止执行。</li>
+<li>如果 <code>$ip</code> 中包含字符串 “bash”，输出 “fxck your bash!” 并终止执行。</li>
+<li>如果 <code>$ip</code> 中包含字符串 “flag”（不区分大小写），输出 “fxck your flag!” 并终止执行。</li>
+</ul>
+<p>那么尝试拆解一下flag <code>/?ip=127.0.0.1;b=lag;cat$IFS$1f$b.php</code></p>
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715134729614.png" alt="1715134729614"></p>
+<p>没有回显，但是没有报错 <del>开始怀疑人生</del></p>
+<p>然后不知道经过多长时间才发现flag在F12里</p>
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715134852929.png" alt="1715134852929"></p>
+<p>成功。<code>flag&#123;38db704f-52e3-4eb2-b399-78fd63d72d8c&#125;</code></p>
+</details>
+</details>
+
+<details>
+<summary>Misc</summary>
+
+<details>
+<summary>[NewStarCTF 公开赛赛道]Whats HTTP</summary>
+
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715137041959.png" alt="1715137041959"></p>
+<p>过滤出http报文。</p>
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715137295220.png" alt="1715137295220"></p>
+<p>因为如果回执报文是404的话，报文长度一定都是一样的，所以把过滤后的报文按顺序排列，着重查看状态码为200的报文。或者直接筛选出状态码为报文 <code>http.response.code == 200</code></p>
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715137533601.png" alt="1715137533601"><br>发现了一个长度异常的报文，经过查看请求报文发现是get了sssssercet，看起来是有用的信息</p>
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715137597234.png" alt="1715137597234"></p>
+<p>提取出回执的data <code>4e6a5932597a59784e6a6333596a4d304e6a597a4d7a4d7a4d7a597a4e444d354e6a517a4d444d7a4d7a41324d7a4d324d7a637a4e7a4d344d7a517a4d6a4d324d7a6b7a4e7a4d784e6a497a4e544d304e6a51324e444d334d7a49324e54597a4e6a55335a413d3d</code></p>
+<p>一眼hex。-&gt;<code>NjY2YzYxNjc3YjM0NjYzMzMzMzYzNDM5NjQzMDMzMzA2MzM2MzczNzM4MzQzMjM2MzkzNzMxNjIzNTM0NjQ2NDM3MzI2NTYzNjU3ZA==</code></p>
+<p>一眼base64。-&gt;<code>666c61677b34663333363439643033306336373738343236393731623534646437326563657d</code></p>
+<p>又是hex。-&gt;<code>flag&#123;4f33649d030c6778426971b54dd72ece&#125;</code></p>
+<p>完成。<code>flag&#123;4f33649d030c6778426971b54dd72ece&#125;</code></p>
+</details>
+
+<details>
+<summary>[NewStarCTF 2023 公开赛道]流量！鲨鱼！</summary>
+
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715138777415.png" alt="1715138777415"><br>筛选出http报文<br><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715138836304.png" alt="1715138836304"><br>发现了一个奇怪的报文 <code>Wm14aFozdFhjbWt6TldnMGNtdGZNWE5mZFRVelpuVnNYMkkzTW1FMk1EazFNemRsTm4wSwo=</code><br><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715138858169.png" alt="1715138858169"></p>
+<p>查看一下对应的请求报文</p>
+<p><img src="/./images/buuctf-web%E5%88%B7%E9%A2%98/1715138901713.png" alt="1715138901713"></p>
+<p>请求报文是在控制台注入了linux命令，是用base64编码以base64的编码格式输出ffffllllllll11111144444GGGGGG里的内容。实质上也就是对ffffllllllll11111144444GGGGGG的内容作两次base64加密。</p>
+<p>完成。<code>flag&#123;Wri35h4rk_1s_u53ful_b72a609537e6&#125;</code></p>
+</details>
+
+
+</details>
+]]></content>
+      <categories>
+        <category>CTF学习</category>
+      </categories>
+      <tags>
+        <tag>自学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>笔记本键盘注册表损坏处理过程</title>
+    <url>/2024/04/26/%E7%AC%94%E8%AE%B0%E6%9C%AC%E9%94%AE%E7%9B%98%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%8D%9F%E5%9D%8F%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF/</url>
+    <content><![CDATA[<p>损坏原因暂时没有找到，暂定为机魂不悦吧</p>
+<span id="more"></span>
+
+<p>因为键盘失灵，所以后续的所有操作只能通过鼠标完成。并且因为原因未知，不排除后面继续复发的过程，所以作此记录。</p>
+<ol>
+<li>检查设备管理器，可以通过右键windows图标找到。</li>
+</ol>
+<p><img src="/./images/%E7%AC%94%E8%AE%B0%E6%9C%AC%E9%94%AE%E7%9B%98%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%8D%9F%E5%9D%8F%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF/1714132399444.png" alt="1714132399444"></p>
+<ol start="2">
+<li>通过 <code>键盘-&gt;设备-&gt;属性</code>查看具体的报错信息，当时我得到的信息是 <code>由于其配置信息(注册表中的)不完整或已损坏，Windows 无法启动这个硬件设备。 (代码 19)</code></li>
+<li>上网搜索得知故障发生在键盘对应的注册表中。于是前往注册表，Windows自带的索引直接搜索 <code>注册表</code>即可，如果没有制作索引可以用鼠标复制之前报错信息里的注册表得到registry，再通过 <code>运行</code>即可。</li>
+<li>然后前往 <code>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Class\</code>路径，在这个路径下基本都是代表着电脑里的各种设备，<code>&#123;4d36e96b-e325-11ce-bfc1-08002be10318&#125;</code>代表着键盘。经过对比网上的经验帖，发现 <code>UpperFilters</code>文件丢失。于是新建一个值补上。数值名称 <code>UpperFilters</code>，数值数据是 <code>kbdclass</code>。</li>
+<li>后在设备管理器上卸载所有发生错误的键盘设备，重启，问题<del>解决</del> 解决个p。</li>
+<li>回头复盘寻找思路，发现在一个帖子中有人询问 <code>UpperFilters</code>里的 <code>kbdclass</code>和 <code>vmkbd3d</code>值的问题，这才反应过来 <code>UpperFilters</code>这个值应该是 <code>多字符串值</code>，猜测和Vmware的虚拟键盘相关，参考的经验贴可能没有虚拟机环境所以给的是 <code> 字符串值</code>，于是重复第4步，并将新建值修改为  <code>多字符串值</code>后问题解决。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>自学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MoeCTF2023部分题目wp</title>
+    <url>/2023/09/20/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/</url>
+    <content><![CDATA[<p>比赛链接：<a href="https://ctf.xidian.edu.cn/">https://ctf.xidian.edu.cn/</a></p>
+<p>因为本人水平有限，并且部分题目是一边做一边记录，有错误在所难免，还请各位师傅多多批评指正。</p>
+<span id="more"></span>
+
+<h1 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h1><details>
+
+<summary>http</summary>
+
+<p>使用工具：Burp</p>
+</details>
+
+<h1 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h1><details>
+
+<summary>机位查询</summary>
+
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695552040696.png"></p>
+<p>使用工具：百度地图，高德地图；(exif)</p>
+<p>题干的安装包里有三个文件（1、2、3）。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546103340.png"></p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546153083.png"></p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546160885.png"></p>
+<p>P1可以看到图片中有个很明显的南宁站，结合旁边的”高铁商务酒店”可以初步判断P1地址位于南宁高铁站附近</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546843704.png"></p>
+<p>然后根据地图与照片尝试反推位置：机位既能看到”猪霸王”所在的美食街，又能看到城市便捷酒店的远角以及南宁站的全貌。因此可以做一个大致的视线图如下。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695547408548.png"></p>
+<p>模拟图显示机位大概在”摩根快捷酒店”与”运德集团小区”附近，考虑到简易标点的误差，把”君安快捷酒店”作为备选项，选择用百度实景地图查看一下附近的具体信息。<img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695547590711.png"></p>
+<p>很显然，只有”嘉士摩根国际”这个建筑具备机位的相关条件，”运德集团小区”的建筑高度无法实现该效果，如果采取相同角度在”君安快捷酒店”拍照，”嘉士摩根国际”必然会出现在照片中。因此P1的flag片段为”jiashi”（注意平翘舌，别问我为什么）。</p>
+<p>P2有一个很明显的”中山路美食街”的特征，扔到bing搜索一下。<img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548004807.png"></p>
+<p>又在南宁，顺手看一眼图片。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548056397.png"></p>
+<p>看到一个类似的图片，点进去发现是素材库。判断这个图片可能是网图，开始百度识图。<img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548274601.png"></p>
+<p>发现是某摄影比赛的作品，于是<del>找到主办方联系作者发邮件问照片是在哪拍的，</del> 打开百度地图搜索南宁中山路美食街</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548713876.png"></p>
+<p>根据”琉璃净”的位置确认具体方位。然后根据照片推断大致机位位置。（这里吐槽一下百度地图和高德地图一个不支持地图旋转，一个没有实景地图）</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548962411.png"></p>
+<p>根据上面比赛信息，可以排除在马路上使用无人机进行拍摄，所以只能是在”广西高等法院办公楼旧址”所在的区域，利用百度实景地图瞄一眼。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549111309.png"></p>
+<p>显然，P2的flag片段为：baisheng</p>
+<p>P3比较麻烦，整个照片几乎没有有效的特征信息，只有最远处高楼有”广西农信”的字样，因此我猜测照片还是在南宁，在百度地图上尝试搜索”时代丽都”。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549302124.png"></p>
+<p>运气很好。并且根据近大远小的透视关系。以及”时代丽都”和”中国人保大厦”的相对位置，可以很容易判断照片是从左往右拍摄的。照片下方有一串95500的电话，经过查询是太平洋保险的电话，由此向左寻找和太平洋相关的地标。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549579432.png"></p>
+<p>初步判断是左边的”疫苗临床研究所”，查询全景地图。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549812014.png"></p>
+<p>显然右边的黄色建筑（疾病预防控制中心）的高度不足以越过”太平洋世纪广场”所在的楼，所以还需要再重新定位。</p>
+<p>再往左看，发现最近同时具备能拍摄”太平洋世纪广场”并且高度明显远高于”太平洋世纪广场”的建筑仅可能有”铭湖经典”、”东方明珠花园”和”汇金苑”</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695550053013.png"></p>
+<p>此时我发现了”中国人保”右边的字被挡住了，因此在通过实景地图查询中国人保标牌在建筑上的相对位置可以模拟一条较为精确的视线。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695550372881.png"></p>
+<p>大致为2&#x2F;3的位置。同时根据机位大概在”时代丽都”与”中国人保财险”的位置正中，并且”时代丽都”所在的区域背后有一条视角偏左的马路，可以模拟另一条视线图。同时照片是刚好只能看到”太平洋世纪广场”的电话的，所以可以做第三条视线图。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551035234.png"></p>
+<p>受限于误差，仅仅排除了”铭湖经典”。并且不能判断究竟是”东方明珠花园”的前楼还是”东方明珠花园”与”汇金苑”的侧楼，然后我又仔细观察了一遍照片，发现有一个红色标识的楼位于机位的正中央。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551258300.png"></p>
+<p>区域特征是旁边有一些红色的楼群，并且几乎都是高度较高的建筑，以及一个红色的不明logo，利用卫星地图确认了目标楼，并作了视线图，由于位于照片正中央，因此只需作平行线即可。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551520367.png"></p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551566402.png"></p>
+<p>然后再通过实景地图确认，”东方明珠花园”前楼的高度不足，因此P3的flag片段为”huijin”。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551701456.png"></p>
+<p>最后，关于P3的这些各位读者其实都可以不看，因为我直到整理wp的时候才想起来把照片扔exif里查一下，里面写了经纬度……</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551823956.png"></p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551866254.png"></p>
+<p>哭了，我的头发，我对不起你。</p>
+</details>
+]]></content>
+      <tags>
+        <tag>复盘</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>利用hexo在github上搭建个人博客</title>
+    <url>/2023/08/15/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<p>由于哥们的服务器过期了，不好意思找他续费，于是决定自己搭一个blog，国内的要么广告多（X书），要么后台略显老旧（X园），几经挑选之后决定利用hexo在github上搭建。</p>
+<p>搭建的过程基本参考了<a href="https://www.cnblogs.com/huanhao/p/hexobase.html#%E9%85%8D%E7%BD%AE%E4%B8%BB%E9%A2%98">【基础篇】hexo博客搭建教程</a>。<br>但是可能是由于版本更新的问题，遇到了一些意料之外的情况。</p>
+<p>同时基于原本的教程增加了一些新功能并作此记录。</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 2023&#x2F;12&#x2F;1：记录了添加谷歌日历订阅的简易过程</li>
+<li><input checked="" disabled="" type="checkbox"> 2024&#x2F;4&#x2F;30: 记录了修正hexo new生成页面需要手动修改类型(categorie -&gt; categories)的问题</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="问题汇总"><a href="#问题汇总" class="headerlink" title="问题汇总"></a>问题汇总</h2><ol>
+<li>在git bash中执行安装cnpm出错<br>错误1：Error: EPERM: operation not permitted<br>解决方案：利用管理员模式打开git即可。<br>错误2：ERR! code EPERM<br>解决方案：将C:&#x2F;user&#x2F;用户名&#x2F;.npmrc删除（需要打开隐藏文件）。</li>
+<li>上传github时页面主题未显示<br>解决方案：分别在博客页面所在的文件夹执行hexo clean后再执行hexo g -d与 hexo d。（无法确认究竟是什么导致的问题，推测是缓存问题。）</li>
+<li>修改schemes后上传无效<br>删除themes&#x2F;next 中的.git（隐藏），再重新执行hexo g -d与 hexo d即可.</li>
+</ol>
+<p>另：由于github的项目规则更改，如果按照链接中的教程会将页面信息上传到项目的master分支中，此时只需将（根目录下的）页面配置文件中的branch项改成main即可。</p>
+<ol start="4">
+<li><p>图片插入无法显示</p>
+<p>图片根目录位于 &#x2F;博客名称&#x2F;themes&#x2F;主题名&#x2F;source&#x2F;images。即如果需要插入图片，需要引用的代码格式为 :<code>！[](./images/图片名（或者可以加入二级文件	夹）))</code></p>
+<p>可以用hexo s在本地页面中检查是否成功，同时本地页面可以动态调整。</p>
+</li>
+<li><p>新版hexo下文章创建无法分段</p>
+<p>需要在文章正文需要分段的地方自行添加 <code>&lt;!--more--&gt;</code></p>
+</li>
+</ol>
+<h2 id="增加谷歌日历订阅"><a href="#增加谷歌日历订阅" class="headerlink" title="增加谷歌日历订阅"></a>增加谷歌日历订阅</h2><details>
+<summary>展开</summary>
+
+<p>（以信息来源：<a href="https://www.ctfhub.com/#/calendar">CTFHub calendar</a>为例）</p>
+<ol>
+<li><p>打开主题内的_config.yml,找到calendar备用（\themes\next_config.yml）。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701415622456.png" alt="1701415622456"></p>
+</li>
+<li><p>打开谷歌开发控制板 <code>https://console.cloud.google.com/apis/dashboard</code> ，创建一个新项目（名字随意，位置默认）。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701416010725.png" alt="1701416010725"></p>
+</li>
+<li><p>在上方搜索框中搜索：Google calendar api.选择并启用。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701415764731.png" alt="1701415764731"></p>
+</li>
+<li><p>打开OAuth consent screen，名称随意，User type选外部，邮箱填写自己的即可，范围勾选所有的Google calendar api。测试用户不用管，然后继续<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701416611080.png" alt="1701416611080"></p>
+</li>
+<li><p>打开凭据，选择创建凭据-api密钥，复制生成的密钥到_config.yml中的api_key里。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701416630608.png" alt="1701416630608"><br>5.5. 如果有需要可以在api设置中add自己的网站为过滤条件，可以防止api被恶意使用（可选）<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417104331.png" alt="1701417104331"></p>
+</li>
+<li><p>打开谷歌日历，打开设置-添加日历-通过网址添加<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417220508.png" alt="1701417220508"></p>
+</li>
+<li><p>打开刚才添加的日历，找到集成日历，复制集成日历的日历ID。（如果添加的是自己的日历需要将日历设置为公开）<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417310583.png" alt="1701417310583"></p>
+</li>
+<li><p>将日历id填入_config.yml。</p>
+<p><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714357303411.png" alt="1714357303411"></p>
+</li>
+<li><p>在网站根目录用命令 <code>hexo new page schedule</code>创建日程表页面。</p>
+</li>
+<li><p>修改刚刚创建的页面，添加 <code>type: scheldule</code>，可自定义修改名字。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417519112.png" alt="1701417519112"></p>
+</li>
+<li><p>启用menu中的schedule。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417720304.png" alt="1701417720304"></p>
+</li>
+<li><p>hexo s 在本地查看无误后分别执行 <code>hexo clean</code>和 <code>hexo g -d</code>推送。</p>
+</li>
+</ol>
+</details>
+
+<h2 id="修正hexo-new生成页面需要手动修改类型-categorie-categories-的问题"><a href="#修正hexo-new生成页面需要手动修改类型-categorie-categories-的问题" class="headerlink" title="修正hexo new生成页面需要手动修改类型(categorie -&gt; categories)的问题"></a>修正hexo new生成页面需要手动修改类型(categorie -&gt; categories)的问题</h2><details>
+<summary>展开</summary>
+
+<p>不确定是我个人的问题，还是hexo的普遍问题，此问题曾导致：使用<code>hexo new</code>生成页面时，默认生成的页面里categories拼写错误，需要手动修改。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714442743740.png" alt="1714442743740"><br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714442805573.png" alt="1714442805573"><br>解决方案：进入 <code>.\%BLOG_NAME%\scaffolds</code>里修改自己使用的页面默认格式。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714443016916.png" alt="1714443016916"><br>如果不确定自己使用的哪个页面，前往根目录的 <code>_config.yaml</code>里的<code>default_layout</code>列查看</p>
+<p><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714443180903.png" alt="1714443180903"></p>
+</details>
+]]></content>
+      <categories>
+        <category>杂项</category>
       </categories>
       <tags>
         <tag>自学</tag>
