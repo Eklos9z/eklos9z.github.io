@@ -1,172 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>CTF自学问题收集</title>
-    <url>/2023/09/06/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/</url>
-    <content><![CDATA[<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/weibo.png"></p>
-<p><strong>“先动手搞起来”</strong></p>
-<p>受限于CTF的分支较多，知识点也比较杂，记录一下自己不熟悉的知识点。</p>
-<span id="more"></span>
-
-<p>robots协议：网络爬虫排除标准，它是搜索引擎中访问网站的时候要查看的第一个文件。robots.txt文件告诉蜘蛛程序在服务器上什么文件是可以被查看的。 当一个搜索蜘蛛访问一个站点时，它会首先检查该站点根目录下是否存在robots.txt。基于人文道德规范建立的标准，不具备强制性（有点类似于readme.md？）<img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/robot.png"></p>
-<p>.php 备份文件后缀：通常备份文件的后缀名为.bak 所以 index. php 的备份文件名为 index.php.bak。</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/php.png"></p>
-<p>cookie：是web服务器为了识别用户身份而设置的一小段文本文件（一小段数据） 可通过Burpsuite爬取网页中的数据包。<a href="https://www.jianshu.com/p/6fc9cea6daa2">深入理解Cookie - 简书 (jianshu.com)</a></p>
-<p>Burp爆破模块使用界面：</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/burp.png"></p>
-<p>base64编码：特征是尾部可能会有等于号。</p>
-<p>gif隐写：可以使用101editor打开gif图片 若gif图片无法在图片管理器中打开考虑图片是否文档开头中缺少GIF8 <code>[GIF文件头：47 49 46 38 39 61]</code></p>
-<p>HTTP请求方法：</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/http.png"></p>
-<p>php:&#x2F;&#x2F;filter理解：其是php协议中的一个独有的协议，可以作为一个中间流去处理其他流，从而实现任意文件的读取。大部分情况下使用resourse以筛选过滤指定的数据流。<br>例如：某个网站的规则被制定为：如果直接用get方法请求flag <code>http://IP:PORT/?p=</code>会直接被拦截，这时候就可以考虑使用 <code>http://IP:PORT/?p=php://filter/convert.base64-encode/resource=flag</code>这样就会绕过拦截规则，以base64的格式输出flag中的文件。</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/1702452297071.png" alt="1702452297071"></p>
-<p>对称加密：对称加密算法是指在加密和解密时使用的是<strong>同一个密钥</strong>。 这种方法速度快，但需要双方事先协商好密钥，并保证密钥不被泄露。它的优点是速度快，效率高，适合加密大量数据。它的缺点是密钥的分发和管理比较困难，如果密钥泄露，加密的数据就会被破解（DES、AES）</p>
-<p>非对称加密：非对称加密使用一对密钥来加密和解密数据，其中一个密钥是公开的，叫做公钥，另一个密钥是私密的，叫做私钥。如果使用 <strong>公钥</strong> 对数据  <strong>进行加密</strong> ，只有用对应的 <strong>私钥</strong> 才能  <strong>进行解密</strong> 。它的优点是密钥的分发和管理比较容易，只需要公开公钥，私钥不需要共享。它的缺点是速度慢，效率低，适合加密少量数据（RSA、DSA）</p>
-<p>简单来说就是，对称加密是同钥加密，同钥解密。非对称加密是公钥加密，私钥解密。</p>
-<details>
-<summary>对称加密与非对称加密的代码实现</summary>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 基本思路是调用pycryptodome(对称加密)和cryptography(非对称加密)实现</span></span><br><span class="line"><span class="comment"># 导入所需的库</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives.ciphers <span class="keyword">import</span> Cipher, algorithms, modes</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives.asymmetric <span class="keyword">import</span> rsa, padding</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives <span class="keyword">import</span> hashes, serialization</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.backends <span class="keyword">import</span> default_backend</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成一个随机的对称密钥</span></span><br><span class="line">symmetric_key = os.urandom(<span class="number">32</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个AES加密器</span></span><br><span class="line">aes_cipher = Cipher(algorithms.AES(symmetric_key), modes.CBC(os.urandom(<span class="number">16</span>)), backend=default_backend())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用对称密钥加密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">symmetric_encrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据转换为字节串</span></span><br><span class="line">    data = data.encode()</span><br><span class="line">    <span class="comment"># 创建一个加密器</span></span><br><span class="line">    encryptor = aes_cipher.encryptor()</span><br><span class="line">    <span class="comment"># 对数据进行填充，使其长度为16的倍数</span></span><br><span class="line">    padding_length = <span class="number">16</span> - <span class="built_in">len</span>(data) % <span class="number">16</span></span><br><span class="line">    data = <span class="built_in">bytes</span>([padding_length]) * padding_length + data</span><br><span class="line">    <span class="comment"># 返回加密后的数据，使用base64编码方便显示</span></span><br><span class="line">    <span class="keyword">return</span> base64.b64encode(encryptor.update(data) + encryptor.finalize())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用对称密钥解密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">symmetric_decrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据解码为字节串</span></span><br><span class="line">    data = base64.b64decode(data)</span><br><span class="line">    <span class="comment"># 创建一个解密器</span></span><br><span class="line">    decryptor = aes_cipher.decryptor()</span><br><span class="line">    <span class="comment"># 返回解密后的数据，去掉填充的部分</span></span><br><span class="line">    data = decryptor.update(data) + decryptor.finalize()</span><br><span class="line">    padding_length = data[-<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> data[:-padding_length].decode()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成一对非对称密钥</span></span><br><span class="line">private_key = rsa.generate_private_key(public_exponent=<span class="number">65537</span>, key_size=<span class="number">2048</span>, backend=default_backend())</span><br><span class="line">public_key = private_key.public_key()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用公钥加密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">asymmetric_encrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据转换为字节串</span></span><br><span class="line">    data = data.encode()</span><br><span class="line">    <span class="comment"># 使用公钥和OAEP填充方式进行加密</span></span><br><span class="line">    <span class="keyword">return</span> base64.b64encode(public_key.encrypt(data, padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=<span class="literal">None</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用私钥解密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">asymmetric_decrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据解码为字节串</span></span><br><span class="line">    data = base64.b64decode(data)</span><br><span class="line">    <span class="comment"># 使用私钥和OAEP填充方式进行解密</span></span><br><span class="line">    <span class="keyword">return</span> public_key.decrypt(data, padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=<span class="literal">None</span>)).decode()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试一下</span></span><br><span class="line">data = <span class="string">&quot;Hello, world!&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;原始数据：&quot;</span>, data)</span><br><span class="line">symmetric_data = symmetric_encrypt(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;对称加密后的数据：&quot;</span>, symmetric_data)</span><br><span class="line">asymmetric_data = asymmetric_encrypt(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;非对称加密后的数据：&quot;</span>, asymmetric_data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;对称解密后的数据：&quot;</span>, symmetric_decrypt(symmetric_data))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;非对称解密后的数据：&quot;</span>, asymmetric_decrypt(asymmetric_data))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-</details>
-
-<p>哈希算法：哈希算法是一种单向算法，可以对任意长度的数据生成固定长度的唯一值，称为哈希值或摘要。 哈希算法不能逆向还原原始数据，只能用于验证数据的完整性和一致性。常见的哈希算法有 MD5、SHA-1、SHA-256 等。代码实现较为简单，导入hashlib，再创建一个hash对象即可。</p>
-]]></content>
-      <categories>
-        <category>CTF学习</category>
-      </categories>
-      <tags>
-        <tag>自学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>DVWA靶场练习笔记</title>
-    <url>/2023/11/01/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<p>发现了一个很棒的靶场，里面囊括了Web方向的大多数常见漏洞，并且还分了四个难度等级（Low,Medium,High,Impossible），很适合目前我的需求。</p>
-<span id="more"></span>
-
-<p>TODO:</p>
-<ul>
-<li><input disabled="" type="checkbox"> Low</li>
-<li><input disabled="" type="checkbox"> Medium</li>
-<li><input disabled="" type="checkbox"> High</li>
-<li><input disabled="" type="checkbox"> Impossible</li>
-</ul>
-<details>
-
-<summary>Brute Force(暴力破解)</summary>
-
-<details>
-
-<summary>Low</summary>
-
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698826342694.png" alt="1698826342694"></p>
-<p>先随意选择一组用户名和密码看看会发生什么。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698827316880.png" alt="1698827316880"></p>
-<p>显示用户名和&#x2F;或密码错误，除此之外没有任何的机制。所以考虑使用Burp的Intruder模块对用户名和密码进行爆破。</p>
-<p>这里由于username和password都需要爆破。所以考虑Pitchfork模块或者Cluster Bomb模块（Sniper和Batteringram只能导入一个payload），这里选择Clusterbomb。</p>
-<p>选择字典之后开始爆破。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698831896134.png" alt="1698831896134"></p>
-<p>发现了一个长度明显有差异的返回长度。输入进去。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698831967463.png" alt="1698831967463"></p>
-</details>
-
-</details>
-
-<hr>
-<details>
-<summary>Command Injection(指令注入)</summary>
-<details>
-<summary>Low</summary>
-
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698843230447.png" alt="1698843230447"><br><del>（是知识盲区</del>  尝试着分析了一下，工作原理可能是直接将输入框内的文字与ping命令进行拼接。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698843498673.png" alt="1698843498673"></p>
-<p>并且不能过滤不合法的输入，那么尝试一下用&amp;符号进行注入。<del>（windows命令行指令都是啥来着</del></p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698843906106.png" alt="1698843906106"></p>
-</details>
-</details>
-
-<hr>
-<details>
-<summary>CSRF(Cross Site Request Forgery)(跨站请求伪造)</summary>
-<details>
-<summary>Low</summary>
-
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698844012937.png" alt="1698844012937"></p>
-<p>尝试抓个包。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698845752819.png" alt="1698845752819"></p>
-<p>发现是直接传递了新的密码和确认的密码，同时查看源代码发现是直接判断New password和Conf password是否相等，并没有其他的验证。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700221775155.png" alt="1700221775155"></p>
-<p><del>普通版burp不具备生成CSRF poc的功能，换个工具先（</del>    burp汉化破解链接 <code>https://www.52pojie.cn/thread-1544866-1-1.html</code></p>
-<p>或者不使用poc工具，直接构造链接 <code>http://127.0.0.1/DVWA-2.3/vulnerabilities/csrf/?password_new=123&amp;password_conf=123&amp;Change=Change#</code> 即可 ，或者再用短链接生成器包装一下看着像那么回事也可以。</p>
-</details>
-</details>
-
-<hr>
-<details>
-<summary>File Inclusion(文件包含)</summary>
-<details>
-
-<summary>Low</summary>
-
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849299946.png" alt="1698849299946"></p>
-<p>页面上给了三个php文件，逐个点击后没有发现特别有用的信息。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849364929.png" alt="1698849364929"></p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849376545.png" alt="1698849376545"><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849392702.png" alt="1698849392702"></p>
-<p>然后注意到了浏览器的网址栏，发现所谓php文件的读取是直接将php文件传入page中再读出来，联系到标题的文件隐藏，尝试着将page&#x3D;file3.php改成page&#x3D;file4.php。</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849666992.png" alt="1698849666992"></p>
-</details>
-</details>
-
-<hr>
-<details>
-<summary>File Upload(文件上传漏洞)</summary>
-<details>
-<summary>Low</summary>
-
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700222526114.png" alt="1700222526114"></p>
-<p>虽然说是上传图片，但是源代码中没有对上传文件的格式作要求</p>
-<p>一句话木马干就完了 <code>&lt;?php @eval($_POST[&#39;z&#39;]);?&gt;</code></p>
-<p><del>tmd卡巴斯基怎么又给我的文件清理了</del></p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700466093449.png" alt="1700466093449"></p>
-<p>上传成功，可以看到下面回显了路径，然后用蚁剑连接或者拼接路径也可以</p>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700466460394.png" alt="1700466460394"></p>
-<p>成功（记得把php文件删掉</p>
-</details>
-</details>
-
-<hr>
-<details>
-<summary>Insecure CAPTCHA(不安全验证码)</summary>
-
-<p><strong>因配置验证码的key有问题，所以暂时搁置</strong></p>
-</details>
-
-<hr>
-<details>
-
-<summary>SQL Injection(SQL注入)</summary>
-
-<details>
-<summary>Low</summary>
-
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700468784744.png" alt="1700468784744"></p>
-<blockquote>
-<p>SQL注入的第一步就要判断注入类型。一般来说，SQL注入按照<strong>参数分类</strong>分为：<strong>字符型</strong>和<strong>数字型</strong>，按照<strong>页面回显</strong>分为<strong>回显注入</strong>和<strong>盲注</strong>，<strong>回显</strong>分为<strong>回显正常</strong>和<strong>回显报错</strong>，<strong>盲注</strong>分为<strong>时间盲注</strong>和<strong>布尔盲注</strong>。</p>
-<p><a href="https://eklos9z.github.io/2023/10/22/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#more">漏洞挖掘学习笔记 | Eklos&#39;s Blog (eklos9z.github.io)</a></p>
-</blockquote>
-<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700541103208.png" alt="1700541103208"></p>
-</details>
-</details>
-]]></content>
-      <categories>
-        <category>信息安全</category>
-      </categories>
-      <tags>
-        <tag>自学</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>buuctf刷题记录</title>
     <url>/2024/04/30/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<p>未来怎么又可期了</p>
@@ -349,26 +183,166 @@
       </tags>
   </entry>
   <entry>
-    <title>笔记本键盘注册表损坏处理过程</title>
-    <url>/2024/04/26/%E7%AC%94%E8%AE%B0%E6%9C%AC%E9%94%AE%E7%9B%98%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%8D%9F%E5%9D%8F%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF/</url>
-    <content><![CDATA[<p>损坏原因暂时没有找到，暂定为机魂不悦吧</p>
+    <title>CTF自学问题收集</title>
+    <url>/2023/09/06/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/</url>
+    <content><![CDATA[<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/weibo.png"></p>
+<p><strong>“先动手搞起来”</strong></p>
+<p>受限于CTF的分支较多，知识点也比较杂，记录一下自己不熟悉的知识点。</p>
 <span id="more"></span>
 
-<p>因为键盘失灵，所以后续的所有操作只能通过鼠标完成。并且因为原因未知，不排除后面继续复发的过程，所以作此记录。</p>
-<ol>
-<li>检查设备管理器，可以通过右键windows图标找到。</li>
-</ol>
-<p><img src="/./images/%E7%AC%94%E8%AE%B0%E6%9C%AC%E9%94%AE%E7%9B%98%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%8D%9F%E5%9D%8F%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF/1714132399444.png" alt="1714132399444">2</p>
-<ol start="2">
-<li>通过 <code>键盘-&gt;设备-&gt;属性</code>查看具体的报错信息，当时我得到的信息是 <code>由于其配置信息(注册表中的)不完整或已损坏，Windows 无法启动这个硬件设备。 (代码 19)</code></li>
-<li>上网搜索得知故障发生在键盘对应的注册表中。于是前往注册表，Windows自带的索引直接搜索 <code>注册表</code>即可，如果没有制作索引可以用鼠标复制之前报错信息里的注册表得到registry，再通过 <code>运行</code>即可。</li>
-<li>然后前往 <code>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Class\</code>路径，在这个路径下基本都是代表着电脑里的各种设备，<code>&#123;4d36e96b-e325-11ce-bfc1-08002be10318&#125;</code>代表着键盘。经过对比网上的经验帖，发现 <code>UpperFilters</code>文件丢失。于是新建一个值补上。数值名称 <code>UpperFilters</code>，数值数据是 <code>kbdclass</code>。</li>
-<li>后在设备管理器上卸载所有发生错误的键盘设备，重启，问题<del>解决</del> 解决个p。</li>
-<li>回头复盘寻找思路，发现在一个帖子中有人询问 <code>UpperFilters</code>里的 <code>kbdclass</code>和 <code>vmkbd3d</code>值的问题，这才反应过来 <code>UpperFilters</code>这个值应该是 <code>多字符串值</code>，猜测和Vmware的虚拟键盘相关，参考的经验贴可能没有虚拟机环境所以给的是 <code> 字符串值</code>，于是重复第4步，并将新建值修改为  <code>多字符串值</code>后问题解决。</li>
-</ol>
+<p>robots协议：网络爬虫排除标准，它是搜索引擎中访问网站的时候要查看的第一个文件。robots.txt文件告诉蜘蛛程序在服务器上什么文件是可以被查看的。 当一个搜索蜘蛛访问一个站点时，它会首先检查该站点根目录下是否存在robots.txt。基于人文道德规范建立的标准，不具备强制性（有点类似于readme.md？）<img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/robot.png"></p>
+<p>.php 备份文件后缀：通常备份文件的后缀名为.bak 所以 index. php 的备份文件名为 index.php.bak。</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/php.png"></p>
+<p>cookie：是web服务器为了识别用户身份而设置的一小段文本文件（一小段数据） 可通过Burpsuite爬取网页中的数据包。<a href="https://www.jianshu.com/p/6fc9cea6daa2">深入理解Cookie - 简书 (jianshu.com)</a></p>
+<p>Burp爆破模块使用界面：</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/burp.png"></p>
+<p>base64编码：特征是尾部可能会有等于号。</p>
+<p>gif隐写：可以使用101editor打开gif图片 若gif图片无法在图片管理器中打开考虑图片是否文档开头中缺少GIF8 <code>[GIF文件头：47 49 46 38 39 61]</code></p>
+<p>HTTP请求方法：</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/http.png"></p>
+<p>php:&#x2F;&#x2F;filter理解：其是php协议中的一个独有的协议，可以作为一个中间流去处理其他流，从而实现任意文件的读取。大部分情况下使用resourse以筛选过滤指定的数据流。<br>例如：某个网站的规则被制定为：如果直接用get方法请求flag <code>http://IP:PORT/?p=</code>会直接被拦截，这时候就可以考虑使用 <code>http://IP:PORT/?p=php://filter/convert.base64-encode/resource=flag</code>这样就会绕过拦截规则，以base64的格式输出flag中的文件。</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/1702452297071.png" alt="1702452297071"></p>
+<p>对称加密：对称加密算法是指在加密和解密时使用的是<strong>同一个密钥</strong>。 这种方法速度快，但需要双方事先协商好密钥，并保证密钥不被泄露。它的优点是速度快，效率高，适合加密大量数据。它的缺点是密钥的分发和管理比较困难，如果密钥泄露，加密的数据就会被破解（DES、AES）</p>
+<p>非对称加密：非对称加密使用一对密钥来加密和解密数据，其中一个密钥是公开的，叫做公钥，另一个密钥是私密的，叫做私钥。如果使用 <strong>公钥</strong> 对数据  <strong>进行加密</strong> ，只有用对应的 <strong>私钥</strong> 才能  <strong>进行解密</strong> 。它的优点是密钥的分发和管理比较容易，只需要公开公钥，私钥不需要共享。它的缺点是速度慢，效率低，适合加密少量数据（RSA、DSA）</p>
+<p>简单来说就是，对称加密是同钥加密，同钥解密。非对称加密是公钥加密，私钥解密。</p>
+<details>
+<summary>对称加密与非对称加密的代码实现</summary>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 基本思路是调用pycryptodome(对称加密)和cryptography(非对称加密)实现</span></span><br><span class="line"><span class="comment"># 导入所需的库</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives.ciphers <span class="keyword">import</span> Cipher, algorithms, modes</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives.asymmetric <span class="keyword">import</span> rsa, padding</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives <span class="keyword">import</span> hashes, serialization</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.backends <span class="keyword">import</span> default_backend</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成一个随机的对称密钥</span></span><br><span class="line">symmetric_key = os.urandom(<span class="number">32</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个AES加密器</span></span><br><span class="line">aes_cipher = Cipher(algorithms.AES(symmetric_key), modes.CBC(os.urandom(<span class="number">16</span>)), backend=default_backend())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用对称密钥加密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">symmetric_encrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据转换为字节串</span></span><br><span class="line">    data = data.encode()</span><br><span class="line">    <span class="comment"># 创建一个加密器</span></span><br><span class="line">    encryptor = aes_cipher.encryptor()</span><br><span class="line">    <span class="comment"># 对数据进行填充，使其长度为16的倍数</span></span><br><span class="line">    padding_length = <span class="number">16</span> - <span class="built_in">len</span>(data) % <span class="number">16</span></span><br><span class="line">    data = <span class="built_in">bytes</span>([padding_length]) * padding_length + data</span><br><span class="line">    <span class="comment"># 返回加密后的数据，使用base64编码方便显示</span></span><br><span class="line">    <span class="keyword">return</span> base64.b64encode(encryptor.update(data) + encryptor.finalize())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用对称密钥解密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">symmetric_decrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据解码为字节串</span></span><br><span class="line">    data = base64.b64decode(data)</span><br><span class="line">    <span class="comment"># 创建一个解密器</span></span><br><span class="line">    decryptor = aes_cipher.decryptor()</span><br><span class="line">    <span class="comment"># 返回解密后的数据，去掉填充的部分</span></span><br><span class="line">    data = decryptor.update(data) + decryptor.finalize()</span><br><span class="line">    padding_length = data[-<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> data[:-padding_length].decode()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成一对非对称密钥</span></span><br><span class="line">private_key = rsa.generate_private_key(public_exponent=<span class="number">65537</span>, key_size=<span class="number">2048</span>, backend=default_backend())</span><br><span class="line">public_key = private_key.public_key()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用公钥加密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">asymmetric_encrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据转换为字节串</span></span><br><span class="line">    data = data.encode()</span><br><span class="line">    <span class="comment"># 使用公钥和OAEP填充方式进行加密</span></span><br><span class="line">    <span class="keyword">return</span> base64.b64encode(public_key.encrypt(data, padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=<span class="literal">None</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用私钥解密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">asymmetric_decrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据解码为字节串</span></span><br><span class="line">    data = base64.b64decode(data)</span><br><span class="line">    <span class="comment"># 使用私钥和OAEP填充方式进行解密</span></span><br><span class="line">    <span class="keyword">return</span> public_key.decrypt(data, padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=<span class="literal">None</span>)).decode()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试一下</span></span><br><span class="line">data = <span class="string">&quot;Hello, world!&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;原始数据：&quot;</span>, data)</span><br><span class="line">symmetric_data = symmetric_encrypt(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;对称加密后的数据：&quot;</span>, symmetric_data)</span><br><span class="line">asymmetric_data = asymmetric_encrypt(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;非对称加密后的数据：&quot;</span>, asymmetric_data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;对称解密后的数据：&quot;</span>, symmetric_decrypt(symmetric_data))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;非对称解密后的数据：&quot;</span>, asymmetric_decrypt(asymmetric_data))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+</details>
+
+<p>哈希算法：哈希算法是一种单向算法，可以对任意长度的数据生成固定长度的唯一值，称为哈希值或摘要。 哈希算法不能逆向还原原始数据，只能用于验证数据的完整性和一致性。常见的哈希算法有 MD5、SHA-1、SHA-256 等。代码实现较为简单，导入hashlib，再创建一个hash对象即可。</p>
 ]]></content>
       <categories>
-        <category>杂项</category>
+        <category>CTF学习</category>
+      </categories>
+      <tags>
+        <tag>自学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DVWA靶场练习笔记</title>
+    <url>/2023/11/01/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<p>发现了一个很棒的靶场，里面囊括了Web方向的大多数常见漏洞，并且还分了四个难度等级（Low,Medium,High,Impossible），很适合目前我的需求。</p>
+<span id="more"></span>
+
+<p>TODO:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Low</li>
+<li><input disabled="" type="checkbox"> Medium</li>
+<li><input disabled="" type="checkbox"> High</li>
+<li><input disabled="" type="checkbox"> Impossible</li>
+</ul>
+<details>
+
+<summary>Brute Force(暴力破解)</summary>
+
+<details>
+
+<summary>Low</summary>
+
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698826342694.png" alt="1698826342694"></p>
+<p>先随意选择一组用户名和密码看看会发生什么。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698827316880.png" alt="1698827316880"></p>
+<p>显示用户名和&#x2F;或密码错误，除此之外没有任何的机制。所以考虑使用Burp的Intruder模块对用户名和密码进行爆破。</p>
+<p>这里由于username和password都需要爆破。所以考虑Pitchfork模块或者Cluster Bomb模块（Sniper和Batteringram只能导入一个payload），这里选择Clusterbomb。</p>
+<p>选择字典之后开始爆破。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698831896134.png" alt="1698831896134"></p>
+<p>发现了一个长度明显有差异的返回长度。输入进去。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698831967463.png" alt="1698831967463"></p>
+</details>
+
+</details>
+
+<hr>
+<details>
+<summary>Command Injection(指令注入)</summary>
+<details>
+<summary>Low</summary>
+
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698843230447.png" alt="1698843230447"><br><del>（是知识盲区</del>  尝试着分析了一下，工作原理可能是直接将输入框内的文字与ping命令进行拼接。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698843498673.png" alt="1698843498673"></p>
+<p>并且不能过滤不合法的输入，那么尝试一下用&amp;符号进行注入。<del>（windows命令行指令都是啥来着</del></p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698843906106.png" alt="1698843906106"></p>
+</details>
+</details>
+
+<hr>
+<details>
+<summary>CSRF(Cross Site Request Forgery)(跨站请求伪造)</summary>
+<details>
+<summary>Low</summary>
+
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698844012937.png" alt="1698844012937"></p>
+<p>尝试抓个包。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698845752819.png" alt="1698845752819"></p>
+<p>发现是直接传递了新的密码和确认的密码，同时查看源代码发现是直接判断New password和Conf password是否相等，并没有其他的验证。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700221775155.png" alt="1700221775155"></p>
+<p><del>普通版burp不具备生成CSRF poc的功能，换个工具先（</del>    burp汉化破解链接 <code>https://www.52pojie.cn/thread-1544866-1-1.html</code></p>
+<p>或者不使用poc工具，直接构造链接 <code>http://127.0.0.1/DVWA-2.3/vulnerabilities/csrf/?password_new=123&amp;password_conf=123&amp;Change=Change#</code> 即可 ，或者再用短链接生成器包装一下看着像那么回事也可以。</p>
+</details>
+</details>
+
+<hr>
+<details>
+<summary>File Inclusion(文件包含)</summary>
+<details>
+
+<summary>Low</summary>
+
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849299946.png" alt="1698849299946"></p>
+<p>页面上给了三个php文件，逐个点击后没有发现特别有用的信息。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849364929.png" alt="1698849364929"></p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849376545.png" alt="1698849376545"><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849392702.png" alt="1698849392702"></p>
+<p>然后注意到了浏览器的网址栏，发现所谓php文件的读取是直接将php文件传入page中再读出来，联系到标题的文件隐藏，尝试着将page&#x3D;file3.php改成page&#x3D;file4.php。</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1698849666992.png" alt="1698849666992"></p>
+</details>
+</details>
+
+<hr>
+<details>
+<summary>File Upload(文件上传漏洞)</summary>
+<details>
+<summary>Low</summary>
+
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700222526114.png" alt="1700222526114"></p>
+<p>虽然说是上传图片，但是源代码中没有对上传文件的格式作要求</p>
+<p>一句话木马干就完了 <code>&lt;?php @eval($_POST[&#39;z&#39;]);?&gt;</code></p>
+<p><del>tmd卡巴斯基怎么又给我的文件清理了</del></p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700466093449.png" alt="1700466093449"></p>
+<p>上传成功，可以看到下面回显了路径，然后用蚁剑连接或者拼接路径也可以</p>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700466460394.png" alt="1700466460394"></p>
+<p>成功（记得把php文件删掉</p>
+</details>
+</details>
+
+<hr>
+<details>
+<summary>Insecure CAPTCHA(不安全验证码)</summary>
+
+<p><strong>因配置验证码的key有问题，所以暂时搁置</strong></p>
+</details>
+
+<hr>
+<details>
+
+<summary>SQL Injection(SQL注入)</summary>
+
+<details>
+<summary>Low</summary>
+
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700468784744.png" alt="1700468784744"></p>
+<blockquote>
+<p>SQL注入的第一步就要判断注入类型。一般来说，SQL注入按照<strong>参数分类</strong>分为：<strong>字符型</strong>和<strong>数字型</strong>，按照<strong>页面回显</strong>分为<strong>回显注入</strong>和<strong>盲注</strong>，<strong>回显</strong>分为<strong>回显正常</strong>和<strong>回显报错</strong>，<strong>盲注</strong>分为<strong>时间盲注</strong>和<strong>布尔盲注</strong>。</p>
+<p><a href="https://eklos9z.github.io/2023/10/22/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#more">漏洞挖掘学习笔记 | Eklos&#39;s Blog (eklos9z.github.io)</a></p>
+</blockquote>
+<p><img src="/./images/DVWA%E9%9D%B6%E5%9C%BA%E7%BB%83%E4%B9%A0%E7%AC%94%E8%AE%B0/1700541103208.png" alt="1700541103208"></p>
+</details>
+</details>
+]]></content>
+      <categories>
+        <category>信息安全</category>
       </categories>
       <tags>
         <tag>自学</tag>
@@ -446,6 +420,107 @@
       </categories>
       <tags>
         <tag>自学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>机器人比赛避障项目赛后总结</title>
+    <url>/2023/08/15/%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%AF%94%E8%B5%9B%E9%81%BF%E9%9A%9C%E9%A1%B9%E7%9B%AE%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<p>在见到避障比赛的文件之后，对比赛算法的设计并没有我想象中那么困难：机器人直行——机器人识别到箭头——机器人向箭头指向的方向平移——机器人视野脱离箭头——机器人直行，但是直觉与经验都在告诉我这个比赛最困难的地方就是在于怎么样才能去识别到三个箭头的方向。</p>
+<span id="more"></span>
+
+<p>首先我通过阅读材料以及代码，很容易便对颜色识别代码进行了改写，通过改写ColorDetect.py中113行—133行，实现了识别到红色和蓝色向左平移，识别到黄色向右平移。如未识别到颜色则直行。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> debug:</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> __isRunning:</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> detect_color != <span class="string">&#x27;None&#x27;</span>:</span><br><span class="line"></span><br><span class="line">               AGC.runActionGroup(<span class="string">&#x27;go_forward_fast&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                action_finish = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> detect_color == <span class="string">&#x27;red&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;left_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]           </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">elif</span> detect_color == <span class="string">&#x27;yellow&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;right_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]           </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">elif</span> detect_color == <span class="string">&#x27;blue&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;left_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]           </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">0.01</span>)       </span><br><span class="line"></span><br><span class="line">                action_finish = <span class="literal">True</span>       </span><br><span class="line"></span><br><span class="line">                detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">               time.sleep(<span class="number">0.01</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">            time.sleep(<span class="number">0.01</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在实际测试中发现可能由于机器人腿部舵机或是场地摩擦力问题导致机器人并不能完全的达到平移效果，经过调整，将“平移”动作后加入一个“转体”动作即可修正平移产生的过度偏差。后续的工作便是在箭头识别设计成功之后，将颜色识别替换为箭头识别即可。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> detect_color == <span class="string">&#x27;red&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;left_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;turn_left_small_step&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]   </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">                            <span class="keyword">elif</span> detect_color == <span class="string">&#x27;yellow&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;right_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;turn_right_small_step&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]   </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+
+<p>然后是对于箭头的识别的设计，我初步的思路是将标准箭头进行对半拆分，拆分成一个包含三角形的部分和只有矩形的部分，由于包含三角形的面积总是大于只有矩形的面积。因此可以把判断条件更改为“左右部分面积谁大”，即如果左半部分的面积更大则向左移动，右半部分的面积更大则向右移动。考虑到可能出现的图像处理问题，初步选择在lab空间中对图像进行处理。（下划线处为关键代码，下同）</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> lab_data:</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> i != <span class="string">&#x27;black&#x27;</span> <span class="keyword">and</span> i != <span class="string">&#x27;white&#x27;</span>:</span><br><span class="line"></span><br><span class="line">                frame_mask = cv2.inRange(frame_lab,</span><br><span class="line"></span><br><span class="line">                                         (lab_data[i][<span class="string">&#x27;min&#x27;</span>][<span class="number">0</span>],</span><br><span class="line"></span><br><span class="line">                                          lab_data[i][<span class="string">&#x27;min&#x27;</span>][<span class="number">1</span>],</span><br><span class="line"></span><br><span class="line">                                          lab_data[i][<span class="string">&#x27;min&#x27;</span>][<span class="number">2</span>]),</span><br><span class="line"></span><br><span class="line">                                         (lab_data[i][<span class="string">&#x27;max&#x27;</span>][<span class="number">0</span>],</span><br><span class="line"></span><br><span class="line">                                          lab_data[i][<span class="string">&#x27;max&#x27;</span>][<span class="number">1</span>],</span><br><span class="line"></span><br><span class="line">                                          lab_data[i][<span class="string">&#x27;max&#x27;</span>][<span class="number">2</span>]))  <span class="comment">#对原图像和掩模进行位运算</span></span><br><span class="line"></span><br><span class="line">                eroded=cv2.erode(frame_mask,cv2.getStructuringElement(cv2.MORPH_RECT, (<span class="number">3</span>, <span class="number">3</span>)))  <span class="comment">#腐蚀</span></span><br><span class="line"></span><br><span class="line">dilated=cv2.dilate(eroded,cv2.getStructuringElement(cv2.MORPH_RECT, (<span class="number">3</span>, <span class="number">3</span>))) <span class="comment">#膨胀</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> debug:</span><br><span class="line"></span><br><span class="line">                cv2.imshow(i, dilated)</span><br><span class="line"></span><br><span class="line">contours=cv2.findContours(dilated,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)[-<span class="number">2</span>]  <span class="comment">#找出轮廓</span></span><br><span class="line"></span><br><span class="line">                areaMaxContour, area_max = getAreaMaxContour(contours)  <span class="comment">#找出最大轮廓</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> areaMaxContour <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> area_max &gt; max_area:<span class="comment">#找最大面积</span></span><br><span class="line"></span><br><span class="line">                        max_area = area_max</span><br><span class="line"></span><br><span class="line">                        color_area_max = i</span><br><span class="line"></span><br><span class="line">                        areaMaxContour_max = areaMaxContour</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> max_area &gt; <span class="number">200</span>:  <span class="comment"># 有找到最大面积</span></span><br><span class="line"></span><br><span class="line">            ((centerX, centerY), radius) = cv2.minEnclosingCircle(areaMaxContour_max)  <span class="comment"># 获取最小外接圆</span></span><br><span class="line"></span><br><span class="line">            centerX = <span class="built_in">int</span>(Misc.<span class="built_in">map</span>(centerX, <span class="number">0</span>, size[<span class="number">0</span>], <span class="number">0</span>, img_w))</span><br><span class="line"></span><br><span class="line">            centerY = <span class="built_in">int</span>(Misc.<span class="built_in">map</span>(centerY, <span class="number">0</span>, size[<span class="number">1</span>], <span class="number">0</span>, img_h))</span><br><span class="line"></span><br><span class="line">            radius = <span class="built_in">int</span>(Misc.<span class="built_in">map</span>(radius, <span class="number">0</span>, size[<span class="number">0</span>], <span class="number">0</span>, img_w))  </span><br><span class="line"></span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+
+<p>根据预设代码的研究发现，如果直接对图像进行分割，它可能会导致对最大图像的识别的误差，即在切割之后的图像可能不是识别到的最大的轮廓，如果在收集并处理过图像之后，对图像的腐蚀膨胀操作可能无法使图像正常识别，猜测因为图像经腐蚀膨胀后两边图像的差异化不够明显。故方案作废。</p>
+<p>而后我通过在幻尔科技的官方网站上进行查阅资料，发现在介绍中有着“标签识别”的功能。于是我预想通过重定义标签或是对预设标签进行替换，即将两边箭头的图像编辑成“标签”，通过对新“标签”的识别做出反应，从而达到方向识别的效果。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">detector = apriltag.Detector(searchpath=apriltag._get_demo_searchpath())</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">apriltagDetect</span>(<span class="params">img</span>):  </span><br><span class="line"></span><br><span class="line">    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)</span><br><span class="line"></span><br><span class="line">    detections = detector.detect(gray, return_image=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(detections) != <span class="number">0</span>:</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> detection <span class="keyword">in</span> detections:              </span><br><span class="line"></span><br><span class="line">            corners = np.rint(detection.corners)  <span class="comment"># 获取四个角点</span></span><br><span class="line"></span><br><span class="line">            cv2.drawContours(img, [np.array(corners, np.<span class="built_in">int</span>)], -<span class="number">1</span>, (<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>), <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">            tag_family = <span class="built_in">str</span>(detection.tag_family, encoding=<span class="string">&#x27;utf-8&#x27;</span>)  <span class="comment"># 获取tag_family</span></span><br><span class="line"></span><br><span class="line">            tag_id = <span class="built_in">int</span>(detection.tag_id)  <span class="comment"># 获取tag_id</span></span><br><span class="line"></span><br><span class="line">            object_center_x, object_center_y = <span class="built_in">int</span>(detection.center[<span class="number">0</span>]), <span class="built_in">int</span>(detection.center[<span class="number">1</span>])  <span class="comment"># 中心点</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">tag_family, tag_id = apriltagDetect(img) <span class="comment"># apriltag检测</span></span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> tag_id <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line"></span><br><span class="line">        cv2.putText(img, <span class="string">&quot;tag_id: &quot;</span> + <span class="built_in">str</span>(tag_id), (<span class="number">10</span>, img.shape[<span class="number">0</span>] - <span class="number">30</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.65</span>, [<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        cv2.putText(img, <span class="string">&quot;tag_family: &quot;</span> + tag_family, (<span class="number">10</span>, img.shape[<span class="number">0</span>] - <span class="number">10</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.65</span>, [<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">        cv2.putText(img, <span class="string">&quot;tag_id: None&quot;</span>, (<span class="number">10</span>, img.shape[<span class="number">0</span>] - <span class="number">30</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.65</span>, [<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        cv2.putText(img, <span class="string">&quot;tag_family: None&quot;</span>, (<span class="number">10</span>, img.shape[<span class="number">0</span>] - <span class="number">10</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.65</span>, [<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+
+<p>经过对代码和机器人内部文件的查阅，我发现机器人的标签识别功能是建立在四个脚点的定位上，不具备对箭头等不规则图形的识别功能，同时机器人内部不存在标签相关的图像文件，难以对标签识别的代码与文件进行修改。故方案作废。</p>
+<p>然后我看到了面部识别的功能介绍和代码，我计划通过修改面部识别的文件，将“箭头”作为“面部”进行识别，但经对面部识别代码以及机器人内部文件的研究，发现机器人的面部识别功能是基于.d6a模型建立起来的。无法针对已经完善的模型文件进行修改，剩余的时间也不足以训练一个新的模型，故方案作废。</p>
+<p>至此，无论是剩余的时间还是任务分配都不允许我去设计其他新的思路去比赛，最终迫不得已基于思路一穷举出了可能的箭头情况并在比赛中分别调用，尽管我们及时发现并修补了机器人行动程序上的缺陷，但场地摩擦力不均带来的行动困难、机器人腿部舵机问题引起的不可控因素等场外条件将比赛算法不成熟引起的问题放大到了极致。因此很遗憾没有取得一个令人满意的成绩。</p>
+]]></content>
+      <categories>
+        <category>杂项</category>
+      </categories>
+      <tags>
+        <tag>复盘</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MoeCTF2023部分题目wp</title>
+    <url>/2023/09/20/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/</url>
+    <content><![CDATA[<p>比赛链接：<a href="https://ctf.xidian.edu.cn/">https://ctf.xidian.edu.cn/</a></p>
+<p>因为本人水平有限，并且部分题目是一边做一边记录，有错误在所难免，还请各位师傅多多批评指正。</p>
+<span id="more"></span>
+
+<h1 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h1><details>
+
+<summary>http</summary>
+
+<p>使用工具：Burp</p>
+</details>
+
+<h1 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h1><details>
+
+<summary>机位查询</summary>
+
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695552040696.png"></p>
+<p>使用工具：百度地图，高德地图；(exif)</p>
+<p>题干的安装包里有三个文件（1、2、3）。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546103340.png"></p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546153083.png"></p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546160885.png"></p>
+<p>P1可以看到图片中有个很明显的南宁站，结合旁边的”高铁商务酒店”可以初步判断P1地址位于南宁高铁站附近</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546843704.png"></p>
+<p>然后根据地图与照片尝试反推位置：机位既能看到”猪霸王”所在的美食街，又能看到城市便捷酒店的远角以及南宁站的全貌。因此可以做一个大致的视线图如下。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695547408548.png"></p>
+<p>模拟图显示机位大概在”摩根快捷酒店”与”运德集团小区”附近，考虑到简易标点的误差，把”君安快捷酒店”作为备选项，选择用百度实景地图查看一下附近的具体信息。<img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695547590711.png"></p>
+<p>很显然，只有”嘉士摩根国际”这个建筑具备机位的相关条件，”运德集团小区”的建筑高度无法实现该效果，如果采取相同角度在”君安快捷酒店”拍照，”嘉士摩根国际”必然会出现在照片中。因此P1的flag片段为”jiashi”（注意平翘舌，别问我为什么）。</p>
+<p>P2有一个很明显的”中山路美食街”的特征，扔到bing搜索一下。<img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548004807.png"></p>
+<p>又在南宁，顺手看一眼图片。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548056397.png"></p>
+<p>看到一个类似的图片，点进去发现是素材库。判断这个图片可能是网图，开始百度识图。<img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548274601.png"></p>
+<p>发现是某摄影比赛的作品，于是<del>找到主办方联系作者发邮件问照片是在哪拍的，</del> 打开百度地图搜索南宁中山路美食街</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548713876.png"></p>
+<p>根据”琉璃净”的位置确认具体方位。然后根据照片推断大致机位位置。（这里吐槽一下百度地图和高德地图一个不支持地图旋转，一个没有实景地图）</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548962411.png"></p>
+<p>根据上面比赛信息，可以排除在马路上使用无人机进行拍摄，所以只能是在”广西高等法院办公楼旧址”所在的区域，利用百度实景地图瞄一眼。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549111309.png"></p>
+<p>显然，P2的flag片段为：baisheng</p>
+<p>P3比较麻烦，整个照片几乎没有有效的特征信息，只有最远处高楼有”广西农信”的字样，因此我猜测照片还是在南宁，在百度地图上尝试搜索”时代丽都”。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549302124.png"></p>
+<p>运气很好。并且根据近大远小的透视关系。以及”时代丽都”和”中国人保大厦”的相对位置，可以很容易判断照片是从左往右拍摄的。照片下方有一串95500的电话，经过查询是太平洋保险的电话，由此向左寻找和太平洋相关的地标。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549579432.png"></p>
+<p>初步判断是左边的”疫苗临床研究所”，查询全景地图。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549812014.png"></p>
+<p>显然右边的黄色建筑（疾病预防控制中心）的高度不足以越过”太平洋世纪广场”所在的楼，所以还需要再重新定位。</p>
+<p>再往左看，发现最近同时具备能拍摄”太平洋世纪广场”并且高度明显远高于”太平洋世纪广场”的建筑仅可能有”铭湖经典”、”东方明珠花园”和”汇金苑”</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695550053013.png"></p>
+<p>此时我发现了”中国人保”右边的字被挡住了，因此在通过实景地图查询中国人保标牌在建筑上的相对位置可以模拟一条较为精确的视线。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695550372881.png"></p>
+<p>大致为2&#x2F;3的位置。同时根据机位大概在”时代丽都”与”中国人保财险”的位置正中，并且”时代丽都”所在的区域背后有一条视角偏左的马路，可以模拟另一条视线图。同时照片是刚好只能看到”太平洋世纪广场”的电话的，所以可以做第三条视线图。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551035234.png"></p>
+<p>受限于误差，仅仅排除了”铭湖经典”。并且不能判断究竟是”东方明珠花园”的前楼还是”东方明珠花园”与”汇金苑”的侧楼，然后我又仔细观察了一遍照片，发现有一个红色标识的楼位于机位的正中央。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551258300.png"></p>
+<p>区域特征是旁边有一些红色的楼群，并且几乎都是高度较高的建筑，以及一个红色的不明logo，利用卫星地图确认了目标楼，并作了视线图，由于位于照片正中央，因此只需作平行线即可。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551520367.png"></p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551566402.png"></p>
+<p>然后再通过实景地图确认，”东方明珠花园”前楼的高度不足，因此P3的flag片段为”huijin”。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551701456.png"></p>
+<p>最后，关于P3的这些各位读者其实都可以不看，因为我直到整理wp的时候才想起来把照片扔exif里查一下，里面写了经纬度……</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551823956.png"></p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551866254.png"></p>
+<p>哭了，我的头发，我对不起你。</p>
+</details>
+]]></content>
+      <tags>
+        <tag>复盘</tag>
       </tags>
   </entry>
   <entry>
@@ -616,104 +691,29 @@
       </tags>
   </entry>
   <entry>
-    <title>MoeCTF2023部分题目wp</title>
-    <url>/2023/09/20/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/</url>
-    <content><![CDATA[<p>比赛链接：<a href="https://ctf.xidian.edu.cn/">https://ctf.xidian.edu.cn/</a></p>
-<p>因为本人水平有限，并且部分题目是一边做一边记录，有错误在所难免，还请各位师傅多多批评指正。</p>
+    <title>笔记本键盘注册表损坏处理过程</title>
+    <url>/2024/04/26/%E7%AC%94%E8%AE%B0%E6%9C%AC%E9%94%AE%E7%9B%98%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%8D%9F%E5%9D%8F%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF/</url>
+    <content><![CDATA[<p>损坏原因暂时没有找到，暂定为机魂不悦吧</p>
 <span id="more"></span>
 
-<h1 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h1><details>
-
-<summary>http</summary>
-
-<p>使用工具：Burp</p>
-</details>
-
-<h1 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h1><details>
-
-<summary>机位查询</summary>
-
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695552040696.png"></p>
-<p>使用工具：百度地图，高德地图；(exif)</p>
-<p>题干的安装包里有三个文件（1、2、3）。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546103340.png"></p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546153083.png"></p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546160885.png"></p>
-<p>P1可以看到图片中有个很明显的南宁站，结合旁边的”高铁商务酒店”可以初步判断P1地址位于南宁高铁站附近</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546843704.png"></p>
-<p>然后根据地图与照片尝试反推位置：机位既能看到”猪霸王”所在的美食街，又能看到城市便捷酒店的远角以及南宁站的全貌。因此可以做一个大致的视线图如下。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695547408548.png"></p>
-<p>模拟图显示机位大概在”摩根快捷酒店”与”运德集团小区”附近，考虑到简易标点的误差，把”君安快捷酒店”作为备选项，选择用百度实景地图查看一下附近的具体信息。<img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695547590711.png"></p>
-<p>很显然，只有”嘉士摩根国际”这个建筑具备机位的相关条件，”运德集团小区”的建筑高度无法实现该效果，如果采取相同角度在”君安快捷酒店”拍照，”嘉士摩根国际”必然会出现在照片中。因此P1的flag片段为”jiashi”（注意平翘舌，别问我为什么）。</p>
-<p>P2有一个很明显的”中山路美食街”的特征，扔到bing搜索一下。<img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548004807.png"></p>
-<p>又在南宁，顺手看一眼图片。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548056397.png"></p>
-<p>看到一个类似的图片，点进去发现是素材库。判断这个图片可能是网图，开始百度识图。<img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548274601.png"></p>
-<p>发现是某摄影比赛的作品，于是<del>找到主办方联系作者发邮件问照片是在哪拍的，</del> 打开百度地图搜索南宁中山路美食街</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548713876.png"></p>
-<p>根据”琉璃净”的位置确认具体方位。然后根据照片推断大致机位位置。（这里吐槽一下百度地图和高德地图一个不支持地图旋转，一个没有实景地图）</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548962411.png"></p>
-<p>根据上面比赛信息，可以排除在马路上使用无人机进行拍摄，所以只能是在”广西高等法院办公楼旧址”所在的区域，利用百度实景地图瞄一眼。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549111309.png"></p>
-<p>显然，P2的flag片段为：baisheng</p>
-<p>P3比较麻烦，整个照片几乎没有有效的特征信息，只有最远处高楼有”广西农信”的字样，因此我猜测照片还是在南宁，在百度地图上尝试搜索”时代丽都”。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549302124.png"></p>
-<p>运气很好。并且根据近大远小的透视关系。以及”时代丽都”和”中国人保大厦”的相对位置，可以很容易判断照片是从左往右拍摄的。照片下方有一串95500的电话，经过查询是太平洋保险的电话，由此向左寻找和太平洋相关的地标。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549579432.png"></p>
-<p>初步判断是左边的”疫苗临床研究所”，查询全景地图。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549812014.png"></p>
-<p>显然右边的黄色建筑（疾病预防控制中心）的高度不足以越过”太平洋世纪广场”所在的楼，所以还需要再重新定位。</p>
-<p>再往左看，发现最近同时具备能拍摄”太平洋世纪广场”并且高度明显远高于”太平洋世纪广场”的建筑仅可能有”铭湖经典”、”东方明珠花园”和”汇金苑”</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695550053013.png"></p>
-<p>此时我发现了”中国人保”右边的字被挡住了，因此在通过实景地图查询中国人保标牌在建筑上的相对位置可以模拟一条较为精确的视线。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695550372881.png"></p>
-<p>大致为2&#x2F;3的位置。同时根据机位大概在”时代丽都”与”中国人保财险”的位置正中，并且”时代丽都”所在的区域背后有一条视角偏左的马路，可以模拟另一条视线图。同时照片是刚好只能看到”太平洋世纪广场”的电话的，所以可以做第三条视线图。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551035234.png"></p>
-<p>受限于误差，仅仅排除了”铭湖经典”。并且不能判断究竟是”东方明珠花园”的前楼还是”东方明珠花园”与”汇金苑”的侧楼，然后我又仔细观察了一遍照片，发现有一个红色标识的楼位于机位的正中央。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551258300.png"></p>
-<p>区域特征是旁边有一些红色的楼群，并且几乎都是高度较高的建筑，以及一个红色的不明logo，利用卫星地图确认了目标楼，并作了视线图，由于位于照片正中央，因此只需作平行线即可。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551520367.png"></p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551566402.png"></p>
-<p>然后再通过实景地图确认，”东方明珠花园”前楼的高度不足，因此P3的flag片段为”huijin”。</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551701456.png"></p>
-<p>最后，关于P3的这些各位读者其实都可以不看，因为我直到整理wp的时候才想起来把照片扔exif里查一下，里面写了经纬度……</p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551823956.png"></p>
-<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551866254.png"></p>
-<p>哭了，我的头发，我对不起你。</p>
-</details>
-]]></content>
-      <tags>
-        <tag>复盘</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>机器人比赛避障项目赛后总结</title>
-    <url>/2023/08/15/%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%AF%94%E8%B5%9B%E9%81%BF%E9%9A%9C%E9%A1%B9%E7%9B%AE%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/</url>
-    <content><![CDATA[<p>在见到避障比赛的文件之后，对比赛算法的设计并没有我想象中那么困难：机器人直行——机器人识别到箭头——机器人向箭头指向的方向平移——机器人视野脱离箭头——机器人直行，但是直觉与经验都在告诉我这个比赛最困难的地方就是在于怎么样才能去识别到三个箭头的方向。</p>
-<span id="more"></span>
-
-<p>首先我通过阅读材料以及代码，很容易便对颜色识别代码进行了改写，通过改写ColorDetect.py中113行—133行，实现了识别到红色和蓝色向左平移，识别到黄色向右平移。如未识别到颜色则直行。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> debug:</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> __isRunning:</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> detect_color != <span class="string">&#x27;None&#x27;</span>:</span><br><span class="line"></span><br><span class="line">               AGC.runActionGroup(<span class="string">&#x27;go_forward_fast&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                action_finish = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> detect_color == <span class="string">&#x27;red&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;left_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]           </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">elif</span> detect_color == <span class="string">&#x27;yellow&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;right_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]           </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">elif</span> detect_color == <span class="string">&#x27;blue&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;left_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]           </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">0.01</span>)       </span><br><span class="line"></span><br><span class="line">                action_finish = <span class="literal">True</span>       </span><br><span class="line"></span><br><span class="line">                detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">               time.sleep(<span class="number">0.01</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">            time.sleep(<span class="number">0.01</span>)</span><br></pre></td></tr></table></figure>
-
-<p>在实际测试中发现可能由于机器人腿部舵机或是场地摩擦力问题导致机器人并不能完全的达到平移效果，经过调整，将“平移”动作后加入一个“转体”动作即可修正平移产生的过度偏差。后续的工作便是在箭头识别设计成功之后，将颜色识别替换为箭头识别即可。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> detect_color == <span class="string">&#x27;red&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;left_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;turn_left_small_step&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]   </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">                            <span class="keyword">elif</span> detect_color == <span class="string">&#x27;yellow&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;right_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;turn_right_small_step&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]   </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"> </span><br></pre></td></tr></table></figure>
-
-<p>然后是对于箭头的识别的设计，我初步的思路是将标准箭头进行对半拆分，拆分成一个包含三角形的部分和只有矩形的部分，由于包含三角形的面积总是大于只有矩形的面积。因此可以把判断条件更改为“左右部分面积谁大”，即如果左半部分的面积更大则向左移动，右半部分的面积更大则向右移动。考虑到可能出现的图像处理问题，初步选择在lab空间中对图像进行处理。（下划线处为关键代码，下同）</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> lab_data:</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> i != <span class="string">&#x27;black&#x27;</span> <span class="keyword">and</span> i != <span class="string">&#x27;white&#x27;</span>:</span><br><span class="line"></span><br><span class="line">                frame_mask = cv2.inRange(frame_lab,</span><br><span class="line"></span><br><span class="line">                                         (lab_data[i][<span class="string">&#x27;min&#x27;</span>][<span class="number">0</span>],</span><br><span class="line"></span><br><span class="line">                                          lab_data[i][<span class="string">&#x27;min&#x27;</span>][<span class="number">1</span>],</span><br><span class="line"></span><br><span class="line">                                          lab_data[i][<span class="string">&#x27;min&#x27;</span>][<span class="number">2</span>]),</span><br><span class="line"></span><br><span class="line">                                         (lab_data[i][<span class="string">&#x27;max&#x27;</span>][<span class="number">0</span>],</span><br><span class="line"></span><br><span class="line">                                          lab_data[i][<span class="string">&#x27;max&#x27;</span>][<span class="number">1</span>],</span><br><span class="line"></span><br><span class="line">                                          lab_data[i][<span class="string">&#x27;max&#x27;</span>][<span class="number">2</span>]))  <span class="comment">#对原图像和掩模进行位运算</span></span><br><span class="line"></span><br><span class="line">                eroded=cv2.erode(frame_mask,cv2.getStructuringElement(cv2.MORPH_RECT, (<span class="number">3</span>, <span class="number">3</span>)))  <span class="comment">#腐蚀</span></span><br><span class="line"></span><br><span class="line">dilated=cv2.dilate(eroded,cv2.getStructuringElement(cv2.MORPH_RECT, (<span class="number">3</span>, <span class="number">3</span>))) <span class="comment">#膨胀</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> debug:</span><br><span class="line"></span><br><span class="line">                cv2.imshow(i, dilated)</span><br><span class="line"></span><br><span class="line">contours=cv2.findContours(dilated,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)[-<span class="number">2</span>]  <span class="comment">#找出轮廓</span></span><br><span class="line"></span><br><span class="line">                areaMaxContour, area_max = getAreaMaxContour(contours)  <span class="comment">#找出最大轮廓</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> areaMaxContour <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> area_max &gt; max_area:<span class="comment">#找最大面积</span></span><br><span class="line"></span><br><span class="line">                        max_area = area_max</span><br><span class="line"></span><br><span class="line">                        color_area_max = i</span><br><span class="line"></span><br><span class="line">                        areaMaxContour_max = areaMaxContour</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> max_area &gt; <span class="number">200</span>:  <span class="comment"># 有找到最大面积</span></span><br><span class="line"></span><br><span class="line">            ((centerX, centerY), radius) = cv2.minEnclosingCircle(areaMaxContour_max)  <span class="comment"># 获取最小外接圆</span></span><br><span class="line"></span><br><span class="line">            centerX = <span class="built_in">int</span>(Misc.<span class="built_in">map</span>(centerX, <span class="number">0</span>, size[<span class="number">0</span>], <span class="number">0</span>, img_w))</span><br><span class="line"></span><br><span class="line">            centerY = <span class="built_in">int</span>(Misc.<span class="built_in">map</span>(centerY, <span class="number">0</span>, size[<span class="number">1</span>], <span class="number">0</span>, img_h))</span><br><span class="line"></span><br><span class="line">            radius = <span class="built_in">int</span>(Misc.<span class="built_in">map</span>(radius, <span class="number">0</span>, size[<span class="number">0</span>], <span class="number">0</span>, img_w))  </span><br><span class="line"></span><br><span class="line"> </span><br></pre></td></tr></table></figure>
-
-<p>根据预设代码的研究发现，如果直接对图像进行分割，它可能会导致对最大图像的识别的误差，即在切割之后的图像可能不是识别到的最大的轮廓，如果在收集并处理过图像之后，对图像的腐蚀膨胀操作可能无法使图像正常识别，猜测因为图像经腐蚀膨胀后两边图像的差异化不够明显。故方案作废。</p>
-<p>而后我通过在幻尔科技的官方网站上进行查阅资料，发现在介绍中有着“标签识别”的功能。于是我预想通过重定义标签或是对预设标签进行替换，即将两边箭头的图像编辑成“标签”，通过对新“标签”的识别做出反应，从而达到方向识别的效果。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">detector = apriltag.Detector(searchpath=apriltag._get_demo_searchpath())</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">apriltagDetect</span>(<span class="params">img</span>):  </span><br><span class="line"></span><br><span class="line">    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)</span><br><span class="line"></span><br><span class="line">    detections = detector.detect(gray, return_image=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(detections) != <span class="number">0</span>:</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> detection <span class="keyword">in</span> detections:              </span><br><span class="line"></span><br><span class="line">            corners = np.rint(detection.corners)  <span class="comment"># 获取四个角点</span></span><br><span class="line"></span><br><span class="line">            cv2.drawContours(img, [np.array(corners, np.<span class="built_in">int</span>)], -<span class="number">1</span>, (<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>), <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">            tag_family = <span class="built_in">str</span>(detection.tag_family, encoding=<span class="string">&#x27;utf-8&#x27;</span>)  <span class="comment"># 获取tag_family</span></span><br><span class="line"></span><br><span class="line">            tag_id = <span class="built_in">int</span>(detection.tag_id)  <span class="comment"># 获取tag_id</span></span><br><span class="line"></span><br><span class="line">            object_center_x, object_center_y = <span class="built_in">int</span>(detection.center[<span class="number">0</span>]), <span class="built_in">int</span>(detection.center[<span class="number">1</span>])  <span class="comment"># 中心点</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">tag_family, tag_id = apriltagDetect(img) <span class="comment"># apriltag检测</span></span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> tag_id <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line"></span><br><span class="line">        cv2.putText(img, <span class="string">&quot;tag_id: &quot;</span> + <span class="built_in">str</span>(tag_id), (<span class="number">10</span>, img.shape[<span class="number">0</span>] - <span class="number">30</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.65</span>, [<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        cv2.putText(img, <span class="string">&quot;tag_family: &quot;</span> + tag_family, (<span class="number">10</span>, img.shape[<span class="number">0</span>] - <span class="number">10</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.65</span>, [<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">        cv2.putText(img, <span class="string">&quot;tag_id: None&quot;</span>, (<span class="number">10</span>, img.shape[<span class="number">0</span>] - <span class="number">30</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.65</span>, [<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        cv2.putText(img, <span class="string">&quot;tag_family: None&quot;</span>, (<span class="number">10</span>, img.shape[<span class="number">0</span>] - <span class="number">10</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.65</span>, [<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"> </span><br></pre></td></tr></table></figure>
-
-<p>经过对代码和机器人内部文件的查阅，我发现机器人的标签识别功能是建立在四个脚点的定位上，不具备对箭头等不规则图形的识别功能，同时机器人内部不存在标签相关的图像文件，难以对标签识别的代码与文件进行修改。故方案作废。</p>
-<p>然后我看到了面部识别的功能介绍和代码，我计划通过修改面部识别的文件，将“箭头”作为“面部”进行识别，但经对面部识别代码以及机器人内部文件的研究，发现机器人的面部识别功能是基于.d6a模型建立起来的。无法针对已经完善的模型文件进行修改，剩余的时间也不足以训练一个新的模型，故方案作废。</p>
-<p>至此，无论是剩余的时间还是任务分配都不允许我去设计其他新的思路去比赛，最终迫不得已基于思路一穷举出了可能的箭头情况并在比赛中分别调用，尽管我们及时发现并修补了机器人行动程序上的缺陷，但场地摩擦力不均带来的行动困难、机器人腿部舵机问题引起的不可控因素等场外条件将比赛算法不成熟引起的问题放大到了极致。因此很遗憾没有取得一个令人满意的成绩。</p>
+<p>因为键盘失灵，所以后续的所有操作只能通过鼠标完成。并且因为原因未知，不排除后面继续复发的过程，所以作此记录。</p>
+<ol>
+<li>检查设备管理器，可以通过右键windows图标找到。</li>
+</ol>
+<p><img src="/./images/%E7%AC%94%E8%AE%B0%E6%9C%AC%E9%94%AE%E7%9B%98%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%8D%9F%E5%9D%8F%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF/1714132399444.png" alt="1714132399444">2</p>
+<ol start="2">
+<li>通过 <code>键盘-&gt;设备-&gt;属性</code>查看具体的报错信息，当时我得到的信息是 <code>由于其配置信息(注册表中的)不完整或已损坏，Windows 无法启动这个硬件设备。 (代码 19)</code></li>
+<li>上网搜索得知故障发生在键盘对应的注册表中。于是前往注册表，Windows自带的索引直接搜索 <code>注册表</code>即可，如果没有制作索引可以用鼠标复制之前报错信息里的注册表得到registry，再通过 <code>运行</code>即可。</li>
+<li>然后前往 <code>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Class\</code>路径，在这个路径下基本都是代表着电脑里的各种设备，<code>&#123;4d36e96b-e325-11ce-bfc1-08002be10318&#125;</code>代表着键盘。经过对比网上的经验帖，发现 <code>UpperFilters</code>文件丢失。于是新建一个值补上。数值名称 <code>UpperFilters</code>，数值数据是 <code>kbdclass</code>。</li>
+<li>后在设备管理器上卸载所有发生错误的键盘设备，重启，问题<del>解决</del> 解决个p。</li>
+<li>回头复盘寻找思路，发现在一个帖子中有人询问 <code>UpperFilters</code>里的 <code>kbdclass</code>和 <code>vmkbd3d</code>值的问题，这才反应过来 <code>UpperFilters</code>这个值应该是 <code>多字符串值</code>，猜测和Vmware的虚拟键盘相关，参考的经验贴可能没有虚拟机环境所以给的是 <code> 字符串值</code>，于是重复第4步，并将新建值修改为  <code>多字符串值</code>后问题解决。</li>
+</ol>
 ]]></content>
       <categories>
         <category>杂项</category>
       </categories>
       <tags>
-        <tag>复盘</tag>
+        <tag>自学</tag>
       </tags>
   </entry>
 </search>
