@@ -1,36 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>CTF自学问题收集</title>
-    <url>/2023/09/06/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/</url>
-    <content><![CDATA[<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/weibo.png"></p>
-<p><strong>“先动手搞起来”</strong></p>
-<p>受限于CTF的分支较多，知识点也比较杂，记录一下自己不熟悉的知识点。</p>
+    <title>buuctf刷题记录</title>
+    <url>/2024/04/30/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<p>未来怎么又可期了</p>
 <span id="more"></span>
 
-<p>robots协议：网络爬虫排除标准，它是搜索引擎中访问网站的时候要查看的第一个文件。robots.txt文件告诉蜘蛛程序在服务器上什么文件是可以被查看的。 当一个搜索蜘蛛访问一个站点时，它会首先检查该站点根目录下是否存在robots.txt。基于人文道德规范建立的标准，不具备强制性（有点类似于readme.md？）<img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/robot.png"></p>
-<p>.php 备份文件后缀：通常备份文件的后缀名为.bak 所以 index. php 的备份文件名为 index.php.bak。</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/php.png"></p>
-<p>cookie：是web服务器为了识别用户身份而设置的一小段文本文件（一小段数据） 可通过Burpsuite爬取网页中的数据包。<a href="https://www.jianshu.com/p/6fc9cea6daa2">深入理解Cookie - 简书 (jianshu.com)</a></p>
-<p>Burp爆破模块使用界面：</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/burp.png"></p>
-<p>base64编码：特征是尾部可能会有等于号。</p>
-<p>gif隐写：可以使用101editor打开gif图片 若gif图片无法在图片管理器中打开考虑图片是否文档开头中缺少GIF8 <code>[GIF文件头：47 49 46 38 39 61]</code></p>
-<p>HTTP请求方法：</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/http.png"></p>
-<p>php:&#x2F;&#x2F;filter理解：其是php协议中的一个独有的协议，可以作为一个中间流去处理其他流，从而实现任意文件的读取。大部分情况下使用resourse以筛选过滤指定的数据流。<br>例如：某个网站的规则被制定为：如果直接用get方法请求flag <code>http://IP:PORT/?p=</code>会直接被拦截，这时候就可以考虑使用 <code>http://IP:PORT/?p=php://filter/convert.base64-encode/resource=flag</code>这样就会绕过拦截规则，以base64的格式输出flag中的文件。</p>
-<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/1702452297071.png" alt="1702452297071"></p>
-<p>对称加密：对称加密算法是指在加密和解密时使用的是<strong>同一个密钥</strong>。 这种方法速度快，但需要双方事先协商好密钥，并保证密钥不被泄露。它的优点是速度快，效率高，适合加密大量数据。它的缺点是密钥的分发和管理比较困难，如果密钥泄露，加密的数据就会被破解（DES、AES）</p>
-<p>非对称加密：非对称加密使用一对密钥来加密和解密数据，其中一个密钥是公开的，叫做公钥，另一个密钥是私密的，叫做私钥。如果使用 <strong>公钥</strong> 对数据  <strong>进行加密</strong> ，只有用对应的 <strong>私钥</strong> 才能  <strong>进行解密</strong> 。它的优点是密钥的分发和管理比较容易，只需要公开公钥，私钥不需要共享。它的缺点是速度慢，效率低，适合加密少量数据（RSA、DSA）</p>
-<p>简单来说就是，对称加密是同钥加密，同钥解密。非对称加密是公钥加密，私钥解密。</p>
 <details>
-<summary>对称加密与非对称加密的代码实现</summary>
+<summary>Web</summary>
 
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 基本思路是调用pycryptodome(对称加密)和cryptography(非对称加密)实现</span></span><br><span class="line"><span class="comment"># 导入所需的库</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives.ciphers <span class="keyword">import</span> Cipher, algorithms, modes</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives.asymmetric <span class="keyword">import</span> rsa, padding</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives <span class="keyword">import</span> hashes, serialization</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.backends <span class="keyword">import</span> default_backend</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成一个随机的对称密钥</span></span><br><span class="line">symmetric_key = os.urandom(<span class="number">32</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个AES加密器</span></span><br><span class="line">aes_cipher = Cipher(algorithms.AES(symmetric_key), modes.CBC(os.urandom(<span class="number">16</span>)), backend=default_backend())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用对称密钥加密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">symmetric_encrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据转换为字节串</span></span><br><span class="line">    data = data.encode()</span><br><span class="line">    <span class="comment"># 创建一个加密器</span></span><br><span class="line">    encryptor = aes_cipher.encryptor()</span><br><span class="line">    <span class="comment"># 对数据进行填充，使其长度为16的倍数</span></span><br><span class="line">    padding_length = <span class="number">16</span> - <span class="built_in">len</span>(data) % <span class="number">16</span></span><br><span class="line">    data = <span class="built_in">bytes</span>([padding_length]) * padding_length + data</span><br><span class="line">    <span class="comment"># 返回加密后的数据，使用base64编码方便显示</span></span><br><span class="line">    <span class="keyword">return</span> base64.b64encode(encryptor.update(data) + encryptor.finalize())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用对称密钥解密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">symmetric_decrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据解码为字节串</span></span><br><span class="line">    data = base64.b64decode(data)</span><br><span class="line">    <span class="comment"># 创建一个解密器</span></span><br><span class="line">    decryptor = aes_cipher.decryptor()</span><br><span class="line">    <span class="comment"># 返回解密后的数据，去掉填充的部分</span></span><br><span class="line">    data = decryptor.update(data) + decryptor.finalize()</span><br><span class="line">    padding_length = data[-<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> data[:-padding_length].decode()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成一对非对称密钥</span></span><br><span class="line">private_key = rsa.generate_private_key(public_exponent=<span class="number">65537</span>, key_size=<span class="number">2048</span>, backend=default_backend())</span><br><span class="line">public_key = private_key.public_key()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用公钥加密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">asymmetric_encrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据转换为字节串</span></span><br><span class="line">    data = data.encode()</span><br><span class="line">    <span class="comment"># 使用公钥和OAEP填充方式进行加密</span></span><br><span class="line">    <span class="keyword">return</span> base64.b64encode(public_key.encrypt(data, padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=<span class="literal">None</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用私钥解密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">asymmetric_decrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据解码为字节串</span></span><br><span class="line">    data = base64.b64decode(data)</span><br><span class="line">    <span class="comment"># 使用私钥和OAEP填充方式进行解密</span></span><br><span class="line">    <span class="keyword">return</span> public_key.decrypt(data, padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=<span class="literal">None</span>)).decode()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试一下</span></span><br><span class="line">data = <span class="string">&quot;Hello, world!&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;原始数据：&quot;</span>, data)</span><br><span class="line">symmetric_data = symmetric_encrypt(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;对称加密后的数据：&quot;</span>, symmetric_data)</span><br><span class="line">asymmetric_data = asymmetric_encrypt(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;非对称加密后的数据：&quot;</span>, asymmetric_data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;对称解密后的数据：&quot;</span>, symmetric_decrypt(symmetric_data))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;非对称解密后的数据：&quot;</span>, asymmetric_decrypt(asymmetric_data))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<details>
+<summary>[极客大挑战 2019]EasySQL</summary>
+
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714459494749.png" alt="1714459494749"></p>
+<p>数据交互点明显在页面上。验证SQL语句的闭合方式。</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714460320935.png" alt="1714460320935"></p>
+<p>判断出来为单引号。</p>
+<p>尝试使用万能密码。</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714460683481.png" alt="1714460683481"></p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714460693162.png" alt="1714460693162"></p>
+<p>成功 <code>flag&#123;6ff105e8-e7ac-4cd0-9f14-14d8f41db6db&#125;</code></p>
+</details>
+
+<details>
+<summary>[极客大挑战 2019]Havefun</summary>
+
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714461027021.png" alt="1714461027021"><br>页面上没有什么有用的信息。<br>查看一下前端：<br><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714461210520.png" alt="1714461210520"></p>
+<p>尝试传入cat&#x3D;dog</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714461280981.png" alt="1714461280981"></p>
+<p>成功 <code>flag&#123;9b385537-e339-4d47-ac68-10fcc3c9217c&#125;</code></p>
+</details>
+
+<details>
+<summary>[HCTF 2018]WarmUp</summary>
+
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714462460575.png" alt="1714462460575"><br>页面同样是没有什么有用的信息。</p>
+<p>查看前端源码：</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714462534879.png" alt="1714462534879"></p>
+<p>里面提到了source.php，那就前往source.php看看</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714462574772.png" alt="1714462574772"></p>
+<p>出现了php源码，里面提到了还有一个hint.php，前往hint.php</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714462636641.png" alt="1714462636641"></p>
+<p>提示flag的文件名是ffffllllaaaagggg。</p>
+<p>回头查看source.php的信息</p>
+<ul>
+<li><code>$whitelist = [&quot;source&quot;=&gt;&quot;source.php&quot;,&quot;hint&quot;=&gt;&quot;hint.php&quot;];</code>: 这是一个白名单数组，只有数组中的文件名才被允许访问。</li>
+<li><code>if (! isset($page) || !is_string($page))</code>: 检查 <code>$page</code> 变量是否已设置，并且确保它是一个字符串。</li>
+<li><code>if (in_array($page, $whitelist))</code>: 检查 <code>$page</code> 是否直接在白名单数组中。</li>
+<li><code>$_page = mb_substr($page, 0, mb_strpos($page . &#39;?&#39;, &#39;?&#39;))</code>: 这行代码试图去除查询字符串之后的部分，只留下文件名。</li>
+<li><code>if (in_array($_page, $whitelist))</code>: 再次检查处理后的文件名是否在白名单中。</li>
+<li><code>$_page = urldecode($page)</code>: 对 <code>$page</code> 进行 URL 解码，以防有编码过的字符。</li>
+<li><code>echo &quot;you can&#39;t see it&quot;</code>: 如果文件不在白名单中，输出这个信息。</li>
+<li><code>include $_REQUEST[&#39;file&#39;]</code>: 如果文件检查通过，包含并执行该文件。</li>
+</ul>
+<p>一共进行了四次过滤，因此构建 <code>http://d4284bb3-a9a4-46be-9050-f86dd118bdb6.node5.buuoj.cn:81/source.php?file=hint.php?/../../../../ffffllllaaaagggg</code></p>
+<p>成功。<code>flag&#123;8a16c171-c3a7-4dc0-8e6f-9d1892970174&#125;</code></p>
+</details>
+<details>
+<summary>[GXYCTF2019]Ping Ping Ping</summary>
+
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715129842819.png" alt="1715129842819"><br>看起来应该是一个指令注入<br>界面提示传入ip，先尝试正常使用<br><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715129922073.png" alt="1715129922073"><br>正常<br>指令注入可以使用 <code>&amp;&amp; || ；</code>间隔开。<code>&amp;&amp;</code>的含义是：如果前面的指令执行成功则执行后面的指令：<code>a&amp;&amp;b  a执行成功后则执行b</code>。<code>||</code>的含义是：如果前面的指令执行失败后则执行后者：<code>a||b a执行失败后才执行b</code>。<code>；</code>的含义是：前后指令按顺序执行：<code>a；b  先执行a再执行b</code>。<br>基于以上信息，构建 <code>?ip=127.0.0.1;whoami</code><br><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715132909524.png" alt="1715132909524"></p>
+<p>注入成功。</p>
+<p>构建语句为 <code>/?ip=127.0.0.1;ls</code>查看当前目录下的文件。</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715133089504.png" alt="1715133089504"></p>
+<p>发现 <code>flag.php</code></p>
+<p>构建语句 <code>/?ip=127.0.0.1;cat%20flag.php</code></p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715133166932.png" alt="1715133166932"></p>
+<p><del>不给就不给怎么还骂人</del></p>
+<p><code>%20 </code>被过滤，用 <code>$IFS</code>代替空格，构建 <code>/?ip=127.0.0.1;cat$IFS$1flag.php</code>。里面$1代表传入的第一个参数，也就是 <code>flag.php</code>。</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715133754043.png" alt="1715133754043"></p>
+<p><del>怎么又骂人</del></p>
+<p>flag也被过滤。尝试了多种间隔符都没有解决。</p>
+<p>转换思路，看看 <code>index.php</code>里面有什么东西。构建 <code>/?ip=127.0.0.1;cat$IFS$1index.php</code></p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715133815963.png" alt="1715133815963"></p>
+<p>里面提示了关于过滤的规则。</p>
+<ul>
+<li>如果 <code>$ip</code> 中包含空格，输出 “fxck your space!” 并终止执行。</li>
+<li>如果 <code>$ip</code> 中包含字符串 “bash”，输出 “fxck your bash!” 并终止执行。</li>
+<li>如果 <code>$ip</code> 中包含字符串 “flag”（不区分大小写），输出 “fxck your flag!” 并终止执行。</li>
+</ul>
+<p>那么尝试拆解一下flag <code>/?ip=127.0.0.1;b=lag;cat$IFS$1f$b.php</code></p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715134729614.png" alt="1715134729614"></p>
+<p>没有回显，但是没有报错 <del>开始怀疑人生</del></p>
+<p>然后不知道经过多长时间才发现flag在F12里</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715134852929.png" alt="1715134852929"></p>
+<p>成功。<code>flag&#123;38db704f-52e3-4eb2-b399-78fd63d72d8c&#125;</code></p>
+</details>
+
+<details>
+<summary>[ACTF2020 新生赛]Exec</summary>
+
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715235491175.png" alt="1715235491175"></p>
+<p>一眼指令注入。</p>
+<p>先尝试正常操作。</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715235556702.png" alt="1715235556702"></p>
+<p>没什么问题，开始加引号分离指令。</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715235600533.png" alt="1715235600533"></p>
+<p>尝试查看当前目录下的文件。</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715235655015.png" alt="1715235655015"></p>
+<p>发现只有index.php</p>
+<p>尝试cat一下index.php里的内容</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237202067.png" alt="1715237202067"></p>
+<p>应该就是当前的页面</p>
+<p>用 <code>ls -a</code>查看有没有隐藏的文件</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237274905.png" alt="1715237274905"></p>
+<p>没有，于是考虑用 <code>ls ../</code>查看上层文件</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237442872.png" alt="1715237442872"></p>
+<p>再往上</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237484105.png" alt="1715237484105"></p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237508985.png" alt="1715237508985"></p>
+<p>发现了flag</p>
+<p>再往上返回的结果就完全一样了，说明flag所在的位置在最顶层目录中，于是构建 <code>127.0.0.1;cat /flag</code></p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237666632.png" alt="1715237666632"></p>
+<p>成功。<code>flag&#123;63e5105c-9bcf-4910-96d0-559eb4e18961&#125;</code></p>
+</details>
+
+<details>
+<summary>[NewStarCTF 2023 公开赛道]逃</summary>
+
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715246890404.png" alt="1715246890404"></p>
+<p>从 <code>unserialize</code>能看出来是典型的反序列化漏洞。</p>
+<p>先把源码搞下来，随便传入一个字符 <code>zz</code>，并把它序列化。</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715247049680.png" alt="1715247049680"></p>
+<p>得到序列化后的结果</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715247299888.png" alt="1715247299888"></p>
+<p>其中数字代表长度，引号内代表具体的值。在这个代码中可以看出来里面设计了一个waf，它把输入的 <code>bad</code>全部换成 <code>good</code>，那就存在了长度和值的差异，从而造成逃逸。</p>
+<p>即每输入一个 <code>bad</code>都会被替换成 <code>good</code>，也就代表着会往后推移一个字符。在不考虑whoami的情况下， <code>$key</code>后面有19个字符，也就是 <code>$key</code>里需要传入19个 <code>bad</code>就可以完成逃逸。</p>
+<p>后面再把whoami换成希望执行的指令，前面的数字转化成对应的值，并增加对应的bad即可。</p>
+<p>于是构建<br><code>/?key=badbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbad%22;s:3:%22cmd%22;s:5:%22ls%20-a%22;&#125;)</code><br>以查看当前目录下的所有文件。</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715247815591.png" alt="1715247815591"></p>
+<p>只有 <code>index.php</code>，再往上查看<br><code>/?key=badbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbad&quot;;s:3:&quot;cmd&quot;;s:6:&quot;ls%20../&quot;;&#125;</code></p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715247884552.png" alt="1715247884552"></p>
+<p>再往上查看<br> <code>/?key=badbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbad&quot;;s:3:&quot;cmd&quot;;s:9:&quot;ls%20../../&quot;;&#125;</code></p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715247918062.png" alt="1715247918062"></p>
+<p>这里需要比上个命令多4个bad，因为ls命令长度超过了10，变成了两位数。<br><code>/?key=badbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbad&quot;;s:3:&quot;cmd&quot;;s:12:&quot;ls%20../../../&quot;;&#125;</code></p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715248005858.png" alt="1715248005858"></p>
+<p>发现了flag。构建<br><code>/?key=badbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbad&quot;;s:3:&quot;cmd&quot;;s:9:&quot;cat /flag&quot;;&#125;</code></p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715248162325.png" alt="1715248162325"></p>
+<p>成功。<code>flag&#123;1bf358c1-faef-4ecb-ba6a-7db4e1f2a434&#125;</code></p>
+</details>
 
 </details>
 
-<p>哈希算法：哈希算法是一种单向算法，可以对任意长度的数据生成固定长度的唯一值，称为哈希值或摘要。 哈希算法不能逆向还原原始数据，只能用于验证数据的完整性和一致性。常见的哈希算法有 MD5、SHA-1、SHA-256 等。代码实现较为简单，导入hashlib，再创建一个hash对象即可。</p>
+<details>
+<summary>Misc</summary>
+
+<details>
+<summary>[NewStarCTF 公开赛赛道]Whats HTTP</summary>
+
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715137041959.png" alt="1715137041959"></p>
+<p>过滤出http报文。</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715137295220.png" alt="1715137295220"></p>
+<p>因为如果回执报文是404的话，报文长度一定都是一样的，所以把过滤后的报文按顺序排列，着重查看状态码为200的报文。或者直接筛选出状态码为报文 <code>http.response.code == 200</code></p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715137533601.png" alt="1715137533601"><br>发现了一个长度异常的报文，经过查看请求报文发现是get了sssssercet，看起来是有用的信息</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715137597234.png" alt="1715137597234"></p>
+<p>提取出回执的data <code>4e6a5932597a59784e6a6333596a4d304e6a597a4d7a4d7a4d7a597a4e444d354e6a517a4d444d7a4d7a41324d7a4d324d7a637a4e7a4d344d7a517a4d6a4d324d7a6b7a4e7a4d784e6a497a4e544d304e6a51324e444d334d7a49324e54597a4e6a55335a413d3d</code></p>
+<p>一眼hex。处理后得到<br><code>NjY2YzYxNjc3YjM0NjYzMzMzMzYzNDM5NjQzMDMzMzA2MzM2MzczNzM4MzQzMjM2MzkzNzMxNjIzNTM0NjQ2NDM3MzI2NTYzNjU3ZA==</code></p>
+<p>一眼base64。处理后得到<br><code>666c61677b34663333363439643033306336373738343236393731623534646437326563657d</code></p>
+<p>又是hex。<br><code>flag&#123;4f33649d030c6778426971b54dd72ece&#125;</code></p>
+<p>完成。<br><code>flag&#123;4f33649d030c6778426971b54dd72ece&#125;</code></p>
+</details>
+
+<details>
+<summary>[NewStarCTF 2023 公开赛道]流量！鲨鱼！</summary>
+
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715138777415.png" alt="1715138777415"><br>筛选出http报文<br><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715138836304.png" alt="1715138836304"></p>
+<p>发现了一个奇怪的报文: <code>Wm14aFozdFhjbWt6TldnMGNtdGZNWE5mZFRVelpuVnNYMkkzTW1FMk1EazFNemRsTm4wSwo=</code></p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715138858169.png" alt="1715138858169"></p>
+<p>查看一下对应的请求报文</p>
+<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715138901713.png" alt="1715138901713"></p>
+<p>请求报文是在控制台注入了linux命令，是用base64编码以base64的编码格式输出ffffllllllll11111144444GGGGGG里的内容。实质上也就是对ffffllllllll11111144444GGGGGG的内容作两次base64加密。</p>
+<p>完成。<code>flag&#123;Wri35h4rk_1s_u53ful_b72a609537e6&#125;</code></p>
+</details>
+
+<details>
+<summary>[NewStarCTF 2023 公开赛道]游戏高手</summary>
+</details>
+
+
+</details>
 ]]></content>
       <categories>
         <category>CTF学习</category>
@@ -238,182 +386,65 @@
       </tags>
   </entry>
   <entry>
-    <title>buuctf刷题记录</title>
-    <url>/2024/04/30/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<p>未来怎么又可期了</p>
+    <title>CTF自学问题收集</title>
+    <url>/2023/09/06/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/</url>
+    <content><![CDATA[<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/weibo.png"></p>
+<p><strong>“先动手搞起来”</strong></p>
+<p>受限于CTF的分支较多，知识点也比较杂，记录一下自己不熟悉的知识点。</p>
 <span id="more"></span>
 
+<p>robots协议：网络爬虫排除标准，它是搜索引擎中访问网站的时候要查看的第一个文件。robots.txt文件告诉蜘蛛程序在服务器上什么文件是可以被查看的。 当一个搜索蜘蛛访问一个站点时，它会首先检查该站点根目录下是否存在robots.txt。基于人文道德规范建立的标准，不具备强制性（有点类似于readme.md？）<img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/robot.png"></p>
+<p>.php 备份文件后缀：通常备份文件的后缀名为.bak 所以 index. php 的备份文件名为 index.php.bak。</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/php.png"></p>
+<p>cookie：是web服务器为了识别用户身份而设置的一小段文本文件（一小段数据） 可通过Burpsuite爬取网页中的数据包。<a href="https://www.jianshu.com/p/6fc9cea6daa2">深入理解Cookie - 简书 (jianshu.com)</a></p>
+<p>Burp爆破模块使用界面：</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/burp.png"></p>
+<p>base64编码：特征是尾部可能会有等于号。</p>
+<p>gif隐写：可以使用101editor打开gif图片 若gif图片无法在图片管理器中打开考虑图片是否文档开头中缺少GIF8 <code>[GIF文件头：47 49 46 38 39 61]</code></p>
+<p>HTTP请求方法：</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/http.png"></p>
+<p>php:&#x2F;&#x2F;filter理解：其是php协议中的一个独有的协议，可以作为一个中间流去处理其他流，从而实现任意文件的读取。大部分情况下使用resourse以筛选过滤指定的数据流。<br>例如：某个网站的规则被制定为：如果直接用get方法请求flag <code>http://IP:PORT/?p=</code>会直接被拦截，这时候就可以考虑使用 <code>http://IP:PORT/?p=php://filter/convert.base64-encode/resource=flag</code>这样就会绕过拦截规则，以base64的格式输出flag中的文件。</p>
+<p><img src="/./images/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/1702452297071.png" alt="1702452297071"></p>
+<p>对称加密：对称加密算法是指在加密和解密时使用的是<strong>同一个密钥</strong>。 这种方法速度快，但需要双方事先协商好密钥，并保证密钥不被泄露。它的优点是速度快，效率高，适合加密大量数据。它的缺点是密钥的分发和管理比较困难，如果密钥泄露，加密的数据就会被破解（DES、AES）</p>
+<p>非对称加密：非对称加密使用一对密钥来加密和解密数据，其中一个密钥是公开的，叫做公钥，另一个密钥是私密的，叫做私钥。如果使用 <strong>公钥</strong> 对数据  <strong>进行加密</strong> ，只有用对应的 <strong>私钥</strong> 才能  <strong>进行解密</strong> 。它的优点是密钥的分发和管理比较容易，只需要公开公钥，私钥不需要共享。它的缺点是速度慢，效率低，适合加密少量数据（RSA、DSA）</p>
+<p>简单来说就是，对称加密是同钥加密，同钥解密。非对称加密是公钥加密，私钥解密。</p>
 <details>
-<summary>Web</summary>
+<summary>对称加密与非对称加密的代码实现</summary>
 
-<details>
-<summary>[极客大挑战 2019]EasySQL</summary>
-
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714459494749.png" alt="1714459494749"></p>
-<p>数据交互点明显在页面上。验证SQL语句的闭合方式。</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714460320935.png" alt="1714460320935"></p>
-<p>判断出来为单引号。</p>
-<p>尝试使用万能密码。</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714460683481.png" alt="1714460683481"></p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714460693162.png" alt="1714460693162"></p>
-<p>成功 <code>flag&#123;6ff105e8-e7ac-4cd0-9f14-14d8f41db6db&#125;</code></p>
-</details>
-
-<details>
-<summary>[极客大挑战 2019]Havefun</summary>
-
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714461027021.png" alt="1714461027021"><br>页面上没有什么有用的信息。<br>查看一下前端：<br><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714461210520.png" alt="1714461210520"></p>
-<p>尝试传入cat&#x3D;dog</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714461280981.png" alt="1714461280981"></p>
-<p>成功 <code>flag&#123;9b385537-e339-4d47-ac68-10fcc3c9217c&#125;</code></p>
-</details>
-
-<details>
-<summary>[HCTF 2018]WarmUp</summary>
-
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714462460575.png" alt="1714462460575"><br>页面同样是没有什么有用的信息。</p>
-<p>查看前端源码：</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714462534879.png" alt="1714462534879"></p>
-<p>里面提到了source.php，那就前往source.php看看</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714462574772.png" alt="1714462574772"></p>
-<p>出现了php源码，里面提到了还有一个hint.php，前往hint.php</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1714462636641.png" alt="1714462636641"></p>
-<p>提示flag的文件名是ffffllllaaaagggg。</p>
-<p>回头查看source.php的信息</p>
-<ul>
-<li><code>$whitelist = [&quot;source&quot;=&gt;&quot;source.php&quot;,&quot;hint&quot;=&gt;&quot;hint.php&quot;];</code>: 这是一个白名单数组，只有数组中的文件名才被允许访问。</li>
-<li><code>if (! isset($page) || !is_string($page))</code>: 检查 <code>$page</code> 变量是否已设置，并且确保它是一个字符串。</li>
-<li><code>if (in_array($page, $whitelist))</code>: 检查 <code>$page</code> 是否直接在白名单数组中。</li>
-<li><code>$_page = mb_substr($page, 0, mb_strpos($page . &#39;?&#39;, &#39;?&#39;))</code>: 这行代码试图去除查询字符串之后的部分，只留下文件名。</li>
-<li><code>if (in_array($_page, $whitelist))</code>: 再次检查处理后的文件名是否在白名单中。</li>
-<li><code>$_page = urldecode($page)</code>: 对 <code>$page</code> 进行 URL 解码，以防有编码过的字符。</li>
-<li><code>echo &quot;you can&#39;t see it&quot;</code>: 如果文件不在白名单中，输出这个信息。</li>
-<li><code>include $_REQUEST[&#39;file&#39;]</code>: 如果文件检查通过，包含并执行该文件。</li>
-</ul>
-<p>一共进行了四次过滤，因此构建 <code>http://d4284bb3-a9a4-46be-9050-f86dd118bdb6.node5.buuoj.cn:81/source.php?file=hint.php?/../../../../ffffllllaaaagggg</code></p>
-<p>成功。<code>flag&#123;8a16c171-c3a7-4dc0-8e6f-9d1892970174&#125;</code></p>
-</details>
-<details>
-<summary>[GXYCTF2019]Ping Ping Ping</summary>
-
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715129842819.png" alt="1715129842819"><br>看起来应该是一个指令注入<br>界面提示传入ip，先尝试正常使用<br><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715129922073.png" alt="1715129922073"><br>正常<br>指令注入可以使用 <code>&amp;&amp; || ；</code>间隔开。<code>&amp;&amp;</code>的含义是：如果前面的指令执行成功则执行后面的指令：<code>a&amp;&amp;b  a执行成功后则执行b</code>。<code>||</code>的含义是：如果前面的指令执行失败后则执行后者：<code>a||b a执行失败后才执行b</code>。<code>；</code>的含义是：前后指令按顺序执行：<code>a；b  先执行a再执行b</code>。<br>基于以上信息，构建 <code>?ip=127.0.0.1;whoami</code><br><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715132909524.png" alt="1715132909524"></p>
-<p>注入成功。</p>
-<p>构建语句为 <code>/?ip=127.0.0.1;ls</code>查看当前目录下的文件。</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715133089504.png" alt="1715133089504"></p>
-<p>发现 <code>flag.php</code></p>
-<p>构建语句 <code>/?ip=127.0.0.1;cat%20flag.php</code></p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715133166932.png" alt="1715133166932"></p>
-<p><del>不给就不给怎么还骂人</del></p>
-<p><code>%20 </code>被过滤，用 <code>$IFS</code>代替空格，构建 <code>/?ip=127.0.0.1;cat$IFS$1flag.php</code>。里面$1代表传入的第一个参数，也就是 <code>flag.php</code>。</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715133754043.png" alt="1715133754043"></p>
-<p><del>怎么又骂人</del></p>
-<p>flag也被过滤。尝试了多种间隔符都没有解决。</p>
-<p>转换思路，看看 <code>index.php</code>里面有什么东西。构建 <code>/?ip=127.0.0.1;cat$IFS$1index.php</code></p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715133815963.png" alt="1715133815963"></p>
-<p>里面提示了关于过滤的规则。</p>
-<ul>
-<li>如果 <code>$ip</code> 中包含空格，输出 “fxck your space!” 并终止执行。</li>
-<li>如果 <code>$ip</code> 中包含字符串 “bash”，输出 “fxck your bash!” 并终止执行。</li>
-<li>如果 <code>$ip</code> 中包含字符串 “flag”（不区分大小写），输出 “fxck your flag!” 并终止执行。</li>
-</ul>
-<p>那么尝试拆解一下flag <code>/?ip=127.0.0.1;b=lag;cat$IFS$1f$b.php</code></p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715134729614.png" alt="1715134729614"></p>
-<p>没有回显，但是没有报错 <del>开始怀疑人生</del></p>
-<p>然后不知道经过多长时间才发现flag在F12里</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715134852929.png" alt="1715134852929"></p>
-<p>成功。<code>flag&#123;38db704f-52e3-4eb2-b399-78fd63d72d8c&#125;</code></p>
-</details>
-
-<details>
-<summary>[ACTF2020 新生赛]Exec</summary>
-
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715235491175.png" alt="1715235491175"></p>
-<p>一眼指令注入。</p>
-<p>先尝试正常操作。</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715235556702.png" alt="1715235556702"></p>
-<p>没什么问题，开始加引号分离指令。</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715235600533.png" alt="1715235600533"></p>
-<p>尝试查看当前目录下的文件。</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715235655015.png" alt="1715235655015"></p>
-<p>发现只有index.php</p>
-<p>尝试cat一下index.php里的内容</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237202067.png" alt="1715237202067"></p>
-<p>应该就是当前的页面</p>
-<p>用 <code>ls -a</code>查看有没有隐藏的文件</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237274905.png" alt="1715237274905"></p>
-<p>没有，于是考虑用 <code>ls ../</code>查看上层文件</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237442872.png" alt="1715237442872"></p>
-<p>再往上</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237484105.png" alt="1715237484105"></p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237508985.png" alt="1715237508985"></p>
-<p>发现了flag</p>
-<p>再往上返回的结果就完全一样了，说明flag所在的位置在最顶层目录中，于是构建 <code>127.0.0.1;cat /flag</code></p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715237666632.png" alt="1715237666632"></p>
-<p>成功。<code>flag&#123;63e5105c-9bcf-4910-96d0-559eb4e18961&#125;</code></p>
-</details>
-
-<details>
-<summary>[NewStarCTF 2023 公开赛道]逃</summary>
-
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715246890404.png" alt="1715246890404"></p>
-<p>从 <code>unserialize</code>能看出来是典型的反序列化漏洞。</p>
-<p>先把源码搞下来，随便传入一个字符 <code>zz</code>，并把它序列化。</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715247049680.png" alt="1715247049680"></p>
-<p>得到序列化后的结果</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715247299888.png" alt="1715247299888"></p>
-<p>其中数字代表长度，引号内代表具体的值。在这个代码中可以看出来里面设计了一个waf，它把输入的 <code>bad</code>全部换成 <code>good</code>，那就存在了长度和值的差异，从而造成逃逸。</p>
-<p>即每输入一个 <code>bad</code>都会被替换成 <code>good</code>，也就代表着会往后推移一个字符。在不考虑whoami的情况下， <code>$key</code>后面有19个字符，也就是 <code>$key</code>里需要传入19个 <code>bad</code>就可以完成逃逸。</p>
-<p>后面再把whoami换成希望执行的指令，前面的数字转化成对应的值，并增加对应的bad即可。</p>
-<p>于是构建<br><code>/?key=badbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbad%22;s:3:%22cmd%22;s:5:%22ls%20-a%22;&#125;)</code><br>以查看当前目录下的所有文件。</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715247815591.png" alt="1715247815591"></p>
-<p>只有 <code>index.php</code>，再往上查看<br><code>/?key=badbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbad&quot;;s:3:&quot;cmd&quot;;s:6:&quot;ls%20../&quot;;&#125;</code></p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715247884552.png" alt="1715247884552"></p>
-<p>再往上查看<br> <code>/?key=badbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbad&quot;;s:3:&quot;cmd&quot;;s:9:&quot;ls%20../../&quot;;&#125;</code></p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715247918062.png" alt="1715247918062"></p>
-<p>这里需要比上个命令多4个bad，因为ls命令长度超过了10，变成了两位数。<br><code>/?key=badbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbad&quot;;s:3:&quot;cmd&quot;;s:12:&quot;ls%20../../../&quot;;&#125;</code></p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715248005858.png" alt="1715248005858"></p>
-<p>发现了flag。构建<br><code>/?key=badbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbadbad&quot;;s:3:&quot;cmd&quot;;s:9:&quot;cat /flag&quot;;&#125;</code></p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715248162325.png" alt="1715248162325"></p>
-<p>成功。<code>flag&#123;1bf358c1-faef-4ecb-ba6a-7db4e1f2a434&#125;</code></p>
-</details>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 基本思路是调用pycryptodome(对称加密)和cryptography(非对称加密)实现</span></span><br><span class="line"><span class="comment"># 导入所需的库</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives.ciphers <span class="keyword">import</span> Cipher, algorithms, modes</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives.asymmetric <span class="keyword">import</span> rsa, padding</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.primitives <span class="keyword">import</span> hashes, serialization</span><br><span class="line"><span class="keyword">from</span> cryptography.hazmat.backends <span class="keyword">import</span> default_backend</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成一个随机的对称密钥</span></span><br><span class="line">symmetric_key = os.urandom(<span class="number">32</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个AES加密器</span></span><br><span class="line">aes_cipher = Cipher(algorithms.AES(symmetric_key), modes.CBC(os.urandom(<span class="number">16</span>)), backend=default_backend())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用对称密钥加密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">symmetric_encrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据转换为字节串</span></span><br><span class="line">    data = data.encode()</span><br><span class="line">    <span class="comment"># 创建一个加密器</span></span><br><span class="line">    encryptor = aes_cipher.encryptor()</span><br><span class="line">    <span class="comment"># 对数据进行填充，使其长度为16的倍数</span></span><br><span class="line">    padding_length = <span class="number">16</span> - <span class="built_in">len</span>(data) % <span class="number">16</span></span><br><span class="line">    data = <span class="built_in">bytes</span>([padding_length]) * padding_length + data</span><br><span class="line">    <span class="comment"># 返回加密后的数据，使用base64编码方便显示</span></span><br><span class="line">    <span class="keyword">return</span> base64.b64encode(encryptor.update(data) + encryptor.finalize())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用对称密钥解密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">symmetric_decrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据解码为字节串</span></span><br><span class="line">    data = base64.b64decode(data)</span><br><span class="line">    <span class="comment"># 创建一个解密器</span></span><br><span class="line">    decryptor = aes_cipher.decryptor()</span><br><span class="line">    <span class="comment"># 返回解密后的数据，去掉填充的部分</span></span><br><span class="line">    data = decryptor.update(data) + decryptor.finalize()</span><br><span class="line">    padding_length = data[-<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> data[:-padding_length].decode()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成一对非对称密钥</span></span><br><span class="line">private_key = rsa.generate_private_key(public_exponent=<span class="number">65537</span>, key_size=<span class="number">2048</span>, backend=default_backend())</span><br><span class="line">public_key = private_key.public_key()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用公钥加密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">asymmetric_encrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据转换为字节串</span></span><br><span class="line">    data = data.encode()</span><br><span class="line">    <span class="comment"># 使用公钥和OAEP填充方式进行加密</span></span><br><span class="line">    <span class="keyword">return</span> base64.b64encode(public_key.encrypt(data, padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=<span class="literal">None</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义一个函数，用私钥解密数据</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">asymmetric_decrypt</span>(<span class="params">data</span>):</span><br><span class="line">    <span class="comment"># 将数据解码为字节串</span></span><br><span class="line">    data = base64.b64decode(data)</span><br><span class="line">    <span class="comment"># 使用私钥和OAEP填充方式进行解密</span></span><br><span class="line">    <span class="keyword">return</span> public_key.decrypt(data, padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()), algorithm=hashes.SHA256(), label=<span class="literal">None</span>)).decode()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试一下</span></span><br><span class="line">data = <span class="string">&quot;Hello, world!&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;原始数据：&quot;</span>, data)</span><br><span class="line">symmetric_data = symmetric_encrypt(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;对称加密后的数据：&quot;</span>, symmetric_data)</span><br><span class="line">asymmetric_data = asymmetric_encrypt(data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;非对称加密后的数据：&quot;</span>, asymmetric_data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;对称解密后的数据：&quot;</span>, symmetric_decrypt(symmetric_data))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;非对称解密后的数据：&quot;</span>, asymmetric_decrypt(asymmetric_data))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 </details>
 
-<details>
-<summary>Misc</summary>
-
-<details>
-<summary>[NewStarCTF 公开赛赛道]Whats HTTP</summary>
-
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715137041959.png" alt="1715137041959"></p>
-<p>过滤出http报文。</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715137295220.png" alt="1715137295220"></p>
-<p>因为如果回执报文是404的话，报文长度一定都是一样的，所以把过滤后的报文按顺序排列，着重查看状态码为200的报文。或者直接筛选出状态码为报文 <code>http.response.code == 200</code></p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715137533601.png" alt="1715137533601"><br>发现了一个长度异常的报文，经过查看请求报文发现是get了sssssercet，看起来是有用的信息</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715137597234.png" alt="1715137597234"></p>
-<p>提取出回执的data <code>4e6a5932597a59784e6a6333596a4d304e6a597a4d7a4d7a4d7a597a4e444d354e6a517a4d444d7a4d7a41324d7a4d324d7a637a4e7a4d344d7a517a4d6a4d324d7a6b7a4e7a4d784e6a497a4e544d304e6a51324e444d334d7a49324e54597a4e6a55335a413d3d</code></p>
-<p>一眼hex。-&gt;<code>NjY2YzYxNjc3YjM0NjYzMzMzMzYzNDM5NjQzMDMzMzA2MzM2MzczNzM4MzQzMjM2MzkzNzMxNjIzNTM0NjQ2NDM3MzI2NTYzNjU3ZA==</code></p>
-<p>一眼base64。-&gt;<code>666c61677b34663333363439643033306336373738343236393731623534646437326563657d</code></p>
-<p>又是hex。-&gt;<code>flag&#123;4f33649d030c6778426971b54dd72ece&#125;</code></p>
-<p>完成。<code>flag&#123;4f33649d030c6778426971b54dd72ece&#125;</code></p>
-</details>
-
-<details>
-<summary>[NewStarCTF 2023 公开赛道]流量！鲨鱼！</summary>
-
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715138777415.png" alt="1715138777415"><br>筛选出http报文<br><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715138836304.png" alt="1715138836304"></p>
-<p>发现了一个奇怪的报文: <code>Wm14aFozdFhjbWt6TldnMGNtdGZNWE5mZFRVelpuVnNYMkkzTW1FMk1EazFNemRsTm4wSwo=</code></p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715138858169.png" alt="1715138858169"></p>
-<p>查看一下对应的请求报文</p>
-<p><img src="/./images/buuctf%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/1715138901713.png" alt="1715138901713"></p>
-<p>请求报文是在控制台注入了linux命令，是用base64编码以base64的编码格式输出ffffllllllll11111144444GGGGGG里的内容。实质上也就是对ffffllllllll11111144444GGGGGG的内容作两次base64加密。</p>
-<p>完成。<code>flag&#123;Wri35h4rk_1s_u53ful_b72a609537e6&#125;</code></p>
-</details>
-
-</details>
+<p>哈希算法：哈希算法是一种单向算法，可以对任意长度的数据生成固定长度的唯一值，称为哈希值或摘要。 哈希算法不能逆向还原原始数据，只能用于验证数据的完整性和一致性。常见的哈希算法有 MD5、SHA-1、SHA-256 等。代码实现较为简单，导入hashlib，再创建一个hash对象即可。</p>
 ]]></content>
       <categories>
         <category>CTF学习</category>
+      </categories>
+      <tags>
+        <tag>自学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>笔记本键盘注册表损坏处理过程</title>
+    <url>/2024/04/26/%E7%AC%94%E8%AE%B0%E6%9C%AC%E9%94%AE%E7%9B%98%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%8D%9F%E5%9D%8F%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF/</url>
+    <content><![CDATA[<p>损坏原因暂时没有找到，暂定为机魂不悦吧</p>
+<span id="more"></span>
+
+<p>因为键盘失灵，所以后续的所有操作只能通过鼠标完成。并且因为原因未知，不排除后面继续复发的过程，所以作此记录。</p>
+<ol>
+<li>检查设备管理器，可以通过右键windows图标找到。</li>
+</ol>
+<p><img src="/./images/%E7%AC%94%E8%AE%B0%E6%9C%AC%E9%94%AE%E7%9B%98%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%8D%9F%E5%9D%8F%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF/1714132399444.png" alt="1714132399444">2</p>
+<ol start="2">
+<li>通过 <code>键盘-&gt;设备-&gt;属性</code>查看具体的报错信息，当时我得到的信息是 <code>由于其配置信息(注册表中的)不完整或已损坏，Windows 无法启动这个硬件设备。 (代码 19)</code></li>
+<li>上网搜索得知故障发生在键盘对应的注册表中。于是前往注册表，Windows自带的索引直接搜索 <code>注册表</code>即可，如果没有制作索引可以用鼠标复制之前报错信息里的注册表得到registry，再通过 <code>运行</code>即可。</li>
+<li>然后前往 <code>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Class\</code>路径，在这个路径下基本都是代表着电脑里的各种设备，<code>&#123;4d36e96b-e325-11ce-bfc1-08002be10318&#125;</code>代表着键盘。经过对比网上的经验帖，发现 <code>UpperFilters</code>文件丢失。于是新建一个值补上。数值名称 <code>UpperFilters</code>，数值数据是 <code>kbdclass</code>。</li>
+<li>后在设备管理器上卸载所有发生错误的键盘设备，重启，问题<del>解决</del> 解决个p。</li>
+<li>回头复盘寻找思路，发现在一个帖子中有人询问 <code>UpperFilters</code>里的 <code>kbdclass</code>和 <code>vmkbd3d</code>值的问题，这才反应过来 <code>UpperFilters</code>这个值应该是 <code>多字符串值</code>，猜测和Vmware的虚拟键盘相关，参考的经验贴可能没有虚拟机环境所以给的是 <code> 字符串值</code>，于是重复第4步，并将新建值修改为  <code>多字符串值</code>后问题解决。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>杂项</category>
       </categories>
       <tags>
         <tag>自学</tag>
@@ -485,32 +516,6 @@
 <p>不确定是我个人的问题，还是hexo的普遍问题，此问题曾导致：使用 <code>hexo new</code>生成页面时，默认生成的页面里categories拼写错误，需要手动修改。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714442743740.png" alt="1714442743740"><br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714442805573.png" alt="1714442805573"><br>解决方案：进入 <code>.\%BLOG_NAME%\scaffolds</code>里修改自己使用的页面默认格式。<br><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714443016916.png" alt="1714443016916"><br>如果不确定自己使用的哪个页面，前往根目录的 <code>_config.yaml</code>里的 <code>default_layout</code>列查看</p>
 <p><img src="/./images/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/1714443180903.png" alt="1714443180903"></p>
 </details>
-]]></content>
-      <categories>
-        <category>杂项</category>
-      </categories>
-      <tags>
-        <tag>自学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>笔记本键盘注册表损坏处理过程</title>
-    <url>/2024/04/26/%E7%AC%94%E8%AE%B0%E6%9C%AC%E9%94%AE%E7%9B%98%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%8D%9F%E5%9D%8F%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF/</url>
-    <content><![CDATA[<p>损坏原因暂时没有找到，暂定为机魂不悦吧</p>
-<span id="more"></span>
-
-<p>因为键盘失灵，所以后续的所有操作只能通过鼠标完成。并且因为原因未知，不排除后面继续复发的过程，所以作此记录。</p>
-<ol>
-<li>检查设备管理器，可以通过右键windows图标找到。</li>
-</ol>
-<p><img src="/./images/%E7%AC%94%E8%AE%B0%E6%9C%AC%E9%94%AE%E7%9B%98%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%8D%9F%E5%9D%8F%E5%A4%84%E7%90%86%E6%80%9D%E8%B7%AF/1714132399444.png" alt="1714132399444">2</p>
-<ol start="2">
-<li>通过 <code>键盘-&gt;设备-&gt;属性</code>查看具体的报错信息，当时我得到的信息是 <code>由于其配置信息(注册表中的)不完整或已损坏，Windows 无法启动这个硬件设备。 (代码 19)</code></li>
-<li>上网搜索得知故障发生在键盘对应的注册表中。于是前往注册表，Windows自带的索引直接搜索 <code>注册表</code>即可，如果没有制作索引可以用鼠标复制之前报错信息里的注册表得到registry，再通过 <code>运行</code>即可。</li>
-<li>然后前往 <code>HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Class\</code>路径，在这个路径下基本都是代表着电脑里的各种设备，<code>&#123;4d36e96b-e325-11ce-bfc1-08002be10318&#125;</code>代表着键盘。经过对比网上的经验帖，发现 <code>UpperFilters</code>文件丢失。于是新建一个值补上。数值名称 <code>UpperFilters</code>，数值数据是 <code>kbdclass</code>。</li>
-<li>后在设备管理器上卸载所有发生错误的键盘设备，重启，问题<del>解决</del> 解决个p。</li>
-<li>回头复盘寻找思路，发现在一个帖子中有人询问 <code>UpperFilters</code>里的 <code>kbdclass</code>和 <code>vmkbd3d</code>值的问题，这才反应过来 <code>UpperFilters</code>这个值应该是 <code>多字符串值</code>，猜测和Vmware的虚拟键盘相关，参考的经验贴可能没有虚拟机环境所以给的是 <code> 字符串值</code>，于是重复第4步，并将新建值修改为  <code>多字符串值</code>后问题解决。</li>
-</ol>
 ]]></content>
       <categories>
         <category>杂项</category>
