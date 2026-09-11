@@ -3,6 +3,7 @@ Thumbs.db
 db.json
 *.log
 *.stackdump
+.obsidian/
 node_modules/
 public/
 .deploy*/

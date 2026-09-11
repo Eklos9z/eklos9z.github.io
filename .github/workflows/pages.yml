@@ -2,11 +2,11 @@ name: Pages
 
 on:
   push:
-    branches: [source]        # 源码在 source 分支
+    branches: [main]          # 源码在 main 分支
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write             # 需要写权限，才能把产物同步到 pages-backup
   pages: write
   id-token: write
 
@@ -30,9 +30,26 @@ jobs:
       - name: Build
         run: npm run build        # 已含 --max-old-space-size=4096
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./public
+      - name: Sync build to pages-backup
+        # 纯 git 命令实现，不依赖第三方 action（避免 Node 运行时被弃用的连带风险）
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd public
+          git init -q
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "产物无变化，跳过同步"
+          else
+            git commit -q -m "Build: ${GITHUB_SHA}"
+            git push -f "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:pages-backup
+            echo "已同步到 pages-backup 分支"
+          fi
 
   deploy:
     needs: build
@@ -43,4 +60,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

@@ -100,8 +100,5 @@ ignore:
 theme: next
 
 # Deployment
-## Docs: https://hexo.io/docs/one-command-deployment
-deploy:
-  type: git
-  repo: git@github.com:Eklos9z/eklos9z.github.io.git
-  branch: main
+## 已改用 GitHub Actions 部署，见 .github/workflows/pages.yml
+## 不要在此配置 hexo-deployer-git：main 现在是源码分支，hexo deploy 会覆盖源码
