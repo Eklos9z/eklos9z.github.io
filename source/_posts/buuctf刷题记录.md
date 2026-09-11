@@ -1,7 +1,6 @@
 ---
 title: buuctf刷题记录
 date: 2024-04-30 09:13:37
-update: 2024-04-30 09:13:37
 tags: 自学
 categories: CTF学习
 ---

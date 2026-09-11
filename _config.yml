@@ -84,10 +84,11 @@ meta_generator: true
 date_format: YYYY-MM-DD
 time_format: HH:mm:ss
 ## updated_option supports 'mtime', 'date', 'empty'
-## 用 'date'：修改时间默认等于发布日，不再取文件系统时间
-## （CI 每次全新 clone，mtime 都是构建时刻，会导致所有文章修改时间天天刷新）
-## 需要单独标记某篇有更新时，在它的 front-matter 里写 updated: 即可
-updated_option: 'date'
+## 设为 'empty'：front-matter 没写 updated 的文章留空，交给 scripts/git-updated.js
+## 用该文件在 git 里的最后一次提交时间补上，逐篇独立，本地与 CI 结果一致。
+## （不能用 'mtime'：CI 全新克隆时所有文件 mtime 都是克隆时刻，会导致全站同一天）
+## 想手动指定某篇的更新时间，直接在该篇 front-matter 写 updated:（优先于脚本）
+updated_option: 'empty'
 
 # Pagination
 ## Set per_page to 0 to disable pagination

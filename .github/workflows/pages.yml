@@ -20,6 +20,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          # 必须取完整历史：文章「更新于」由 scripts/git-updated.js
+          # 读该文件的最后一次 git 提交时间得出，浅克隆会让所有文章拿到同一个日期
+          fetch-depth: 0
       - name: Setup Node
         uses: actions/setup-node@v5
         with:
