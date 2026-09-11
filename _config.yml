@@ -43,6 +43,9 @@ render_drafts: false
 post_asset_folder: false
 relative_link: false
 future: true
+## Syntax highlighter: highlight.js | prismjs | (empty to disable)
+## Hexo 7+ 用这个键选择高亮引擎，下面的 highlight/prismjs 块只作为其参数
+syntax_highlighter: highlight.js
 highlight:
   enable: true
   line_number: true
@@ -81,7 +84,10 @@ meta_generator: true
 date_format: YYYY-MM-DD
 time_format: HH:mm:ss
 ## updated_option supports 'mtime', 'date', 'empty'
-updated_option: 'mtime'
+## 用 'date'：修改时间默认等于发布日，不再取文件系统时间
+## （CI 每次全新 clone，mtime 都是构建时刻，会导致所有文章修改时间天天刷新）
+## 需要单独标记某篇有更新时，在它的 front-matter 里写 updated: 即可
+updated_option: 'date'
 
 # Pagination
 ## Set per_page to 0 to disable pagination
