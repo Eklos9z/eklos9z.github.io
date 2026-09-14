@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 8.1.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/16x16.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/16x16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eklos9z.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+  </script>
+
+  <meta name="description" content="在见到避障比赛的文件之后，对比赛算法的设计并没有我想象中那么困难：机器人直行——机器人识别到箭头——机器人向箭头指向的方向平移——机器人视野脱离箭头——机器人直行，但是直觉与经验都在告诉我这个比赛最困难的地方就是在于怎么样才能去识别到三个箭头的方向。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器人比赛避障项目赛后总结">
+<meta property="og:url" content="https://eklos9z.github.io/2023/08/15/%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%AF%94%E8%B5%9B%E9%81%BF%E9%9A%9C%E9%A1%B9%E7%9B%AE%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="Eklos&#39;s Blog">
+<meta property="og:description" content="在见到避障比赛的文件之后，对比赛算法的设计并没有我想象中那么困难：机器人直行——机器人识别到箭头——机器人向箭头指向的方向平移——机器人视野脱离箭头——机器人直行，但是直觉与经验都在告诉我这个比赛最困难的地方就是在于怎么样才能去识别到三个箭头的方向。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-15T13:12:11.000Z">
+<meta property="article:modified_time" content="2026-09-11T01:30:20.000Z">
+<meta property="article:author" content="Eklos">
+<meta property="article:tag" content="复盘">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://eklos9z.github.io/2023/08/15/%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%AF%94%E8%B5%9B%E9%81%BF%E9%9A%9C%E9%A1%B9%E7%9B%AE%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>机器人比赛避障项目赛后总结 | Eklos's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Eklos's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">明镜止水之心</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">2</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eklos9z.github.io/2023/08/15/%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%AF%94%E8%B5%9B%E9%81%BF%E9%9A%9C%E9%A1%B9%E7%9B%AE%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eklos">
+      <meta itemprop="description" content="The world around you is not what it seems.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eklos's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          机器人比赛避障项目赛后总结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-08-15 21:12:11" itemprop="dateCreated datePublished" datetime="2023-08-15T21:12:11+08:00">2023-08-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-09-11 09:30:20" itemprop="dateModified" datetime="2026-09-11T09:30:20+08:00">2026-09-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9D%82%E9%A1%B9/" itemprop="url" rel="index"><span itemprop="name">杂项</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在见到避障比赛的文件之后，对比赛算法的设计并没有我想象中那么困难：机器人直行——机器人识别到箭头——机器人向箭头指向的方向平移——机器人视野脱离箭头——机器人直行，但是直觉与经验都在告诉我这个比赛最困难的地方就是在于怎么样才能去识别到三个箭头的方向。</p>
+<span id="more"></span>
+
+<p>首先我通过阅读材料以及代码，很容易便对颜色识别代码进行了改写，通过改写ColorDetect.py中113行—133行，实现了识别到红色和蓝色向左平移，识别到黄色向右平移。如未识别到颜色则直行。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> debug:</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> __isRunning:</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> detect_color != <span class="string">&#x27;None&#x27;</span>:</span><br><span class="line"></span><br><span class="line">               AGC.runActionGroup(<span class="string">&#x27;go_forward_fast&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                action_finish = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> detect_color == <span class="string">&#x27;red&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;left_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]           </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">elif</span> detect_color == <span class="string">&#x27;yellow&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;right_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]           </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">elif</span> detect_color == <span class="string">&#x27;blue&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;left_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]           </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">0.01</span>)       </span><br><span class="line"></span><br><span class="line">                action_finish = <span class="literal">True</span>       </span><br><span class="line"></span><br><span class="line">                detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">               time.sleep(<span class="number">0.01</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">            time.sleep(<span class="number">0.01</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在实际测试中发现可能由于机器人腿部舵机或是场地摩擦力问题导致机器人并不能完全的达到平移效果，经过调整，将“平移”动作后加入一个“转体”动作即可修正平移产生的过度偏差。后续的工作便是在箭头识别设计成功之后，将颜色识别替换为箭头识别即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> detect_color == <span class="string">&#x27;red&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;left_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;turn_left_small_step&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]   </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">                            <span class="keyword">elif</span> detect_color == <span class="string">&#x27;yellow&#x27;</span>:</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;right_move&#x27;</span>)</span><br><span class="line"></span><br><span class="line">AGC.runActionGroup(<span class="string">&#x27;turn_right_small_step&#x27;</span>)</span><br><span class="line"></span><br><span class="line">                    detect_color = <span class="string">&#x27;None&#x27;</span></span><br><span class="line"></span><br><span class="line">                    draw_color = range_rgb[<span class="string">&quot;black&quot;</span>]   </span><br><span class="line"></span><br><span class="line">                    time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+
+<p>然后是对于箭头的识别的设计，我初步的思路是将标准箭头进行对半拆分，拆分成一个包含三角形的部分和只有矩形的部分，由于包含三角形的面积总是大于只有矩形的面积。因此可以把判断条件更改为“左右部分面积谁大”，即如果左半部分的面积更大则向左移动，右半部分的面积更大则向右移动。考虑到可能出现的图像处理问题，初步选择在lab空间中对图像进行处理。（下划线处为关键代码，下同）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> lab_data:</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> i != <span class="string">&#x27;black&#x27;</span> <span class="keyword">and</span> i != <span class="string">&#x27;white&#x27;</span>:</span><br><span class="line"></span><br><span class="line">                frame_mask = cv2.inRange(frame_lab,</span><br><span class="line"></span><br><span class="line">                                         (lab_data[i][<span class="string">&#x27;min&#x27;</span>][<span class="number">0</span>],</span><br><span class="line"></span><br><span class="line">                                          lab_data[i][<span class="string">&#x27;min&#x27;</span>][<span class="number">1</span>],</span><br><span class="line"></span><br><span class="line">                                          lab_data[i][<span class="string">&#x27;min&#x27;</span>][<span class="number">2</span>]),</span><br><span class="line"></span><br><span class="line">                                         (lab_data[i][<span class="string">&#x27;max&#x27;</span>][<span class="number">0</span>],</span><br><span class="line"></span><br><span class="line">                                          lab_data[i][<span class="string">&#x27;max&#x27;</span>][<span class="number">1</span>],</span><br><span class="line"></span><br><span class="line">                                          lab_data[i][<span class="string">&#x27;max&#x27;</span>][<span class="number">2</span>]))  <span class="comment">#对原图像和掩模进行位运算</span></span><br><span class="line"></span><br><span class="line">                eroded=cv2.erode(frame_mask,cv2.getStructuringElement(cv2.MORPH_RECT, (<span class="number">3</span>, <span class="number">3</span>)))  <span class="comment">#腐蚀</span></span><br><span class="line"></span><br><span class="line">dilated=cv2.dilate(eroded,cv2.getStructuringElement(cv2.MORPH_RECT, (<span class="number">3</span>, <span class="number">3</span>))) <span class="comment">#膨胀</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> debug:</span><br><span class="line"></span><br><span class="line">                cv2.imshow(i, dilated)</span><br><span class="line"></span><br><span class="line">contours=cv2.findContours(dilated,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)[-<span class="number">2</span>]  <span class="comment">#找出轮廓</span></span><br><span class="line"></span><br><span class="line">                areaMaxContour, area_max = getAreaMaxContour(contours)  <span class="comment">#找出最大轮廓</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> areaMaxContour <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> area_max &gt; max_area:<span class="comment">#找最大面积</span></span><br><span class="line"></span><br><span class="line">                        max_area = area_max</span><br><span class="line"></span><br><span class="line">                        color_area_max = i</span><br><span class="line"></span><br><span class="line">                        areaMaxContour_max = areaMaxContour</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> max_area &gt; <span class="number">200</span>:  <span class="comment"># 有找到最大面积</span></span><br><span class="line"></span><br><span class="line">            ((centerX, centerY), radius) = cv2.minEnclosingCircle(areaMaxContour_max)  <span class="comment"># 获取最小外接圆</span></span><br><span class="line"></span><br><span class="line">            centerX = <span class="built_in">int</span>(Misc.<span class="built_in">map</span>(centerX, <span class="number">0</span>, size[<span class="number">0</span>], <span class="number">0</span>, img_w))</span><br><span class="line"></span><br><span class="line">            centerY = <span class="built_in">int</span>(Misc.<span class="built_in">map</span>(centerY, <span class="number">0</span>, size[<span class="number">1</span>], <span class="number">0</span>, img_h))</span><br><span class="line"></span><br><span class="line">            radius = <span class="built_in">int</span>(Misc.<span class="built_in">map</span>(radius, <span class="number">0</span>, size[<span class="number">0</span>], <span class="number">0</span>, img_w))  </span><br><span class="line"></span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+
+<p>根据预设代码的研究发现，如果直接对图像进行分割，它可能会导致对最大图像的识别的误差，即在切割之后的图像可能不是识别到的最大的轮廓，如果在收集并处理过图像之后，对图像的腐蚀膨胀操作可能无法使图像正常识别，猜测因为图像经腐蚀膨胀后两边图像的差异化不够明显。故方案作废。</p>
+<p>而后我通过在幻尔科技的官方网站上进行查阅资料，发现在介绍中有着“标签识别”的功能。于是我预想通过重定义标签或是对预设标签进行替换，即将两边箭头的图像编辑成“标签”，通过对新“标签”的识别做出反应，从而达到方向识别的效果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">detector = apriltag.Detector(searchpath=apriltag._get_demo_searchpath())</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">apriltagDetect</span>(<span class="params">img</span>):  </span><br><span class="line"></span><br><span class="line">    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)</span><br><span class="line"></span><br><span class="line">    detections = detector.detect(gray, return_image=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(detections) != <span class="number">0</span>:</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> detection <span class="keyword">in</span> detections:              </span><br><span class="line"></span><br><span class="line">            corners = np.rint(detection.corners)  <span class="comment"># 获取四个角点</span></span><br><span class="line"></span><br><span class="line">            cv2.drawContours(img, [np.array(corners, np.<span class="built_in">int</span>)], -<span class="number">1</span>, (<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>), <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">            tag_family = <span class="built_in">str</span>(detection.tag_family, encoding=<span class="string">&#x27;utf-8&#x27;</span>)  <span class="comment"># 获取tag_family</span></span><br><span class="line"></span><br><span class="line">            tag_id = <span class="built_in">int</span>(detection.tag_id)  <span class="comment"># 获取tag_id</span></span><br><span class="line"></span><br><span class="line">            object_center_x, object_center_y = <span class="built_in">int</span>(detection.center[<span class="number">0</span>]), <span class="built_in">int</span>(detection.center[<span class="number">1</span>])  <span class="comment"># 中心点</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">tag_family, tag_id = apriltagDetect(img) <span class="comment"># apriltag检测</span></span><br><span class="line"></span><br><span class="line">   </span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> tag_id <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line"></span><br><span class="line">        cv2.putText(img, <span class="string">&quot;tag_id: &quot;</span> + <span class="built_in">str</span>(tag_id), (<span class="number">10</span>, img.shape[<span class="number">0</span>] - <span class="number">30</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.65</span>, [<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        cv2.putText(img, <span class="string">&quot;tag_family: &quot;</span> + tag_family, (<span class="number">10</span>, img.shape[<span class="number">0</span>] - <span class="number">10</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.65</span>, [<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">        cv2.putText(img, <span class="string">&quot;tag_id: None&quot;</span>, (<span class="number">10</span>, img.shape[<span class="number">0</span>] - <span class="number">30</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.65</span>, [<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        cv2.putText(img, <span class="string">&quot;tag_family: None&quot;</span>, (<span class="number">10</span>, img.shape[<span class="number">0</span>] - <span class="number">10</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.65</span>, [<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+
+<p>经过对代码和机器人内部文件的查阅，我发现机器人的标签识别功能是建立在四个脚点的定位上，不具备对箭头等不规则图形的识别功能，同时机器人内部不存在标签相关的图像文件，难以对标签识别的代码与文件进行修改。故方案作废。</p>
+<p>然后我看到了面部识别的功能介绍和代码，我计划通过修改面部识别的文件，将“箭头”作为“面部”进行识别，但经对面部识别代码以及机器人内部文件的研究，发现机器人的面部识别功能是基于.d6a模型建立起来的。无法针对已经完善的模型文件进行修改，剩余的时间也不足以训练一个新的模型，故方案作废。</p>
+<p>至此，无论是剩余的时间还是任务分配都不允许我去设计其他新的思路去比赛，最终迫不得已基于思路一穷举出了可能的箭头情况并在比赛中分别调用，尽管我们及时发现并修补了机器人行动程序上的缺陷，但场地摩擦力不均带来的行动困难、机器人腿部舵机问题引起的不可控因素等场外条件将比赛算法不成熟引起的问题放大到了极致。因此很遗憾没有取得一个令人满意的成绩。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Eklos
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://eklos9z.github.io/2023/08/15/%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%AF%94%E8%B5%9B%E9%81%BF%E9%9A%9C%E9%A1%B9%E7%9B%AE%E8%B5%9B%E5%90%8E%E6%80%BB%E7%BB%93/" title="机器人比赛避障项目赛后总结">https://eklos9z.github.io/2023/08/15/机器人比赛避障项目赛后总结/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%A4%8D%E7%9B%98/" rel="tag"><i class="fa fa-tag"></i> 复盘</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2023/08/15/%E5%88%A9%E7%94%A8hexo%E5%9C%A8github%E4%B8%8A%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" rel="next" title="利用hexo在github上搭建个人博客">
+      利用hexo在github上搭建个人博客 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eklos"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Eklos</p>
+  <div class="site-description" itemprop="description">The world around you is not what it seems.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/eklos9z" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;eklos9z" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eklos</span>
+</div>
+  <div class="powered-by">
+   <!--由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动 -->
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'cedbea90b1d096e29c15',
+      clientSecret: '69b03a5b8b64294966225f86b5b9ec094091f68c',
+      repo        : 'Eklos9z-s-Blog-comment',
+      owner       : 'Eklos9z',
+      admin       : ['Eklos9z'],
+      id          : '066ec647b547c3f55f59bf4a35ffdd3f',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

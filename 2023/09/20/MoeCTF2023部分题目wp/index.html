@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 8.1.2">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/16x16.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/16x16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"eklos9z.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.json"};
+  </script>
+
+  <meta name="description" content="比赛链接：https:&#x2F;&#x2F;ctf.xidian.edu.cn&#x2F; 因为本人水平有限，并且部分题目是一边做一边记录，有错误在所难免，还请各位师傅多多批评指正。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MoeCTF2023部分题目wp">
+<meta property="og:url" content="https://eklos9z.github.io/2023/09/20/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/index.html">
+<meta property="og:site_name" content="Eklos&#39;s Blog">
+<meta property="og:description" content="比赛链接：https:&#x2F;&#x2F;ctf.xidian.edu.cn&#x2F; 因为本人水平有限，并且部分题目是一边做一边记录，有错误在所难免，还请各位师傅多多批评指正。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695552040696.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546103340.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546153083.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546160885.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546843704.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695547408548.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695547590711.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548004807.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548056397.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548274601.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548713876.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548962411.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549111309.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549302124.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549579432.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549812014.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695550053013.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695550372881.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551035234.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551258300.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551520367.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551566402.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551701456.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551823956.png">
+<meta property="og:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551866254.png">
+<meta property="article:published_time" content="2023-09-20T07:40:50.000Z">
+<meta property="article:modified_time" content="2026-09-11T01:30:20.000Z">
+<meta property="article:author" content="Eklos">
+<meta property="article:tag" content="复盘">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://eklos9z.github.io/images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695552040696.png">
+
+<link rel="canonical" href="https://eklos9z.github.io/2023/09/20/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>MoeCTF2023部分题目wp | Eklos's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Eklos's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">明镜止水之心</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">2</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">8</span></a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://eklos9z.github.io/2023/09/20/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Eklos">
+      <meta itemprop="description" content="The world around you is not what it seems.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Eklos's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MoeCTF2023部分题目wp
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-09-20 15:40:50" itemprop="dateCreated datePublished" datetime="2023-09-20T15:40:50+08:00">2023-09-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2026-09-11 09:30:20" itemprop="dateModified" datetime="2026-09-11T09:30:20+08:00">2026-09-11</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>比赛链接：<a target="_blank" rel="noopener" href="https://ctf.xidian.edu.cn/">https://ctf.xidian.edu.cn/</a></p>
+<p>因为本人水平有限，并且部分题目是一边做一边记录，有错误在所难免，还请各位师傅多多批评指正。</p>
+<span id="more"></span>
+
+<h1 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h1><details>
+
+<summary>http</summary>
+
+<p>使用工具：Burp</p>
+</details>
+
+<h1 id="Misc"><a href="#Misc" class="headerlink" title="Misc"></a>Misc</h1><details>
+
+<summary>机位查询</summary>
+
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695552040696.png"></p>
+<p>使用工具：百度地图，高德地图；(exif)</p>
+<p>题干的安装包里有三个文件（1、2、3）。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546103340.png"></p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546153083.png"></p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546160885.png"></p>
+<p>P1可以看到图片中有个很明显的南宁站，结合旁边的”高铁商务酒店”可以初步判断P1地址位于南宁高铁站附近</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695546843704.png"></p>
+<p>然后根据地图与照片尝试反推位置：机位既能看到”猪霸王”所在的美食街，又能看到城市便捷酒店的远角以及南宁站的全貌。因此可以做一个大致的视线图如下。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695547408548.png"></p>
+<p>模拟图显示机位大概在”摩根快捷酒店”与”运德集团小区”附近，考虑到简易标点的误差，把”君安快捷酒店”作为备选项，选择用百度实景地图查看一下附近的具体信息。<img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695547590711.png"></p>
+<p>很显然，只有”嘉士摩根国际”这个建筑具备机位的相关条件，”运德集团小区”的建筑高度无法实现该效果，如果采取相同角度在”君安快捷酒店”拍照，”嘉士摩根国际”必然会出现在照片中。因此P1的flag片段为”jiashi”（注意平翘舌，别问我为什么）。</p>
+<p>P2有一个很明显的”中山路美食街”的特征，扔到bing搜索一下。<img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548004807.png"></p>
+<p>又在南宁，顺手看一眼图片。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548056397.png"></p>
+<p>看到一个类似的图片，点进去发现是素材库。判断这个图片可能是网图，开始百度识图。<img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548274601.png"></p>
+<p>发现是某摄影比赛的作品，于是<del>找到主办方联系作者发邮件问照片是在哪拍的，</del> 打开百度地图搜索南宁中山路美食街</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548713876.png"></p>
+<p>根据”琉璃净”的位置确认具体方位。然后根据照片推断大致机位位置。（这里吐槽一下百度地图和高德地图一个不支持地图旋转，一个没有实景地图）</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695548962411.png"></p>
+<p>根据上面比赛信息，可以排除在马路上使用无人机进行拍摄，所以只能是在”广西高等法院办公楼旧址”所在的区域，利用百度实景地图瞄一眼。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549111309.png"></p>
+<p>显然，P2的flag片段为：baisheng</p>
+<p>P3比较麻烦，整个照片几乎没有有效的特征信息，只有最远处高楼有”广西农信”的字样，因此我猜测照片还是在南宁，在百度地图上尝试搜索”时代丽都”。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549302124.png"></p>
+<p>运气很好。并且根据近大远小的透视关系。以及”时代丽都”和”中国人保大厦”的相对位置，可以很容易判断照片是从左往右拍摄的。照片下方有一串95500的电话，经过查询是太平洋保险的电话，由此向左寻找和太平洋相关的地标。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549579432.png"></p>
+<p>初步判断是左边的”疫苗临床研究所”，查询全景地图。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695549812014.png"></p>
+<p>显然右边的黄色建筑（疾病预防控制中心）的高度不足以越过”太平洋世纪广场”所在的楼，所以还需要再重新定位。</p>
+<p>再往左看，发现最近同时具备能拍摄”太平洋世纪广场”并且高度明显远高于”太平洋世纪广场”的建筑仅可能有”铭湖经典”、”东方明珠花园”和”汇金苑”</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695550053013.png"></p>
+<p>此时我发现了”中国人保”右边的字被挡住了，因此在通过实景地图查询中国人保标牌在建筑上的相对位置可以模拟一条较为精确的视线。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695550372881.png"></p>
+<p>大致为2&#x2F;3的位置。同时根据机位大概在”时代丽都”与”中国人保财险”的位置正中，并且”时代丽都”所在的区域背后有一条视角偏左的马路，可以模拟另一条视线图。同时照片是刚好只能看到”太平洋世纪广场”的电话的，所以可以做第三条视线图。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551035234.png"></p>
+<p>受限于误差，仅仅排除了”铭湖经典”。并且不能判断究竟是”东方明珠花园”的前楼还是”东方明珠花园”与”汇金苑”的侧楼，然后我又仔细观察了一遍照片，发现有一个红色标识的楼位于机位的正中央。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551258300.png"></p>
+<p>区域特征是旁边有一些红色的楼群，并且几乎都是高度较高的建筑，以及一个红色的不明logo，利用卫星地图确认了目标楼，并作了视线图，由于位于照片正中央，因此只需作平行线即可。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551520367.png"></p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551566402.png"></p>
+<p>然后再通过实景地图确认，”东方明珠花园”前楼的高度不足，因此P3的flag片段为”huijin”。</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551701456.png"></p>
+<p>最后，关于P3的这些各位读者其实都可以不看，因为我直到整理wp的时候才想起来把照片扔exif里查一下，里面写了经纬度……</p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551823956.png"></p>
+<p><img src="/./images/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/1695551866254.png"></p>
+<p>哭了，我的头发，我对不起你。</p>
+</details>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Eklos
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://eklos9z.github.io/2023/09/20/MoeCTF2023%E9%83%A8%E5%88%86%E9%A2%98%E7%9B%AEwp/" title="MoeCTF2023部分题目wp">https://eklos9z.github.io/2023/09/20/MoeCTF2023部分题目wp/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E5%A4%8D%E7%9B%98/" rel="tag"><i class="fa fa-tag"></i> 复盘</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/09/06/CTF%E8%87%AA%E5%AD%A6%E9%97%AE%E9%A2%98%E6%94%B6%E9%9B%86/" rel="prev" title="CTF自学问题收集">
+      <i class="fa fa-chevron-left"></i> CTF自学问题收集
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/10/22/%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="next" title="漏洞挖掘学习笔记">
+      漏洞挖掘学习笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Web"><span class="nav-number">1.</span> <span class="nav-text">Web</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Misc"><span class="nav-number">2.</span> <span class="nav-text">Misc</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Eklos"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Eklos</p>
+  <div class="site-description" itemprop="description">The world around you is not what it seems.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/eklos9z" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;eklos9z" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Eklos</span>
+</div>
+  <div class="powered-by">
+   <!--由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动 -->
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'cedbea90b1d096e29c15',
+      clientSecret: '69b03a5b8b64294966225f86b5b9ec094091f68c',
+      repo        : 'Eklos9z-s-Blog-comment',
+      owner       : 'Eklos9z',
+      admin       : ['Eklos9z'],
+      id          : '5ea2bfe02a55a7841a22c51e782f004a',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
