@@ -2,7 +2,7 @@
 title: MoeCTF2023部分题目wp
 date: 2023-09-20 15:40:50
 tags: 复盘
-categories![1714442743740](./images/利用hexo在github上搭建个人博客/1714442743740.png): CTF比赛
+categories: CTF比赛
 ---
 比赛链接：https://ctf.xidian.edu.cn/
 
